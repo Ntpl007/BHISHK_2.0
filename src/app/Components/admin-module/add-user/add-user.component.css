@@ -1,0 +1,44 @@
+.alignment{
+    text-align: center;
+}
+
+input.ng-invalid.ng-touched{
+    border-left: 4px solid red;
+}
+
+input.ng-invalid.ng-dirty{
+    border-left: 5px solid red;
+} 
+/* 
+input.ng-valid.ng-dirty{
+    border-left: 5px solid rgb(7, 160, 20);
+} */
+
+select.ng-touched.ng-pristine{
+    border-left: 4px solid red;
+}
+
+/* 
+select.ng-valid.ng-touched{
+    border-left: 5px solid rgb(7, 160, 20);
+} */
+
+div input{
+    margin-top: 10px;
+}
+
+div select{
+    margin-top: 10px;
+}
+.mblerrorclass{
+    list-style: none;
+    margin-left: 0px;
+    text-decoration: none;
+   
+}
+li{
+    margin-left: 0px;
+    text-decoration: none;
+    display:block;
+    list-style: none;
+}
