@@ -1,0 +1,2 @@
+
+$("#ddlDoctorId").select2();
