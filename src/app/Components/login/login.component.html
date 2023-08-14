@@ -1,1 +1,46 @@
-<p>login works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIMS Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link href="../../../css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class="blue-background">
+    <section class="container-login" style="background-image: url('../../../../assets/img/login-bg.png');">
+        <div class="container">
+            <div class="login-box">
+                <div class="login-logo-parent text-center">
+                    <img src="../../../../assets/img/abc-logo.png" alt="logo" />
+                </div>
+                <form #login="ngForm"  (ngSubmit)="Login(login.value)" autocomplete="off">
+                <h1 class="text-center">Login to your Account </h1>
+                <div class="text-center login-fields">
+                    <div class="input-parent">
+                        <label class="" for="exampleInputPassword2">Enter User Name</label>
+                        <input type="text" id="UserName" name="UserName" [value]="username" ngModel placeholder="Enter User Name" />
+                    </div>
+                    <div class="input-parent">
+                        <label class="" for="exampleInputPassword2">Enter Password</label>
+                        <input type="password" id="Password" ngModel [value]="password" name="Password" placeholder="Enter Password" />
+                    </div>
+                    <div class="remember-forgot">
+                        <div class="forgot-pass">
+                            <a href="#">Forgot Password?</a>
+                        </div>
+                       
+                    </div>
+                    <div><button type="submit" class="login-btn">Login</button></div>
+                </div>
+            </form>
+            </div>
+            </div>
+           
+    </section>
+</body>
+
+</html>
