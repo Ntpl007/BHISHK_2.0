@@ -1,0 +1,32 @@
+select option{
+    width: 100px;
+}
+
+.isdisplayretextbx{
+    display: none;
+}
+
+.errspan {
+    float: right;
+    margin-right: 6px;
+    margin-top: -28px;
+    position: relative;
+    z-index: 2;
+    color: green;
+}
+
+
+.errspan2 {
+    float: right;
+    margin-right: 6px;
+    margin-top: -28px;
+    position: relative;
+    z-index: 2;
+    color: red;
+}
+
+.divd {
+   
+    transition: opacity 1s ease-out;
+    opacity: 0;
+}

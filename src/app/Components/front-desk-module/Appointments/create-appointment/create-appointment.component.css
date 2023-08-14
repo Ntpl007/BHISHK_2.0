@@ -1,0 +1,60 @@
+label {
+    font-size: 19px;}
+
+
+    
+#patients thead, #patients tbody{
+    width: 100%;
+    border-collapse: collapse;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  #patients td {
+    /* border: 1px solid #ddd; */
+     padding-left: 9px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align: left;
+    width: 20px;
+    overflow: hidden;
+    /* position: absolute; */
+   }  
+  
+  .tablebody tr{
+padding: 10px;
+  }
+   #patients th {
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align: left;
+    width: 20px;
+    background-color:#0b7af3;
+    color: white; 
+    
+   }  
+  .tablebody{
+    display: block;
+      max-height: 100px;
+      overflow-y: scroll;
+     /* z-index: 999;  */
+  
+  
+  } 
+  
+   thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    
+    /* even columns width , fix width of table too*/
+   } 
+  
+  .tableshow{
+    position: absolute;
+     z-index: 999;
+      background:#f1f5fa;
+      border: 1px solid #0075a9;
+      text-align: center;
+  }
+  

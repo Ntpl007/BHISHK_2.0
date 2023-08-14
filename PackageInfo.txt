@@ -1,4 +1,7 @@
-1.npm install Sweatalert2 ----14082023 
+npm install Sweatalert2 ----14082023 
 
-2.ng add @auth0/angular-jwt ----14082023 
-3.npm install @ng-bootstrap/ng-bootstrap  --legacy-peer-deps
+ng add @auth0/angular-jwt ----14082023 
+npm install @ng-bootstrap/ng-bootstrap  --legacy-peer-deps
+
+ng generate interceptor global
+npm install ngx-pagination

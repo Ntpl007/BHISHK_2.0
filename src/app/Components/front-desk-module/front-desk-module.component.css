@@ -1,0 +1,14 @@
+.styl1{
+    display: none;
+}
+.styl2{
+    display: block;
+}
+
+
+dropdown-menu{
+  
+    color: #506ee4;
+    text-decoration: none;
+    background-color: transparent;
+  }

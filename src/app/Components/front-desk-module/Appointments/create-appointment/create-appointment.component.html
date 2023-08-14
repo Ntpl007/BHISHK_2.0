@@ -1,0 +1,352 @@
+<div class="card-body">
+<div class="form-body">
+
+
+    <form [formGroup]="myform"  #reg="ngForm" (ngSubmit)="SaveAppointment(reg.value)" autocomplete="off">
+     <div class="form-row">
+        <div class="form-group mb-0 row">
+
+            <div class="form-check-inline my-0">
+                <div class="custom-control ">
+                    <input style="size: 50px;" (click)="existedCheck()" type="checkbox"  name="customRadio"
+                    class="custom-control-input,col-md-1" id="chk">
+                    <label   class="custom-label" for="chk"> &nbsp;Existed Patient</label>
+                </div>
+            </div>
+
+        </div>
+
+     </div>
+<div class="form-row">
+
+
+    <div class="col-md-5 mb-3" [hidden]="isexistedpatientHide">
+
+        <div     #Mobilenumsearch>
+           <input type="text"   class="form-control" [value]="mobilenumber" id="mobilenumber" ngModel name="mobilenumber" id="Mobilenumsearch" placeholder="Enter Mobile Number*
+   " (keyup)="getpatient($event)">
+</div>
+
+
+                                              <!--table-->
+                                              <div *ngIf="showModal">
+                                               <div class="tableshow">
+                                                   <table  class="table table-hover"  id="patients" >
+                                                       <thead>
+                                             <tr>
+                                               <th style="font-size: 10px; padding-left: 9px;padding-top: 5px;">Name</th>
+                                               <th style="font-size:10px; "> Gender</th>
+                                               <th style="font-size: 10px; ">Patient Id</th>
+                                               <th style="font-size: 10px;">Mobile</th>
+                                               <th style="font-size: 10px;">Aadhar Number</th>
+                                             </tr>
+                                           </thead>
+                                           <tbody class="tablebody" >
+                                             <tr *ngFor="let item of listOfDisplayData;let k = index" (click)="getpatientdata(k, item)">
+
+                                               <td style="text-align: left;"><label style="font-size: 10px;">{{item.firstName}}</label></td>
+                                               <td ><label style="font-size: 10px;">{{item.gender}}</label></td>
+                                               <td ><label style="font-size: 10px;" >{{item.patienTMrn}}</label></td>
+                                               <td ><label style="font-size: 10px;">{{item.mobileNumber}}</label></td>
+                                               <td ><label style="font-size: 10px;">{{item.aadhaarNumber}}</label></td>
+                                             </tr>
+                                           </tbody>
+                                         </table>
+                                               </div>
+
+                                             </div>
+
+                                           </div>
+</div>
+
+
+
+<div class="form-row">
+    <div class="col-md-1 mb-2">
+       <select class="form-control" isSearchable="true" id="exampleFormControlSelect1" formControlName="Prefix"   name="Prefix" id="ddlprefix">
+            <option [selected]="true" hidden  >Prefix*</option>
+            <option value="Mr" >Mr</option>
+            <option value="Miss">Miss</option>
+            <option value="Ms">Ms</option>
+            <option value="Mrs">Mrs</option>
+            </select>
+            <!-- <small *ngIf="myform.get('Prefix').pristine&& myform.get('Prefix').touched" class="text-danger">
+                Prefix is requied
+                             </small> -->
+        </div>
+
+<div class="col-md-4 mb-3">
+
+    <input type="text" class="form-control text-capitalize" id="txtName" formControlName="FirstName" class="form-control"  placeholder="First Name*"  name="FirstName">
+    <!-- <small *ngIf="myform.get('FirstName').touched&&myform.get('FirstName').hasError('required')" class="text-danger">
+        First Name is required
+       </small> -->
+</div>
+<div class="col-md-4 mb-4">
+
+    <input type="text" class="form-control text-capitalize" formControlName="LastName" id="txtName" placeholder="Last Name"  name="Last Name">
+
+</div>
+
+
+<div  class="col-md-3 mb-3" >
+    <div class="input-group">
+     <input formControlName="DateOfBirth" class="form-control"  (ngModelChange)="getAgeInDays($event)"
+            class="form-control"
+            placeholder="Date Of Birth*"
+            ngbDatepicker
+                        #d="ngbDatepicker"
+
+                          name="dob"
+                         [maxDate]="maxDate"
+                          id="dob"
+
+        />
+        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"type="button"></button>
+    </div>
+    <!-- <small *ngIf="myform.get('DateOfBirth').touched&&myform.get('DateOfBirth').hasError('required')" class="text-danger">
+        Date of birth is required
+       </small> -->
+
+    </div>
+
+    <div class="col-md-1 mb-1" >
+
+        <input type="text"formControlName="Age"   class="form-control text-capitalize" id="txtAge" placeholder="Age*"  name="Age">
+        <!-- <small *ngIf="myform.get('Age').touched&&myform.get('Age').hasError('required')" class="text-danger">
+            Age is required
+           </small> -->
+</div>
+<div class="col-md-2 mb-2">
+    <select class="form-control" id="AgeModId" formControlName="AgeModId"   name="AgeModId" >
+        <option [selected]="true"  hidden  >Age Mode*</option>
+        <option value="1">Days</option>
+        <option value="2">Months</option>
+        <option value="3">Years</option>
+
+    </select>
+    <!-- <small *ngIf="myform.get('AgeModId').pristine&& myform.get('AgeModId').touched" class="text-danger">
+        Religion is requied
+                     </small> -->
+</div>
+
+  <div class="col-md-3 mb-4">
+    <div>
+        <select class="form-control" id="ddlSex" name="Sex"  formControlName="Gender">
+            <option [selected]="true" hidden  >Gender*</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Other</option>
+        </select>
+        <!-- <small *ngIf="myform.get('Gender').pristine&& myform.get('Gender').touched" class="text-danger">
+            Religion is requied
+                         </small> -->
+    </div>
+    </div>
+<div class="col-md-3 mb-3">
+<input type="text"  class="form-control" formControlName="AadhaarNumber" id="Aadhaar" placeholder="Aadhaar*" name="Aadhaar">
+<!-- <span   class="fa fa-check errspan"></span>
+<span  class="fa fa-exclamation-circle errspan2"></span>
+
+<small style="color: red;" >Aadhaar is already Existed</small>   -->
+<small *ngIf="myform.get('AadhaarNumber').touched&&myform.get('AadhaarNumber').hasError('required')" class="text-danger">
+    First Name is required
+   </small>
+</div>
+
+<div class="col-md-3 mb-3">
+<input type="text" class="form-control" formControlName="MobileNumber" placeholder="Mobile*" name="MobileNumber"/>
+<!-- <small *ngIf="myform.get('MobileNumber').touched&&myform.get('MobileNumber').hasError('required')" class="text-danger">
+    Mobile Number is required
+   </small> -->
+</div>
+<div class="col-md-3 mb-3">
+    <select class="form-control" id="ddlReligion" formControlName="RelegionId"   name="ReligionId">
+        <option [selected]="true"  hidden  >Religion*</option>
+        <option  *ngFor="let d of Relig"  value={{d.religionID}}>{{d.religionName}}</option>
+
+    </select>
+    <!-- <small *ngIf="myform.get('RelegionId').pristine&& myform.get('RelegionId').touched" class="text-danger">
+        Religion is requied
+                     </small> -->
+</div>
+
+
+<div class="col-md-3 mb-3">
+    <select class="form-control" id="ddlnationality" formControlName="NationalityId"  name="NationalityId" >
+        <option [selected]="true"  hidden  >Nationality*</option>
+    <option  *ngFor="let d of nat"  value={{d.nationalitY_ID}}>{{d.nationalitY_NAME}}</option>
+    </select>
+    <!-- <small *ngIf="myform.get('NationalityId').pristine&& myform.get('NationalityId').touched" class="text-danger">
+        Nationality is requied
+                     </small> -->
+</div>
+
+
+
+
+ <div class="col-md-3 mb-3">
+    <input type="text" class="form-control" formControlName="HouseNo" id="Hno" name="HouseNo" placeholder="House No.">
+</div>
+ <div class="col-md-3 mb-3">
+
+    <select class="form-control" id="State" formControlName="StateId"   #state name="State" (change)="GetDistricts(state.value)">
+         <option [selected]="true"  hidden  value="0">State*</option>
+     <option  *ngFor="let x of states" value={{x.id}}>{{x.name}}</option>
+
+
+    </select>
+    <!-- <small *ngIf="myform.get('StateId').pristine&& myform.get('StateId').touched" class="text-danger">
+        State is requied
+                     </small> -->
+</div>
+
+
+<div class="col-md-3 mb-3">
+    <select class="form-control" formControlName="DistrictId"  id="District" name="District" >
+        <option [selected]="true"  hidden  >District*</option>
+        <option *ngFor="let x of districts" value={{x.id}} >{{x.name}}</option>
+
+    </select>
+    <!-- <small *ngIf="myform.get('DistrictId').pristine&& myform.get('DistrictId').touched" class="text-danger">
+        District is requied
+                     </small> -->
+</div>
+<div class="col-md-3 mb-3">
+    <input type="text" class="form-control" formControlName="City"  name="City" placeholder="City">
+</div>
+<div class="col-md-3 mb-3">
+    <input type="text" class="form-control" formControlName="Village" name="Village" placeholder="Village">
+</div>
+<div class="col-md-3 mb-3">
+    <input type="text" class="form-control" formControlName="PinCode"  name="Pincode" placeholder="Pincode">
+    <!-- <small *ngIf="myform.get('PinCode').touched&&myform.get('PinCode').hasError('required')" class="text-danger">
+        End Time is required
+       </small> -->
+</div>
+
+</div>
+<div class="form-row">
+    
+    <div class="col-md-4 mb-4" >
+        <div class="input-group">
+            <input formControlName="AppointmentDate" class="form-control" readonly="true"
+                   class="form-control"
+                   placeholder="Appointment Date*"
+                   ngbDatepicker
+                               #p="ngbDatepicker"
+       
+                                 name="AppointmentDate"
+                                 
+                                [minDate]="minDate"
+                                 id="AppointmentDate"
+       
+               />
+               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="p.toggle()"type="button"></button>
+           </div>
+    </div>
+    <div class="col-md-2 mb-2" >
+
+        <label>
+         Start Time
+        </label>
+       
+        <!-- <small *ngIf="myform.get('StartTime').touched&&myform.get('StartTime').hasError('required')" class="text-danger">
+            Start Time is required
+           </small> -->
+      </div>
+      <div class="col-md-2 mb-2" >
+        <input type="time" class="form-control" #obj S formControlName="StartTime" id="stime">
+        </div>
+     <div class="col-md-2 mb-2" >
+
+         <label>
+          End Time
+         </label>
+        
+         <!-- <small *ngIf="myform.get('EndTime').touched&&myform.get('EndTime').hasError('required')" class="text-danger">
+            End Time is required
+           </small> -->
+       </div>
+       <div class="col-md-2 mb-2" >
+        <input type="time" formControlName="EndTime" class="form-control"  id="etime">
+       </div>
+
+
+</div>
+<div class="form-row">
+
+<div class="col-md-4 mb-4">
+<select class="form-control" id="ddlScheduleType" formControlName="ScheduleTypeId" (change)="getId($event)"  name="ScheduleTypeId" >
+    <option [selected]="true"  hidden  value="0"  >ScheduleType*</option>
+     <option  *ngFor="let d of stype"  value={{d.scheduleTypeId}}>{{d.scheduleType_Name}}</option>
+</select>
+<!-- <small *ngIf="myform.get('ScheduleTypeId').pristine&& myform.get('ScheduleTypeId').touched" class="text-danger">
+    Schedule Type is requied
+                 </small> -->
+</div>
+
+<div class="col-md-4 mb-4" *ngIf="isspecialityhide" >
+
+    <select class="form-control" formControlName="SpecialityID"  id="ddlSpecialityId"    name="specialityID"  (change)="getDoctors($event)"  >
+        <option [selected]="true"  hidden  value="0"  >Speciality*</option>
+      <option  *ngFor="let d of speciality"  value={{d.specialityID}}>{{d.speciality}}</option>
+    </select>
+    <!-- <small *ngIf="myform.get('SpecialityID').pristine&& myform.get('SpecialityID').touched" class="text-danger">
+        Speciality is requied
+                     </small> -->
+</div>
+
+<div class="col-md-4 mb-4" *ngIf="isdoctorhide">
+
+    <select class="form-control" formControlName="DoctorId"   id="ddlDoctor"  name="DoctorId"  >
+        <option [selected]="true"  hidden   value="0" >Doctor*</option>
+     <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+    </select>
+    <!-- <small *ngIf="myform.get('DoctorId').pristine&& myform.get('DoctorId').touched" class="text-danger">
+        Doctor is requied
+                     </small> -->
+</div>
+
+<div class="col-md-4 mb-4" *ngIf="ischargegrouphide">
+
+    <select class="form-control" formControlName="ChargegroupId"   id="ddlChargeGroup"  name="Chargegroup"(change)="GetChargeItems($event)"  >
+        <option [selected]="true"  hidden  value="0"  >Charge Group*</option>
+    <option  *ngFor="let d of chargegroup"  value={{d.chargeGroupId}}>{{d.chargeGroup}}</option>
+</select>
+<!-- <small *ngIf="myform.get('ChargegroupId').pristine&& myform.get('ChargegroupId').touched" class="text-danger">
+    Charge group is requied
+                 </small> -->
+</div>
+<div class="col-md-4 mb-4"  *ngIf="ischargegrouphide">
+
+    <select class="form-control" formControlName="ChargeItemId"    id="ddlChargeItem"  name="ChargeItem" >
+        <option [selected]="true"  hidden  value="0" >Charge Item*</option>
+      <option  *ngFor="let d of chargeitems"  value={{d.chargeItemId}}>{{d.chargeItem}}</option>
+    </select>
+    <!-- <small *ngIf="myform.get('ChargeItemId').pristine&& myform.get('ChargeItemId').touched" class="text-danger">
+        Charge item is requied
+                     </small> -->
+</div>
+</div>
+<div class="form-row">
+
+<div style="text-align: right;" class="col-md-12 mb-4">
+    <button type="submit"
+
+    class="btn btn-primary waves-effect waves-light" id="btnSave"  >
+        Save
+
+    </button>&nbsp;
+    <button type="reset" style=" background: #ef4d56; color:white;font-weight: bold;  width: 70px;" id="reset" class="btn btn-gradient-danger waves-effect m-l-5">
+        Clear
+    </button>
+
+</div>
+</div>
+</form>
+
+
+
+</div>
+</div>

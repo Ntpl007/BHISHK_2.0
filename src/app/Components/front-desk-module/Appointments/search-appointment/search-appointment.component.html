@@ -1,0 +1,183 @@
+
+<div *ngIf="islload">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status" >
+          <span class="sr-only" id="loading"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" /> -->
+    <div class="card-body">
+       
+       <form [formGroup]="searchform" #search="ngForm" (ngSubmit)="SearchAppointments(search.value)">
+        <div class="form-row">
+            <div class="input-group col-md-4 mb-4">
+            <div class="input-group" >
+                <input
+                    class="form-control"
+                    placeholder="From Date"
+                    name="dp"
+                    value="{{todayfrom}}"
+                    ngbDatepicker
+                    #d="ngbDatepicker" 
+                   id="fdate"   (dateSelect)="onDateSelectfromdate($event)"   name="FromDate"   
+                />
+              
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+            </div></div>
+           
+            <div  class="input-group col-md-4 mb-4"  >
+                <div class="input-group"   >
+                    <input
+                        class="form-control"
+                        placeholder="To Date"
+                        name="dp"
+                      
+                        ngbDatepicker
+                        #d2="ngbDatepicker"
+                       
+                        value="{{todayTo}}" id="toDate" (dateSelect)="onDateSelecttodate($event)"   name="ToDate"  
+                    />
+                   
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button> 
+                </div></div>
+                
+               
+           
+            <div class="input-group col-md-4 mb-4" >
+                <input type="text" class="form-control" name ="PatientName"  formControlName="PatientName" id="PatientName"
+                    placeholder="Patient Name">
+              
+           
+            </div>
+            </div>
+            <div class="form-row">
+                
+                
+               
+
+            <div class="input-group col-md-4 mb-4" >
+                <input type="text" class="form-control" name="MobileNumber"   formControlName="MobileNumber" id="MobileNumber"
+                    placeholder="Mobile Number">
+              
+           
+            </div>
+            <div class="col-md-4">
+                <!-- <label for="cmbFecility" class="form-label">Facility</label> -->
+                <select   class="form-control" [ngModel]="dct" formControlName="DoctorId" id="DoctorId"  name="DoctorId" >
+                    <option  [selected]="true" [value]="dct"  hidden  >Doctor</option>
+                   
+                    <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+                   
+                   </select>
+                 
+            </div>
+            <div class="col-md-4">
+                <!-- <label for="cmbFecility" class="form-label">Facility</label> -->
+                <select   class="form-control" [ngModel]="astatus" formControlName="AppointmentStatusId" id="AppointmentStatusId"  name="AppointmentStatusId" >
+                    <option  [selected]="true" [value]="astatus" hidden >Appointment Status</option>
+                    
+                    <option  *ngFor="let d of appointmentstatus"  value={{d.appointmentStatusID}}>{{d.appointmentStatus}}</option>
+                   
+                   </select>
+                 
+            </div>
+          
+            <div  class="col-md-12" style="text-align: right;" >
+                <button type="submit"  
+                
+    
+                class="btn btn-primary waves-effect waves-light" id="btnSave" >
+                    Search
+                  
+                </button>&nbsp;
+                <button type="reset" (click)="resetdates()"  id="reset" class="btn btn-danger waves-effect waves-light">
+                    Clear
+                </button>
+               
+            </div>
+            
+            
+            </div>
+        
+    <div>
+       
+        Total Appointments : {{rowscount}}
+      
+    </div>
+            <div   class="row d-flex justify-content-center" >
+    
+                <table id="tblfacility"  class="styled-table" style="margin-top: 0px;overflow-x:auto;" >
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;padding-left: 10px;" >S.No</th>
+                            <th class="dt" > Date</th>
+                            <th class="time">Time Slot</th>
+                            <!-- <th class="dt">End Time</th> -->
+                            <!-- <th class="dt" >Patient Id</th>  -->
+                            <!-- <th hidden>Patient Id</th> -->
+                            <th class="name">Name</th>
+                            <th class="name" hidden>apid</th>
+                            <th class="mobile">Mobile Number</th>
+                            <!-- <th >Aadhaar Number</th> -->
+                            <th class="age">Age/Gender</th>
+                            <th class="name">Doctor Name</th>
+                            <th class="status" >Status</th>
+                            <th hidden>Appointment Id</th>
+                            <th class="action">Action</th>
+                           
+                            <!-- <th>Appointment Type</th> -->
+                            
+                            </tr>
+                    </thead>
+                   <tbody class="as"> 
+                   
+                    <tr *ngFor="let i=index  let rowlist of patientList | paginate: { itemsPerPage: 50, currentPage: p }" >
+                        <td style="width:50px; padding-left: 10px;" >{{i+1}}</td>
+                        <td class="dt" >{{rowlist.appointment_Date}}</td>
+                        <td class="time">{{rowlist.start_Time}} - {{rowlist.end_Time}}</td>
+                        <!-- <td class="dt"> {{rowlist.end_Time}}</td> -->
+                        <!-- <td class="dt">{{rowlist.patient_Mrn}}</td>  -->
+                        <!-- <td hidden>{{rowlist.patient_Id}}</td> -->
+                        <td class="name">{{rowlist.patient_Name}}</td>
+                        <td class="name" hidden>{{rowlist.appointmentId}}</td>
+                        <td  class="mobile">{{rowlist.mobile_Number}}</td>
+                        <!-- <td  class="mobile">--</td> -->
+                        <td class="age">{{rowlist.age}}Y / {{rowlist.gender}}</td> 
+                        <td class="name">{{rowlist.doctor_Name}}</td>
+                        <td  class="status"> {{rowlist.appointment_status}}</td>
+                        <td hidden>{{rowlist.appointmentId}} </td>
+                        <td class="action" >
+                           
+                        <i  style="font-size:10px;" class="material-icons" style="color: black;size: 3px;"   ngbTooltip="Re Schedule"  > calendar_month</i>
+                                                 
+                       <a> <i  style="font-size:10px;" class="material-icons" style="color: black;height: 1px;" ngbTooltip="Edit Appointment"  (click)="EditAppointment(i, rowlist)"> edit_note</i></a> 
+                       <i style="font-size:10px;" class="material-icons"   style="color: rgb(237, 69, 69);height: 10px;" ngbTooltip="Cancel Appointment" (click)="CancelAppointment(i, rowlist)" > cancel</i>
+                       
+
+                     
+                       <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home">add</mat-icon> -->
+                        
+                        </td>
+                      
+
+                        
+                        <!-- <td>{{rowlist.appointment_Type}}</td>  -->
+                        
+                    </tr>
+                    <tr *ngIf=norecords>
+                        <td>No Records Found</td>
+    
+                    </tr>
+                   </tbody>
+                   <tfoot>
+                    <tr><td> <pagination-controls (pageChange)="p = $event"></pagination-controls></td></tr>
+                   </tfoot>
+                </table>
+                </div>
+    
+    
+        </form>
+    </div>
+    

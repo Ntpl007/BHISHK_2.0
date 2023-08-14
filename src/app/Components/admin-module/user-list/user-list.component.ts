@@ -4,7 +4,7 @@ import { HimsServiceService } from 'src/app/Shared/hims-service.service';
 import { DatePipe, formatDate } from '@angular/common';
 import Swal from 'sweetalert2';
 
-import { FilterPipe } from 'src/app/filter.pipe';
+//import { FilterPipe } from 'src/app/filter.pipe';
 import { NgbAlertModule, NgbDatepickerConfig, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

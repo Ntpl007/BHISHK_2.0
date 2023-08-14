@@ -1,0 +1,12 @@
+table{
+    width: 500px;
+    background-color: aquamarine;
+    padding: 10px;
+    border-radius: 20px;
+ }
+ 
+   table tr td{
+     padding-left: 15px;
+     border-radius: 20px;
+     
+  }

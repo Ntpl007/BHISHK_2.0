@@ -1,0 +1,35 @@
+<div class="card-body">
+    
+    <form [formGroup]="_form" (ngSubmit)="VerifyOtp(_form.value)" >
+        
+    <div class="row d-flex justify-content-center">
+        
+       
+                
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="input-group">
+                <input type="text"   formControlName="Otp" class="form-control"  placeholder="Enter Otp*"/> &nbsp;
+               
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit" >Verify</button>
+                    
+                </span>
+                <br>
+               
+            </div>
+            <!-- /input-group -->
+           <small *ngIf="_form.get('Otp').touched&&_form.get('Otp').hasError('required')" class="text-danger">
+            Aadhaar Number is required
+               </small>
+        </div><!-- /.col-lg-4 -->
+       
+       
+       
+      
+       
+    </div><!-- /.row -->
+
+    
+    
+</form>
+</div>

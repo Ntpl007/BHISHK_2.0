@@ -22,7 +22,7 @@ userdata:any
   
   public isExpired():boolean
   {
-   // debugger
+    debugger
    
    this.token=  localStorage.getItem('token');
    var dt=helper.getTokenExpirationDate(this.token);

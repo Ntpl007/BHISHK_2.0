@@ -1,0 +1,62 @@
+<div class="card-body">
+   
+    
+    <form    (ngSubmit)="GetAbhaStatus(_Form.value)"  >
+       
+        <div align="center">
+          <table class="tblInput">
+            <tr><td width="80%">
+                <input  type="text" formControlName="healthID" class="form-control" placeholder="Enter health id number">
+                <small *ngIf="_Form.get('healthID').touched&&_Form.get('healthID').hasError('required')" class="text-danger">
+                    Health Id Number is required
+                   </small>
+            </td>
+        <td width="20%"> 
+             <button type="submit" class="btn btn-primary waves-effect waves-light" style="width: 150px;" >
+                Submit
+              
+            </button>
+        </td>
+        </tr>
+          </table>
+             
+          <div class="reslt-div">
+                <table>
+                    <tr>
+                        <td width="200px">
+                            Health Id
+                        </td><td>:</td>
+                        <td style="font-weight: bold;color: blueviolet;"> {{hid}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Health Id Number
+                        </td><td>:</td>
+                        <td style="font-weight: bold;color: blueviolet;">{{hidnumber}} </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Name
+                        </td><td>:</td>
+                        <td style="font-weight: bold;color: blueviolet;">{{name}} </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Status
+                        </td><td width="10px">:</td>
+                        <td  *ngIf="isActive" style="color: rgb(7, 133, 7);text-shadow: azure 20px;font-weight: bold;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"> {{status}}</td>
+                        <td *ngIf="!isActive" style="color: rgb(247, 46, 32);text-shadow: azure 20px;font-weight: bold;"> {{status}}</td>
+                    </tr>
+                </table>
+              </div>   
+                   
+           
+
+        </div>
+       
+
+    </form>
+    
+
+
+</div>

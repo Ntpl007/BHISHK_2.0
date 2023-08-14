@@ -1,0 +1,42 @@
+
+<div class="card-body">
+
+    
+    
+    <form [formGroup]="_form" (ngSubmit)="Generateotp(_form.value)" >
+       
+    <div class="row d-flex justify-content-center">
+        
+    
+                
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="input-group">
+                <input type="text"   formControlName="Aadhaar" class="form-control"  placeholder="Aadhaar Number*"/> &nbsp;
+               
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit" >Go!</button>
+                    
+                </span>
+                <br>
+               
+            </div>
+            <!-- /input-group -->
+           <small *ngIf="_form.get('Aadhaar').touched&&_form.get('Aadhaar').hasError('required')" class="text-danger">
+            Aadhaar Number is required
+               </small>
+               <small *ngIf="_form.get('Aadhaar').dirty&&_form.get('Aadhaar').hasError('minlength')" class="text-danger">
+                Aadhaar Number Must be 12 digits
+                   </small>
+                  
+        </div><!-- /.col-lg-4 -->
+       
+       
+       
+      
+       
+    </div><!-- /.row -->
+
+    
+    
+</form>
+</div>

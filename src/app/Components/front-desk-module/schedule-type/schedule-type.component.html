@@ -1,0 +1,52 @@
+<div class="form-body">
+<form >
+    <div class="form-row">
+
+    <div class="col-md-3 mb-3">
+    <select class="form-control" id="ddlScheduleType" (change)="getId($event)"  name="ScheduleTypeId" >
+        <option [selected]="true"  hidden [value]="0" >ScheduleType</option>
+         <option  *ngFor="let d of stype"  value={{d.scheduleTypeId}}>{{d.scheduleType_Name}}</option> 
+    </select>
+</div> 
+
+<div class="col-md-3 mb-3" *ngIf="isspecialityhide" >
+    
+    <select class="form-control"  id="ddlSpecialityId"  name="specialityID"  (change)="getDoctors($event)"   >
+        <option [selected]="true"  hidden [value]="0" >Speciality*</option>
+        <option  *ngFor="let d of speciality"  value={{d.specialityID}}>{{d.speciality}}</option>
+    </select>
+</div>
+
+<div class="col-md-3 mb-3" *ngIf="isdoctorhide">
+    
+    <select class="form-control "  id="ddlDoctor"  name="Doctor"  >
+        <option [selected]="true"  hidden [value]="0" >Doctor*</option>
+       <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+    </select>
+</div>
+
+<div class="col-md-3 mb-3" *ngIf="ischargegrouphide" >
+    
+    <select class="form-control"  id="ddlChargeGroup"  name="Chargegroup" (change)="GetChargeItems($event)" >
+        <option [selected]="true"  hidden [value]="0" >Charge Group*</option>
+        <option  *ngFor="let d of chargegroup"  value={{d.chargeGroupId}}>{{d.chargeGroup}}</option>
+    </select>
+</div>
+
+<div class="col-md-3 mb-3" *ngIf="ischargegrouphide" >
+    
+    <select class="form-control"  id="ddlChargeItem"  name="ChargeItem" >
+        <option [selected]="true"  hidden [value]="0" >Charge Item*</option>
+       <option  *ngFor="let d of chargeitems"  value={{d.chargeItemId}}>{{d.chargeItem}}</option>
+    </select>
+</div>
+
+</div>
+<div>
+    <button class="btn-primary" >open</button>
+</div>
+
+</form>
+
+
+</div>
