@@ -150,7 +150,7 @@
                         <td hidden>{{rowlist.appointmentId}} </td>
                         <td class="action" >
                            
-                        <i  style="font-size:10px;" class="material-icons" style="color: black;size: 3px;"   ngbTooltip="Re Schedule"  > calendar_month</i>
+                        <i  style="font-size:10px;" class="material-icons" style="color: black;size: 3px;" (click)="reschedule()"   ngbTooltip="Re Schedule"  > calendar_month</i>
                                                  
                        <a> <i  style="font-size:10px;" class="material-icons" style="color: black;height: 1px;" ngbTooltip="Edit Appointment"  (click)="EditAppointment(i, rowlist)"> edit_note</i></a> 
                        <i style="font-size:10px;" class="material-icons"   style="color: rgb(237, 69, 69);height: 10px;" ngbTooltip="Cancel Appointment" (click)="CancelAppointment(i, rowlist)" > cancel</i>

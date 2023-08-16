@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HimsServiceService } from 'src/app/Shared/hims-service.service';
-//import { SchedulePopupComponent } from '../../schedule-popup/schedule-popup.component';
-
-
 @Component({
   selector: 'app-schedule-type',
   templateUrl:'./schedule-type.component.html',
@@ -26,7 +23,7 @@ ischargeItemhide:any=false
 
   // open()
   // {
-  //   this.d.open(SchedulePopupComponent,{
+  //   this.d.open(ReschedulePopUpComponent,{
   //     width:"60%",
   //     height:"400px"
   //   })

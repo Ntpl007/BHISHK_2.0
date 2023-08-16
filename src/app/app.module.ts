@@ -25,10 +25,17 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTableModule} from '@angular/material/table';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
+import { RescheduleComponent } from './Components/PopUps/reschedule/reschedule.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    RescheduleComponent,
+    
     
   ],
   imports: [
@@ -36,8 +43,9 @@ import {MatTableModule} from '@angular/material/table';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    
+    MatDatepickerModule,
     FormsModule,
+    MatNativeDateModule,
      NgxPaginationModule,
      NgbModule,
      NgbModule,

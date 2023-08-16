@@ -1,0 +1,67 @@
+
+    <div class="title-bar">
+      <h2>Reschedule</h2>
+      <button mat-icon-button [mat-dialog-close]="true">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="table-container">
+        <!-- <div class="form-row">
+            <div class="col-md-3">
+                Patient:<label>gill</label>
+            </div>
+            <div class="col-md-3 mb-1">
+                Doctor:<label>Ramu</label>
+            </div>
+           
+        </div> -->
+    
+        <div class="form-row">
+            <div class="col-md-4 mb-4">
+<input type="text" placeholder="Patient Name"  disabled class="form-control">
+            </div>
+            <div class="col-md-4 mb-4">
+                <input type="text" placeholder="doctors Name"  disabled class="form-control">
+                            </div>
+            <div class="input-group col-md-4 mb-4">
+                <div class="input-group" >
+                    <input
+                        class="form-control"
+                        placeholder="Appointment Date"
+                        name="dp"
+                   
+                        ngbDatepicker
+                        #d="ngbDatepicker" 
+                       id="fdate"      name="FromDate"   
+                    />
+                  
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                </div></div>
+                </div>
+                
+                <div class="form-row">
+                <div class="col-md-4 mb-4">
+                    Start Time 
+                 <input type="time" class="form-control">
+                </div>
+                <div class="col-md-4 mb-4" >
+                    End Time 
+                <input type="time" class="form-control">
+                </div>
+
+        </div>
+        <div class="form-row">
+            <div  class="col-md-12" style="text-align: right;" >
+                <button type="submit"  
+                
+    
+                class="btn btn-primary waves-effect waves-light" id="btnSave" >
+                    Reschedule
+                  
+                </button>
+               
+               
+            </div>
+        </div>
+   
+    </div>

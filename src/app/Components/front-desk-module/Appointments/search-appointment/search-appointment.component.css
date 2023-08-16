@@ -30,7 +30,8 @@
     border-radius: 5px 5px 0 0;
     scroll-behavior: smooth;
   
-    
+    display:block; 
+overflow:auto;
     
 }
 .styled-table thead tr {
@@ -90,7 +91,7 @@ button{cursor: pointer;}
  .styled-table tbody{
     display: block;
     width: 100%;
-      overflow-y:auto;
+      /* overflow-y:auto; */
  }
  #loading{
     position: absolute;

@@ -11,7 +11,8 @@ import { NgbAlertModule, NgbDatepickerConfig, NgbDatepickerModule, NgbDateStruct
 import { Buffer } from "buffer";
 import { Router } from '@angular/router';
 import { DateService } from 'src/app/Shared/date.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { RescheduleComponent } from 'src/app/Components/PopUps/reschedule/reschedule.component';
 
 @Component({
   selector: 'app-search-appointment',
@@ -55,7 +56,7 @@ pulldata:any=[]
 isvi:boolean=false
   maxDate: { year: number; month: number; day: number; };
   minDate: { year: number; month: number; day: number; };
-  constructor(private dateservice:DateService, private datePipe:DatePipe, private formbuilder:FormBuilder,private himsservice:HimsServiceService,private config: NgbDatepickerConfig,private rout:Router) {
+  constructor(private pop:MatDialog,private dateservice:DateService, private datePipe:DatePipe, private formbuilder:FormBuilder,private himsservice:HimsServiceService,private config: NgbDatepickerConfig,private rout:Router) {
     const current = new Date();
     this.maxDate = {
       year: current.getFullYear()+1,
@@ -249,7 +250,13 @@ GlobalDateStringFormat(date:any):string
 
    }
 
-
+reschedule()
+{
+   this.pop.open(RescheduleComponent,{
+     width:"65%",
+     height:"450px"
+ })
+}
   ngOnInit(): void {
     debugger
     
