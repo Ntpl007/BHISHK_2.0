@@ -53,6 +53,7 @@ appointmentstatus:any
 paymentcategory:any
 loadData:any;
 pulldata:any=[]
+iscancelled?:false
 isvi:boolean=false
   maxDate: { year: number; month: number; day: number; };
   minDate: { year: number; month: number; day: number; };
@@ -193,6 +194,15 @@ GlobalDateStringFormat(date:any):string
       debugger
       if(result.length!=0)
       {
+        for(var i=0;i<result.length;i++)
+        {
+
+          if(result[i].appointment_status=="Cancelled")
+          {
+            result[i].status=true
+          }else  result[i].status=false
+  
+        }
         debugger
        this.patientList=result;
        this.rowscount=result.length
@@ -250,12 +260,19 @@ GlobalDateStringFormat(date:any):string
 
    }
 
-reschedule()
+reschedule(index:any,row:any)
 {
+  
+  debugger
    this.pop.open(RescheduleComponent,{
      width:"65%",
-     height:"450px"
+     height:"450px",
+     data:row
+    
  })
+
+ 
+ this.SearchAppointments(this.pulldata);
 }
   ngOnInit(): void {
     debugger

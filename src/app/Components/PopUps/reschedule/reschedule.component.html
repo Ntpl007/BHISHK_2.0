@@ -1,4 +1,4 @@
-
+<form [formGroup]="rescheduleform"  #reg="ngForm" (ngSubmit)="Reschedule(reg.value)">
     <div class="title-bar">
       <h2>Reschedule</h2>
       <button mat-icon-button [mat-dialog-close]="true">
@@ -18,20 +18,26 @@
     
         <div class="form-row">
             <div class="col-md-4 mb-4">
-<input type="text" placeholder="Patient Name"  disabled class="form-control">
+                Patient Name
+<input type="text" placeholder="Patient Name"  disabled class="form-control" [value]="Data.patient_Name">
             </div>
             <div class="col-md-4 mb-4">
-                <input type="text" placeholder="doctors Name"  disabled class="form-control">
+                Doctor Name
+                <input type="text" placeholder="doctors Name" [value]="Data.doctor_Name"  disabled class="form-control">
                             </div>
             <div class="input-group col-md-4 mb-4">
+                Appointment Date
                 <div class="input-group" >
                     <input
                         class="form-control"
                         placeholder="Appointment Date"
                         name="dp"
-                   
+                   [value]="model"
                         ngbDatepicker
+                       
                         #d="ngbDatepicker" 
+                        (dateSelect)="onDateSelecttodate($event)" 
+                        formControlName="AppointmentDate"
                        id="fdate"      name="FromDate"   
                     />
                   
@@ -42,17 +48,17 @@
                 <div class="form-row">
                 <div class="col-md-4 mb-4">
                     Start Time 
-                 <input type="time" class="form-control">
+                 <input type="time" class="form-control" id="StartTime" [value]="starttime"  formControlName="StartTime">
                 </div>
                 <div class="col-md-4 mb-4" >
                     End Time 
-                <input type="time" class="form-control">
+                <input type="time" class="form-control" id="EndTime" [value]="endtime" formControlName="EndTime">
                 </div>
 
         </div>
         <div class="form-row">
             <div  class="col-md-12" style="text-align: right;" >
-                <button type="submit"  
+                <button type="submit"   
                 
     
                 class="btn btn-primary waves-effect waves-light" id="btnSave" >
@@ -65,3 +71,4 @@
         </div>
    
     </div>
+</form>
