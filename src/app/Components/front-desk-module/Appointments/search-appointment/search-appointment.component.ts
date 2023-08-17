@@ -264,15 +264,24 @@ reschedule(index:any,row:any)
 {
   
   debugger
-   this.pop.open(RescheduleComponent,{
+  const dialogRef=this.pop.open(RescheduleComponent,{
      width:"65%",
      height:"450px",
      data:row
     
- })
+ }
+ )
+ dialogRef.afterClosed().subscribe(result => {
+  // This code will execute when the dialog is closed
+  if (result === 'someValue') {
+  debugger
+    this.SearchAppointments(this.pulldata);
+  }
+});
 
+debugger
  
- this.SearchAppointments(this.pulldata);
+
 }
   ngOnInit(): void {
     debugger

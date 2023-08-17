@@ -235,7 +235,7 @@ public getAdminDashboard():Observable<any>
 
 
 public GetAppointments(Data:any):Observable<any>
-{ return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/GetAppointments',Data)
+{ return this.http.post<any>('https://localhost:44395/'+'FetchMasterData/GetAppointments',Data)
 
 }
 

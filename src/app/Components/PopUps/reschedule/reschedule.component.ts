@@ -5,6 +5,7 @@ import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DateService } from 'src/app/Shared/date.service';
 import { HimsServiceService } from 'src/app/Shared/hims-service.service';
+
 import Swal from 'sweetalert2';
 export interface UserData {
   id: number;
@@ -37,6 +38,13 @@ export class RescheduleComponent implements OnInit {
     });
     
   }
+
+
+  
+closeDialog(): void {
+  // Any logic you want before closing the dialog
+  this.dialogRef.close();
+}
 
 
  convertTo24HourFormat(time12Hour: string): string {
@@ -92,7 +100,10 @@ onDateSelecttodate(event:any) {
     debugger
     
     this.rescheduleform=this.formbuilder.group({
-     
+      StartTime:[this.convertTo24HourFormat(this.Data.start_Time),Validators.required],
+      EndTime:[this.convertTo24HourFormat(this.Data.end_Time),Validators.required],
+
+
     });
     this.starttime = this.convertTo24HourFormat(this.Data.start_Time);
     this.endtime = this.convertTo24HourFormat(this.Data.end_Time);
