@@ -37,7 +37,7 @@
                        
                         #d="ngbDatepicker" 
                         (dateSelect)="onDateSelecttodate($event)" 
-                        formControlName="AppointmentDate"
+                      
                        id="fdate"      name="FromDate"   
                     />
                   
@@ -58,7 +58,7 @@
         </div>
         <div class="form-row">
             <div  class="col-md-12" style="text-align: right;" >
-                <button type="submit"   
+                <button type="submit" [mat-dialog-close]="true"  
                 
     
                 class="btn btn-primary waves-effect waves-light" id="btnSave" >
