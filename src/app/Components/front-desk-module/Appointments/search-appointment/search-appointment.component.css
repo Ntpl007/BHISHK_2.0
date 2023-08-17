@@ -1,24 +1,3 @@
-.tblfacilitydiv{
-    margin-top: 40px;
-}
-.tblfacility{
-    border-collapse: collapse;
-   
-}
-.tblfacility  thead tr{
-    background-color: aquamarine;
-    border-collapse: collapse;
-    border-radius: 60px;
-    border: 1px solid black;
-
-}
-.tblfacility  thead tr td{
-    padding: 8px;
-}
-.tblfacility{
-    width: 60%;
-}
-
 
 .styled-table {
     border-collapse: collapse;
@@ -29,9 +8,9 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-radius: 5px 5px 0 0;
     scroll-behavior: smooth;
-  
+    overflow-x:auto;
+   
     display:block; 
-overflow:auto;
     
 }
 .styled-table thead tr {
@@ -52,6 +31,12 @@ overflow:auto;
     
 }
 
+.styled-table tbody{
+    display: block;
+    width: 100%;
+overflow-x:auto;
+max-height: 280px;
+ }
 .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }

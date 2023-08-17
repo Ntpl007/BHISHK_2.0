@@ -3,5 +3,4 @@ npm install Sweatalert2 ----14082023
 ng add @auth0/angular-jwt ----14082023 
 npm install @ng-bootstrap/ng-bootstrap  --legacy-peer-deps
 
-ng generate interceptor global
 npm install ngx-pagination

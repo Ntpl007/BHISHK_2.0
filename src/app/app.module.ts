@@ -19,7 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import{MatIconModule} from '@angular/material/icon';
 //import { SchedulePopupComponent } from './Components/schedule-popup/schedule-popup.component';
 import {MatToolbar, MatToolbarModule} from '@angular/material/toolbar';
-import { MatDialogModule } from '@angular/material/dialog';
+import {  MatDialogModule } from '@angular/material/dialog';
 import {TextFieldModule} from '@angular/cdk/text-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
@@ -58,7 +58,8 @@ import { RescheduleComponent } from './Components/PopUps/reschedule/reschedule.c
      MatFormFieldModule,
     MatAutocompleteModule,
      MatToolbarModule,
-     MatTableModule
+     MatTableModule,
+     
   ],
  
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},DatePipe,
