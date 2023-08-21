@@ -29,12 +29,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
 import { RescheduleComponent } from './Components/PopUps/reschedule/reschedule.component';
+import { TransferAppointmentComponent } from './Components/PopUps/transfer-appointment/transfer-appointment.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RescheduleComponent,
+    TransferAppointmentComponent,
     
     
   ],

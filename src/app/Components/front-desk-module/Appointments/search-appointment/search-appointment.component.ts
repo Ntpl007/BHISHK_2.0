@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { DateService } from 'src/app/Shared/date.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RescheduleComponent } from 'src/app/Components/PopUps/reschedule/reschedule.component';
+import { TransferAppointmentComponent } from 'src/app/Components/PopUps/transfer-appointment/transfer-appointment.component';
 
 @Component({
   selector: 'app-search-appointment',
@@ -267,6 +268,30 @@ reschedule(index:any,row:any)
   const dialogRef=this.pop.open(RescheduleComponent,{
      width:"65%",
      height:"450px",
+     data:row
+    
+ }
+ )
+ dialogRef.afterClosed().subscribe(result => {
+  // This code will execute when the dialog is closed
+  if (result === 'someValue') {
+  debugger
+    this.SearchAppointments(this.pulldata);
+  }
+});
+
+debugger
+ 
+
+}
+
+Transfer(index:any,row:any)
+{
+  
+  debugger
+  const dialogRef=this.pop.open(TransferAppointmentComponent,{
+     width:"65%",
+     height:"550px",
      data:row
     
  }

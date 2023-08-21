@@ -272,4 +272,8 @@ public RescheduleAppointment(Appointment:any):Observable<any>
 { return this.http.post<any>('https://localhost:44341/'+'api/Appointments/RescheduleAppointment',Appointment)
 
 }
+public TransferAppointment(Appointment:any):Observable<any>
+{
+return this.http.post<any>('https://localhost:44341/'+'api/Appointments/TransferAppointment',Appointment)
+}
 }
