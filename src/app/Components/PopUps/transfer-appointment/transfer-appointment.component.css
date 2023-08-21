@@ -1,0 +1,28 @@
+.table-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 20px;
+  }
+  
+  .title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .title-bar h2 {
+    margin: 0;
+  }
+  
+  .mat-icon-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .mattable th{
+padding: 20px;
+  }

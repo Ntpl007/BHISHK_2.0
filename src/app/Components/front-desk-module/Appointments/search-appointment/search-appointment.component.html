@@ -151,7 +151,8 @@
                         <td class="action" *ngIf="rowlist.appointment_status!='Cancelled'"  >
                            
                         <i  style="font-size:10px;" class="material-icons"  style="color: black;size: 3px;" (click)="reschedule(i, rowlist)"   ngbTooltip="Re Schedule"  > calendar_month</i>
-                                                 
+                                
+<i  style="font-size:10px;" class="material-icons" style="color: black;size: 3px;"   ngbTooltip="Transfer" (click)="Transfer(i,rowlist)"  >move_up</i>                 
                        <a> <i  style="font-size:10px;" class="material-icons" style="color: black;height: 1px;" ngbTooltip="Edit Appointment"  (click)="EditAppointment(i, rowlist)"> edit_note</i></a> 
                        <i style="font-size:10px;" class="material-icons"   style="color: rgb(237, 69, 69);height: 10px;" ngbTooltip="Cancel Appointment" (click)="CancelAppointment(i, rowlist)" > cancel</i>
                        
@@ -163,7 +164,8 @@
                         <td class="action" *ngIf="rowlist.appointment_status=='Cancelled'"  >
                            
                             <i  style="font-size:10px;" class="material-icons"  style="color: rgb(173, 168, 168);size: 3px;"    > calendar_month</i>
-                                                     
+                            <i  style="font-size:10px;" class="material-icons" style="color: rgb(173, 168, 168);size: 3px;"  >move_up</i>                 
+                            
                            <a> <i  style="font-size:10px;" class="material-icons" style="color: rgb(173, 168, 168);height: 1px;"  > edit_note</i></a> 
                            <i style="font-size:10px;" class="material-icons"   style="color: rgb(173, 168, 168);height: 10px;" > cancel</i>
                            

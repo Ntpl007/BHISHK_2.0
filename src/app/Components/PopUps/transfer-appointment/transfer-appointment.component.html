@@ -1,1 +1,120 @@
-<p>transfer-appointment works!</p>
+<form [formGroup]="Transferform"   class="form-control"#reg="ngForm" (ngSubmit)="Transfer(reg.value)">
+   
+    <div class="title-bar">
+        <h2>Transfer</h2>
+        <button mat-icon-button [mat-dialog-close]="true">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    <div class="table-container">
+    
+    
+        <div class="form-row">
+            <div class="col-md-4 mb-4">
+                Patient Name
+<input type="text" placeholder="Patient Name"  disabled class="form-control" [value]="Data.patient_Name">
+            </div> 
+            <div class="col-md-4 mb-4">
+                Transfer From
+                <input type="text" placeholder="doctors Name" [value]="Data.doctor_Name"  disabled class="form-control">
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                Appointment Date
+                               
+                                    <input
+                                
+                                        class="form-control"
+                                        disabled class="form-control"
+                                        placeholder="Appointment Date"
+                                        name="dp"
+                                   [value]="model"
+                                        
+                                       
+                                     
+                                      
+                                       id="fdate"      name="FromDate"   
+                                    />  </div>
+                                
+                                <div class="col-md-4 mb-4"  >
+                                    Speciality
+    
+                                    <select class="form-control" formControlName="SpecialityID"  id="ddlSpecialityId"  placeholder="Speciality"  name="specialityID"  (change)="getDoctors($event)"  >
+                                        <option [selected]="true"  hidden    >Speciality*</option>
+                                    <option  *ngFor="let d of specialityList"  value={{d.specialityID}}>{{d.speciality}}</option>
+                                    </select>
+                                    <!-- <small *ngIf="myform.get('SpecialityID').pristine&& myform.get('SpecialityID').touched" class="text-danger">
+                                        Speciality is requied
+                                                     </small> -->
+                                </div> 
+                                
+                                    <div class="  col-md-4 mb-4">
+                                        Transfer To
+                                    <select class="form-control" formControlName="DoctorId"   id="ddlDoctor"  name="DoctorId"  >
+                                       <option [selected]="true"  hidden   >Doctor*</option>
+                                    <option  *ngFor="let d of doctorList"  value={{d.providerId}}>{{d.firstName}}</option>
+                                    </select>
+                                    <!-- <small *ngIf="myform.get('DoctorId').pristine&& myform.get('DoctorId').touched" class="text-danger">
+                                        Doctor is requied
+                                                     </small> --></div> 
+
+
+                                                     <div class="input-group col-md-4 mb-4">
+                                                        Appointment Date
+                                                        <div class="input-group" >
+                                                            <input
+                                                                class="form-control"
+                                                               
+                                                                name="dp"
+                                                           [value]="appModel"
+                                                            ngbDatepicker
+                                                               
+                                                                #d="ngbDatepicker" 
+                                                                (dateSelect)="onDateSelecttodate($event)" 
+                                                              
+                                                               id="Appdate"      name="FromDate"  placeholder="Select Date" 
+                                                            />   <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                                                            </div></div>
+                                                            <div class="col-md-2 mb-2" >
+    
+                                                                <label>
+                                                                 Start Time
+                                                                </label>
+                                                                <input type="time" class="form-control" #obj S formControlName="StartTime" id="stime">
+                                                                <!-- <small *ngIf="myform.get('StartTime').touched&&myform.get('StartTime').hasError('required')" class="text-danger">
+                                                                    Start Time is required
+                                                                   </small> -->
+                                                              </div>
+                                                            
+                                                             <div class="col-md-2 mb-2" >
+                                                        
+                                                                 <label>
+                                                                  End Time
+                                                                 </label>
+                                                                 <input type="time" formControlName="EndTime" class="form-control"  id="etime">
+                                                                
+                                                                 <!-- <small *ngIf="myform.get('EndTime').touched&&myform.get('EndTime').hasError('required')" class="text-danger">
+                                                                    End Time is required
+                                                                   </small> -->
+                                                               </div>
+                                                          
+                                                            
+                                                        
+                                                        </div>
+                                                           
+                                                       <div class="form-row">
+                                                        <div  class="col-md-12" style="text-align: right;" >
+                                                            <button type="submit" [mat-dialog-close]="true"  
+                                                            
+                                                
+                                                            class="btn btn-primary waves-effect waves-light" id="btnSave" >
+                                                               Transfer
+                                                              
+                                                        </button>
+                                                        </div>
+                                                </div></div>
+                                               
+                               
+
+            
+                                
+                                  
