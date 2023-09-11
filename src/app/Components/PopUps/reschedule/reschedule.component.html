@@ -1,6 +1,6 @@
 <form [formGroup]="rescheduleform"  #reg="ngForm" (ngSubmit)="Reschedule(reg.value)">
-    <div class="title-bar">
-      <h2>Reschedule</h2>
+    <div class="title-bar" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+      <h4>Reschedule Appointment</h4>
       <button mat-icon-button [mat-dialog-close]="true">
         <mat-icon>close</mat-icon>
       </button>
@@ -25,16 +25,17 @@
                 Doctor Name
                 <input type="text" placeholder="doctors Name" [value]="Data.doctor_Name"  disabled class="form-control">
                             </div>
-            <div class="input-group col-md-4 mb-4">
+            <div class="col-md-4 mb-4">
                 Appointment Date
                 <div class="input-group" >
-                    <input
+                    <input 
+                    [minDate]="minDate"
                         class="form-control"
-                        placeholder="Appointment Date"
+                        placeholder="Appointment Date" [minDate]="minDate"
                         name="dp"
                    [value]="model"
                         ngbDatepicker
-                       
+                       readonly="true"
                         #d="ngbDatepicker" 
                         (dateSelect)="onDateSelecttodate($event)" 
                       
@@ -42,23 +43,97 @@
                     />
                   
                     <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
-                </div></div>
+                </div>
+                <!-- <small *ngIf="rescheduleform.get('AppointmentDate').touched&&rescheduleform.get('AppointmentDate').hasError('required')" class="text-danger">
+                    Appointment Date is requied
+                                 </small> -->
+            </div>
                 </div>
                 
                 <div class="form-row">
-                <div class="col-md-4 mb-4">
+                <!-- <div class="col-md-4 mb-4">
                     Start Time 
-                 <input type="time" class="form-control" id="StartTime" [value]="starttime"  formControlName="StartTime">
-                </div>
+                 <input type="time" class="form-control" id="StartTime" [value]="starttime"   formControlName="StartTime">
+                
+                 <small *ngIf="rescheduleform.get('StartTime').touched&&rescheduleform.get('StartTime').hasError('required')" class="text-danger">
+                    Start Time is required
+                   </small> 
+                </div> -->
+                <!-- <div class="col-md-4 mb-4">
+                    Time Interval
+                    <select class="form-control" >
+                        <option>5 Mins</option>
+                        <option selected>25 Mins</option>
+
+                    </select>
+                </div> -->
+                <!-- Mobilenumsearch -->
+                <div class="col-md-4 mb-4">
+  
+                    <div    #StartTime> 
+                     
+                       Start Time
+                        <div class="input-group">
+                        <input type="text"   class="form-control"  id="StartTime"    formControlName="StartTime"
+                         name="mobilenumber" id="StartTime" [value]="starttime" (keydown)="EndTimeKeyEvent($event)"
+                          placeholder="start time*" onpaste="return false" >
+                          <button class="btn btn-outline-secondary" style="width: 30px;"></button>
+   
+                          <i class="fa fa-clock-o fa-lg TimeSpan " aria-hidden="false"></i>
+                          
+                        
+                        </div>
+                        <small *ngIf="rescheduleform.get('StartTime').touched&&rescheduleform.get('StartTime').hasError('required')" class="text-danger">
+                            Start Time is required
+                           </small> 
+
+                      
+                      
+                    
+                    
+                                                         <!--table-->
+                                                         <div *ngIf="showModal">
+                                                          <div class="tableshow">
+                                                              <table  class="table table-hover"  id="patients" >
+                                                                  
+                                                      <tbody class="tablebody" >
+                                                        <tr id="rd" *ngFor="let item of timeintarval;let k = index" (click)="ChangeTimeSlot(k, item)">
+                    
+                                                         
+                                                          <td style="font-weight: bold" ><label style="font-size: 10px;">{{item}}</label></td>
+                                                         
+                                                        </tr>
+                                                      </tbody>
+                                                    </table>
+                                                          </div>
+                    
+                                                      
+                                                      </div>
+                    
+                                                     
+                                                      
+                                                      
+            </div>
+            </div>
                 <div class="col-md-4 mb-4" >
                     End Time 
-                <input type="time" class="form-control" id="EndTime" [value]="endtime" formControlName="EndTime">
-                </div>
+                    <div class="input-group">
+                <input type="text"  onpaste="return false" class="form-control non-selectable" id="EndTime"  ngbTooltip="End Time Can't be Editable" [value]="endtime" formControlName="EndTime" (keydown)="EndTimeKeyEvent($event)">
+                <!-- <button class="btn btn-outline-secondary non-selectable" style="width: 30px;"></button>
+   
+                <i class="fa fa-clock-o fa-lg TimeSpan " aria-hidden="false"></i>
+                 -->
+              
+            </div>
+                <small *ngIf="rescheduleform.get('EndTime').touched&&rescheduleform.get('EndTime').hasError('required')" class="text-danger">
+                    End Time is required
+                   </small>  
+            </div>
 
         </div>
         <div class="form-row">
             <div  class="col-md-12" style="text-align: right;" >
-                <button type="submit" [mat-dialog-close]="true"  
+                <button type="submit" [disabled]="btnisDesable"
                 
     
                 class="btn btn-primary waves-effect waves-light" id="btnSave" >
@@ -69,6 +144,7 @@
                
             </div>
         </div>
-   
-    </div>
+       
+   </div>
+    
 </form>

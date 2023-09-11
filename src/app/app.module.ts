@@ -12,7 +12,7 @@ import { HimsServiceService } from './Shared/hims-service.service';
 import { GlobalInterceptor } from './global.interceptor';
 import { AuthService } from './Shared/auth.service';
 //import { FilterPipe } from './filter.pipe';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbModule, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 //import { ScheduleModule, RecurrenceEditorModule ,DayService,WeekService,MonthService,WorkWeekService,MonthAgendaService} from '@syncfusion/ej2-angular-schedule';
 //import { ScheduleAllModule } from '@syncfusion/ej2-angular-schedule';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,14 +30,17 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 import { RescheduleComponent } from './Components/PopUps/reschedule/reschedule.component';
 import { TransferAppointmentComponent } from './Components/PopUps/transfer-appointment/transfer-appointment.component';
-
+import { LoadingPopupComponent } from './Components/PopUps/loading-popup/loading-popup.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Import the module
+import { CustomNgbDateAdapter } from './CustomClass/CustomNgbDateParserFormatter';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RescheduleComponent,
     TransferAppointmentComponent,
-    
+    LoadingPopupComponent
     
   ],
   imports: [
@@ -50,8 +53,7 @@ import { TransferAppointmentComponent } from './Components/PopUps/transfer-appoi
     MatNativeDateModule,
      NgxPaginationModule,
      NgbModule,
-     NgbModule,
-    
+     MatProgressSpinnerModule,
      BrowserAnimationsModule,
      MatIconModule,
      MatDialogModule,
@@ -61,11 +63,16 @@ import { TransferAppointmentComponent } from './Components/PopUps/transfer-appoi
     MatAutocompleteModule,
      MatToolbarModule,
      MatTableModule,
+     MatDatepickerModule,
+     MatDialogModule,
+     MatSnackBarModule
+    
+     
      
   ],
  
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},DatePipe,
-    
+    { provide: NgbDateAdapter, useClass: CustomNgbDateAdapter },
    
   {
    provide: HTTP_INTERCEPTORS,

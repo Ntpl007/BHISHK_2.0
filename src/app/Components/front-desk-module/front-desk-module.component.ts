@@ -1,7 +1,9 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/Shared/auth.service';
+import { DateService } from 'src/app/Shared/date.service';
 import Swal from 'sweetalert2';
 export let browserRefresh = false;
 @Component({
@@ -23,14 +25,22 @@ export class FrontDeskModuleComponent implements OnInit {
     myscriptelement:HTMLScriptElement;
     
     my2scriptelement:HTMLScriptElement | undefined
-    
+    today: { year: number; month: number; day: number; };
    // subscription: Subscription;
-    constructor(private router:Router,private authservice:AuthService) {
+    constructor(private router:Router,private authservice:AuthService,private dateservice:DateService) {
+     let current=new Date();
+     this.today = {
+      year: current.getFullYear(),
+      month: current.getMonth()+1,
+      day: current.getDate()
+    };
     //  this.my2scriptelement=document.createElement('script');
    //   this.my2scriptelement.src='../../../assets//js/m.js';
     this.myscriptelement=document.createElement('script');
     this.myscriptelement.src='../../../assets//js/myapp.js';
-    
+    this.my2scriptelement=document.createElement('script');
+    this.my2scriptelement.src='../../../assets//js//time-picker-bootstrap//timepicker.js';
+  
    document.body.appendChild(this.myscriptelement)
    //document.body.appendChild(this.my2scriptelement)
        setInterval(() => {
@@ -100,18 +110,24 @@ export class FrontDeskModuleComponent implements OnInit {
      }
      displaydate()
     {
-      let m=null;
-      let d=null;
-  
-      if(this.date.getMonth().toString().length==1)
-      {
-         m="0"+this.date.getMonth()
-      } else m=this.date.getMonth()
-      if(this.date.getDate().toString().length==1)
-      {
-         d="0"+this.date.getDate()
-      } else d=this.date.getDate()
-      this.datenow=d+"-"+m+"-"+this.date.getFullYear();
+      //let m=null;
+     // let d=null;
+     let _today=new Date();
+
+      // let day=this.today.day;
+      // let month=this.today.month;
+      // let year=this.today.year;
+      // let splitdate=
+  this.datenow=formatDate(_today,'dd-MM-yyyy','en-Us')  //day+"-"+month+"-"+year;
+      // if(this.date.getMonth().toString().length==1)
+      // {
+      //    m="0"+parseInt(this.date.getMonth())
+      // } else m=this.date.getMonth()
+      // if(this.date.getDate().toString().length==1)
+      // {
+      //    d="0"+this.date.getDate()
+      // } else d=this.date.getDate()
+      // this.datenow=d+"-"+m+"-"+this.date.getFullYear();
     }
   
     

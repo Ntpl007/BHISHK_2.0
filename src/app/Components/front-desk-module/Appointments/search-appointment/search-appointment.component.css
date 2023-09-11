@@ -4,14 +4,19 @@
     margin: 25px 0;
     font-size: 0.9em;
     font-family: sans-serif;
-    min-width: 400px;
+  
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-radius: 5px 5px 0 0;
     scroll-behavior: smooth;
-    overflow-x:auto;
-   
-    display:block; 
-    
+  
+  max-height: 300px;
+    display: block;
+    overflow-y: auto;
+  
+}
+
+.styled-table tbody tr{
+    margin-left: 1px;
 }
 .styled-table thead tr {
     background-color: #0a4890;
@@ -30,16 +35,16 @@
    
     
 }
-
+/* 
 .styled-table tbody{
     display: block;
-    width: 100%;
 overflow-x:auto;
 max-height: 280px;
- }
+ } */
 .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
+
 
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #0a4890;
@@ -72,12 +77,14 @@ lnkbtn:hover{
 
 a{cursor: pointer;}
 button{cursor: pointer;}
-
+/* 
  .styled-table tbody{
     display: block;
-    width: 100%;
-      /* overflow-y:auto; */
- }
+    overflow-y: auto;
+    max-height: 200px;
+    
+    
+ } */
  #loading{
     position: absolute;
     left: 50%;
@@ -103,28 +110,36 @@ button{cursor: pointer;}
         overflow: hidden;
     }
 
-    .as{
-        max-height: 280px;
-    }
             .dt{
-                width: 100px;
+                width: 90px;
             }
             .mobile{
                 width: 110px;
             }
+            .mobileh{
+                width: 100px;
+            }
             .name{
-                width: 150px;
+                width: 130px;
+            }
+            .nameh{
+                width: 120px;
             }
             .age{
                 width: 92px;
             }
             .time
             {
-                width: 150px;
+                width: 140px;
+
+            }
+            .timeh
+            {
+                width: 130px;
 
             }
             .action{
-                width:200px;
+                width:165px;
 
             }
             .action a{
@@ -141,7 +156,7 @@ button{cursor: pointer;}
 
             }  */
             .status{
-                width: 120px;
+                width: 140px;
             }
           
             .styled-table tbody tr:hover{

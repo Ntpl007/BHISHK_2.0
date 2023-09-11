@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 
 //import { FilterPipe } from 'src/app/filter.pipe';
 import { NgbAlertModule, NgbDatepickerConfig, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { DateService } from 'src/app/Shared/date.service';
 
 @Component({
   selector: 'app-user-list',
@@ -28,13 +29,15 @@ patientList:any
 frmdate=new Date
 tDate=new Date
 rowscount:any=0
+userCount:any
 p: number = 0;
 searchText = '';
 _fromdate:any
 _todate:any
 isvi:boolean=false
   maxDate: { year: number; month: number; day: number; };
-  constructor(private formbuilder:FormBuilder,private himsservice:HimsServiceService,private config: NgbDatepickerConfig) {
+  constructor(private formbuilder:FormBuilder,private himsservice:HimsServiceService,private config: NgbDatepickerConfig,
+    private dateservice:DateService) {
     const current = new Date();
     this.maxDate = {
       year: current.getFullYear(),
@@ -86,23 +89,37 @@ isvi:boolean=false
    }
 
    
+getusers()
+{
+  let organizationName=localStorage.getItem('organization')
+  this.himsservice.GetUsers(organizationName).subscribe((result)=>{
+   debugger
+   if(result.length>0)
+   {
+    this.userCount=result.length
+    debugger
+    for(var i=0;i<result.length;i++)
+    {
+      let d= result[i].createD_DATE.split('T');
+      result[i].createD_DATE=this.dateservice.LocalStringDateFormat(d[0])
+    }
+   }
+   this.userlist=result})
 
+}
    
   ngOnInit(): void {
     debugger
-    let organizationName=localStorage.getItem('organization')
-   this.himsservice.GetUsers(organizationName).subscribe((result)=>{
-    debugger
-    this.userlist=result})
+   this.getusers()
     localStorage.setItem('header','User List')
     this.patientList=[]
-    this.searchform=this.formbuilder.group({
-      FromDate:[this.today],
-      ToDate:[this.today],
-      MobileNumber:[''],
-      FirstName:['']
+    // this.searchform=this.formbuilder.group({
+    //   FromDate:[this.today],
+    //   ToDate:[this.today],
+    //   MobileNumber:[''],
+    //   FirstName:['']
       
-    })
+    // })
   }
 
   

@@ -1,37 +1,23 @@
-.tblfacilitydiv{
-    margin-top: 40px;
-}
-.tblfacility{
-    border-collapse: collapse;
-   
-}
-.tblfacility  thead tr{
-    background-color: aquamarine;
-    border-collapse: collapse;
-    border-radius: 60px;
-    border: 1px solid black;
-
-}
-.tblfacility  thead tr td{
-    padding: 8px;
-}
-.tblfacility{
-    width: 60%;
-}
-
 
 .styled-table {
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 0.9em;
     font-family: sans-serif;
-    min-width: 30%;
+  
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-radius: 5px 5px 0 0;
     scroll-behavior: smooth;
+ 
+  max-height: 300px;
+    display: block;
+    overflow-y: auto;
+    overflow-x: auto;
   
-    
-    
+}
+
+.styled-table tbody tr{
+    margin-left: 1px;
 }
 .styled-table thead tr {
     background-color: #0a4890;
@@ -39,24 +25,34 @@
     text-align: left;
 }
 
-.styled-table th,
+.styled-table th{
+    padding: 8px 5px;
+}
 .styled-table td {
-    padding: 12px 15px;
+    padding: 5px 3px;
 }
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
+   
+    
 }
-
+/* 
+.styled-table tbody{
+    display: block;
+overflow-x:auto;
+max-height: 280px;
+ } */
 .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
+
 
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #0a4890;
 }
 .styled-table tbody tr.active-row {
     font-weight: bold;
-    color: #009879;
+    /* color: #009879; */
 }
 .tbtr td{
     padding: 12px 15px;
@@ -79,18 +75,17 @@ lnkbtn:hover{
     cursor: pointer;
     color: aqua;
 }
-.styled-table tbody tr:hover{
-    background-color: #e8e5e8;
-}
 
 a{cursor: pointer;}
 button{cursor: pointer;}
-
+/* 
  .styled-table tbody{
     display: block;
-    width: 30%;
-      overflow-y:auto;
- }
+    overflow-y: auto;
+    max-height: 200px;
+    
+    
+ } */
  #loading{
     position: absolute;
     left: 50%;
@@ -116,7 +111,132 @@ button{cursor: pointer;}
         overflow: hidden;
     }
 
-    .as{
-        max-height: 280px;
-    }
+            .dt{
+                width: 90px;
+            }
+            .mobile{
+                width: 110px;
+            }
+            .mobileh{
+                width: 100px;
+            }
+            .name{
+                width: 130px;
+            }
+            .nameh{
+                width: 120px;
+            }
+            .age{
+                width: 92px;
+            }
+            .time
+            {
+                width: 140px;
+
+            }
+            .timeh
+            {
+                width: 130px;
+
+            }
+            .action{
+                width:165px;
+
+            }
+            .action a{
+                color:#2451f4;
+                font-weight: bold;
+            }
+             /* .styled-table tr td{
+                border: solid 1px black;
+
+            }
+
+            .styled-table tr th{
+                border: solid 1px black;
+
+            }  */
+            .status{
+                width: 140px;
+            }
+          
+            .styled-table tbody tr:hover{
+                background-color: #eff1e9;
+            }
+
+            
+
+.menu{
+    width:65px;
+    height:260px;
+    background:#5533FF;
+    border-radius: 5px;
+    
+  }
+  
+  .material-icons{
+      color: white;
+      padding-top:20px;
+      padding-left: 20px;
    
+  }
+  
+  .material-icons:hover{
+      color: #c9c9c9;
+      cursor:pointer;
+      
+    
+  }
+  
+  .tooltip {
+      position: relative;
+      display: inline-block;
+  }
+  .tooltip .tooltiptext {
+      visibility: hidden;
+      font-family:'Open Sans';
+      background-color: #E53F6D;
+      color: white;
+      text-align: center;
+      padding: 5px 0;
+      padding-left:5px;
+      padding-right:5px;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 1;
+      top: 15px;
+      left: 60px;
+      opacity: 0;
+      transition: opacity 0.5s; 
+    
+  }
+  
+  .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+      
+  }
+  
+  .tooltip .tooltiptext::after {
+      content: " ";
+      position: absolute;
+      top: 50%;
+      right: 100%; 
+      margin-top: -8px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent #E53F6D transparent transparent;
+  }
+
+  i.material-icons{
+    padding-top: 0px; padding-left: 20px;
+  
+  }
+
+  .custum-col{
+    width: 150px;
+  }
+  .custum-col-sno{
+    width:60px;
+     padding-left: 10px;
+  }

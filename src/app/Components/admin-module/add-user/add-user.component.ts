@@ -7,6 +7,7 @@ import { HimsServiceService } from 'src/app/Shared/hims-service.service';
 import{HostListener} from '@angular/core'
 import Swal from 'sweetalert2';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { UserService } from 'src/app/Shared/user.service';
 
 @Component({
   selector: 'app-add-user',
@@ -31,11 +32,16 @@ export class AddUserComponent implements OnInit {
   Personal:any 
   isrefdoctor:any=false
   myForm?:FormBuilder
+  uservalid=false
+d=true
+  isusernamevalid=false
+  isusernameinvalid=false
   enbld:any="[attr.enabled]"
   @ViewChild('reg') 
     public createform :NgForm | undefined;
  
-    constructor(private service:HimsServiceService,private formbulder:FormBuilder) {
+    constructor(private service:HimsServiceService,private formbulder:FormBuilder,
+      private userservice:UserService) {
     
       this.myform=formbulder.group({
       
@@ -44,56 +50,91 @@ export class AddUserComponent implements OnInit {
   public SaveUser(data:any)
   {
     debugger
-    if(this.myform.invalid)
-    {
-        this.validateallformfields(this.myform)
-    }else
-       {
+    
 
-      debugger
-      this.service.SaveUser(data).subscribe((result:any)=>{
-        debugger
-          let D=result
-         if(D!=null && D!='')
-         {
-          if(D=='User Name is Already Exists')
-          {
-           
-            Swal.fire('Failed',D,'info')
-            this.reset()
-  
-          }
-          else{
-            Swal.fire('Success',D,'success')
-            this.reset()
-         
-          }
-  
-         }else{
-         
-          Swal.fire('Failed',D,'info')
-          this.reset()
-
-         }
+      this.myform.get('Organization_id').markAsDirty();
+      this.myform.get('Organization_id').setErrors(null);
+      this.myform.get('Organization_id').markAsTouched();
+      if(this.isrefdoctor==true)
+      {
+      
+        this.myform.get('Password').markAsDirty();
+        this.myform.get('Password').setErrors(null);
+        this.myform.get('Password').markAsTouched();
         
-          
-         
-  
-        },
-        error=>
+        this.myform.get('User_Name').markAsDirty();
+        this.myform.get('User_Name').setErrors(null);
+        this.myform.get('User_Name').markAsTouched();
+      }
+      if(this.isusernamevalid=true)
+      {
+          if(this.myform.invalid || this.isusernamevalid!=true)
           {
+              this.validateallformfields(this.myform)
+          }else
+             {
+             
+              if(data.Speciality=="Speciality*")
+              {
+                data.Speciality="0"
+      
+              }
+      data.Organization_id=this.userservice.getOrganizationId();
             debugger
-            Swal.fire('Failed',error,'error')
-            //this.reset()
+          
+              this.service.SaveUser(data).subscribe((result:any)=>{
+                this.isrefdoctor=false
+                debugger
+                  let D=result
+                 if(D!=null && D!='')
+                 {
+                  if(D=='User Name is Already Exists')
+                  {
+                   
+                    Swal.fire('Failed',D,'info')
+                    this.reset()
+          
+                  }
+                  else{
+                    
+    this.isusernamevalid=false
+                    Swal.fire('Success',D,'success')
+                    this.reset()
+                 
+                  }
+          
+                 }else{
+                 
+    this.isusernamevalid=false
+                  Swal.fire('Something went wrong',D,'info')
+                  this.reset()
+        
+                 }
+                
+                  
+                 
+          
+                },
+                error=>
+                  {
+                    debugger
+                    Swal.fire('Failed',error,'error')
+                    
+    this.isusernamevalid=false
+                    //this.reset()
+                  }
+                
+                
+                
+                
+                
+                );
+            
+           
+        
           }
-        
-        
-        
-        
-        
-        );
-  
     }
+    this.isusernamevalid=false
   }
  public GetFecility(SelectedOrganization: any )
   {
@@ -126,7 +167,7 @@ public reset()
     Last_Name:['',Validators.required],
     Mobile_Number:['',[Validators.required,Validators.minLength(10)]],
     userrole:['Role*',Validators.required],
-    Organization_id:['Organization*',Validators.required],
+    Organization_id:[ this.userservice.getOrganizationId],
     facility_id:['Facility*',Validators.required],
     User_Name:['',Validators.required],
     Password:['',Validators.required],
@@ -135,7 +176,47 @@ public reset()
     
   })
   
-}
+}//'Organization*'
+
+
+AcceptMobilenumberOnly(event: KeyboardEvent) {
+  debugger
+  // Allow numbers, backspace, and delete keys
+  if (
+    [46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
+    // Allow Ctrl+A
+    (event.keyCode === 65 && event.ctrlKey === true) ||
+    // Allow Ctrl+C
+    (event.keyCode === 67 && event.ctrlKey === true) ||
+    // Allow Ctrl+V
+    (event.keyCode === 86 && event.ctrlKey === true) ||
+    // Allow Ctrl+X
+    (event.keyCode === 88 && event.ctrlKey === true) ||
+    // Allow home, end, left, right arrow keys
+    (event.keyCode >= 35 && event.keyCode <= 39)
+  ) {
+    return;
+  }
+  debugger
+ // let txtmobile=this.myform.get('Mobile_Number').value
+  let txt=(<HTMLInputElement>document.getElementById('Mobile')).value;
+  
+    if (event.key >= "0" && event.key <= "5") {
+      if(txt.length==0)
+  {
+   
+      event.preventDefault();
+    }
+  }
+ 
+    // Allow only numeric input
+  if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) {
+   
+     
+      event.preventDefault();
+    }
+  
+  }
 _keyUp(evt: any) {
   debugger
      // Only ASCII character in that range allowed
@@ -146,8 +227,8 @@ _keyUp(evt: any) {
          
         }
         let txtmobile=this.myform.get('Mobile_Number').value
-       if(txtmobile.length==0)
-       {
+      //  if(txtmobile.length==0)
+      //  {
         if(evt.key>=6)
         {
           return true;
@@ -155,7 +236,7 @@ _keyUp(evt: any) {
         }else{
           return false
         }
-      }
+      //}
          return true;
 //   debugger
 //  var d=event.target.value;
@@ -198,15 +279,66 @@ if(role=="14")
   ischecked()
   {
     debugger
-  
+  this.isusernamevalid=true
     if(this.isrefdoctor==false)
     {
       this.isrefdoctor=true
     }else this.isrefdoctor=false
   }
 
+
+  onKeyPress(event: KeyboardEvent) {
+    // Check if the pressed key is a number
+    if (!isNaN(Number(event.key)) || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(event.key)) {
+      event.preventDefault(); // Prevent input of numeric characters
+    }
+  }
+
+CheckUsernameisExisted(user:any)
+{
+debugger
+
+  let text=(<HTMLInputElement>document.getElementById('txtusername')).value;
+ let OrganizationId=this.userservice.getOrganizationId();
+ let Uname=user.target.value
+
+if(text!="")
+{
+  this.service.CheckUsernameIsExisted(Uname,OrganizationId).subscribe((result)=>{
+    debugger
+        let resp=result;
+        if(resp==true)
+        {
+          
+    //this.myform.get('User_Name').setErrors("required");
+    //this.myform.get('User_Name').markAsTouched();
+    //this.myform.get('User_Name').markAsDirty();
+     
+    this.uservalid=false
+    this.isusernamevalid=false
+    this.isusernameinvalid=true
+        }else
+        if(resp==false)
+        {
+          this.isusernamevalid=true
+          this.isusernameinvalid=false
+          this.uservalid=false
+        }
+     
+      })
+}else{
+  this.isusernameinvalid=false
+}
+  
+    
+ 
+
+}
+
   ngOnInit(): void {
-   
+    debugger
+    this.GetFecility(this.userservice.getOrganizationId())
+   let OrgId=Number(this.userservice.getOrganizationId())
     
    this.service.getSpeciality().subscribe((result)=>this.speciality=result)
 this.myform=this.formbulder.group({
@@ -214,16 +346,16 @@ this.myform=this.formbulder.group({
   Last_Name:['',Validators.required],
   Mobile_Number:['',[Validators.required,Validators.minLength(10),Validators.maxLength(10),Validators.pattern(/^[6-9]\d*$/)]],
   userrole:['Role*',Validators.required],
-  Organization_id:['Organization*',Validators.required],
+  Organization_id:[OrgId],
   facility_id:['Facility*',Validators.required],
   Speciality:['Speciality*'],
   isReferDoctor:[false],
 
-  User_Name:[''],
-  Password:[''],
+  User_Name:['',Validators.required],
+  Password:['',Validators.required],
   
 })
-
+this.myform.get('Organization_id').disable();
     localStorage.setItem('header','User Registration')
     this.service.GetRoles().subscribe((result : Roles[])=>(this.docs=result));
    // this.service.GetFecility().subscribe((result : Fecility[])=>(this.fecility=result));

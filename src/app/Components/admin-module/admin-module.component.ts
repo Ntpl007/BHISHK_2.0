@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/Shared/auth.service';
@@ -92,18 +93,11 @@ export class AdminModuleComponent implements OnInit {
      }
      displaydate()
     {
-      let m=null;
-      let d=null;
-  
-      if(this.date.getMonth().toString().length==1)
-      {
-         m="0"+this.date.getMonth()
-      } else m=this.date.getMonth()
-      if(this.date.getDate().toString().length==1)
-      {
-         d="0"+this.date.getDate()
-      } else d=this.date.getDate()
-      this.datenow=d+"-"+m+"-"+this.date.getFullYear();
+
+      let d=new Date();
+      this.datenow=formatDate(d,'dd-MM-yyyy','en-U')
+      
+     // this.datenow=d+"-"+m+"-"+this.date.getFullYear();
     }
   
     
@@ -151,6 +145,8 @@ export class AdminModuleComponent implements OnInit {
       this.organization=localStorage.getItem('organization')
     
       this.displaydate();
+
+
    
   
     }

@@ -13,9 +13,9 @@ import { VerifyAadhaarComponent } from './ABDM/Level1/ABHA-Creation/verify-aadha
 import { CheckAndGenerateMotpComponent } from './ABDM/Level1/ABHA-Creation/check-and-generate-motp/check-and-generate-motp.component';
 import { ABHAInputComponent } from './ABDM/Level1/ABHA-Creation/abha-input/abha-input.component';
 import { ScheduleTypeComponent } from './schedule-type/schedule-type.component';
-import { SearchAppointmentComponent } from './Appointments/search-appointment/search-appointment.component';
 import { EditAppointmentsComponent } from './Appointments/edit-appointments/edit-appointments.component';
 import { CreateAppointmentComponent } from './Appointments/create-appointment/create-appointment.component';
+import { SearchAppointmentComponent } from './Appointments/search-appointment/search-appointment.component';
 
 const routes: Routes = [{ path: '', component: FrontDeskModuleComponent },
 {
@@ -37,6 +37,7 @@ const routes: Routes = [{ path: '', component: FrontDeskModuleComponent },
     
     {path:'Edit-Appointments',component:EditAppointmentsComponent ,  canActivate:[AuthguardGuard],},
     {path:'create-Appointments',component:CreateAppointmentComponent ,  canActivate:[AuthguardGuard],},
+   // {path:'transfer',component:TransferAppointmentComponent ,  canActivate:[AuthguardGuard],},
     
     
       ]

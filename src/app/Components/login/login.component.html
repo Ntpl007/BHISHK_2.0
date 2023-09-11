@@ -17,16 +17,23 @@
                 <div class="login-logo-parent text-center">
                     <img src="../../../../assets/img/abc-logo.png" alt="logo" />
                 </div>
-                <form #login="ngForm"  (ngSubmit)="Login(login.value)" autocomplete="off">
+                <form [formGroup]="loginForm" #login="ngForm"  (ngSubmit)="Login(login.value)" autocomplete="off">
                 <h1 class="text-center">Login to your Account </h1>
                 <div class="text-center login-fields">
                     <div class="input-parent">
-                        <label class="" for="exampleInputPassword2">Enter User Name</label>
-                        <input type="text" id="UserName" name="UserName" [value]="username" ngModel placeholder="Enter User Name" />
+                        <label  for="exampleInputPassword2">Enter User Name</label>
+                        <input maxlength="15" type="text" id="UserName" formControlName="UserName" [value]="username"  placeholder="Enter User Name" />
+                        <small *ngIf="loginForm.get('UserName').touched&&loginForm.get('UserName').hasError('required')" class="text-danger">
+                            Username is required
+                           </small> 
                     </div>
+                    
                     <div class="input-parent">
-                        <label class="" for="exampleInputPassword2">Enter Password</label>
-                        <input type="password" id="Password" ngModel [value]="password" name="Password" placeholder="Enter Password" />
+                        <label  for="exampleInputPassword2">Enter Password</label>
+                        <input maxlength="10"  type="password" id="Password"  [value]="password" formControlName="Password" placeholder="Enter Password" />
+                        <small *ngIf="loginForm.get('Password').touched&&loginForm.get('Password').hasError('required')" class="text-danger">
+                            Password is required
+                           </small> 
                     </div>
                     <div class="remember-forgot">
                         <div class="forgot-pass">

@@ -4,24 +4,24 @@
         <div class="form-row">
         <div class="col-md-4">
           <!-- <label for="txtfname" class="form-label">First Name</label> -->
-          <input id="txtfname" formControlName="First_Name" type="text" class="form-control" name="First_Name" placeholder="First Name*" >
+          <input id="txtfname" formControlName="First_Name" onpaste="return false" (keydown)="onKeyPress($event)" type="text" class="form-control text-capitalize" name="First_Name" placeholder="First Name*" >
          <small *ngIf="myform.get('First_Name').touched&&myform.get('First_Name').hasError('required')" class="text-danger">
           First Name is required
          </small>
         </div>
         <div class="col-md-4">
           <!-- <label for="txtlname" class="form-label">Last Name</label> -->
-          <input id="txtlname"  formControlName="Last_Name" type="text" class="form-control"  name="Last_Name" placeholder="Last Name*" >
+          <input id="txtlname"  formControlName="Last_Name" onpaste="return false" type="text" (keydown)="onKeyPress($event)" class="form-control text-capitalize"  name="Last_Name" placeholder="Last Name*" >
           <small *ngIf="myform.get('Last_Name').touched&&myform.get('Last_Name').hasError('required')" class="text-danger">
             Last Name is required
                          </small>
         </div>
         <div class="col-md-4">
             <!-- <label for="Mobile" class="form-label">Mobile Number</label> -->
-            <input (keypress)="_keyUp($event)" type="text" maxlength="10"  formControlName="Mobile_Number" class="form-control" name="Mobile_Number" placeholder="Mobile Number*" id="Mobile"  >
+            <input (keypress)="AcceptMobilenumberOnly($event)" type="text" maxlength="10"  formControlName="Mobile_Number" class="form-control" onpaste="return false" name="Mobile_Number" placeholder="Mobile Number*" id="Mobile"  >
           
          <small *ngIf="myform.get('Mobile_Number').touched&&myform.get('Mobile_Number').hasError('required')" class="text-danger">
-            <li>   Mobile Number is requied   </li>
+            <li>   Mobile Number is required   </li>
                              </small>
                           
                           <small *ngIf="myform.get('Mobile_Number').dirty&&myform.get('Mobile_Number').hasError('minlength')" class="text-danger">
@@ -43,7 +43,7 @@
                
                </select>
                <small *ngIf="myform.get('userrole').pristine&& myform.get('userrole').touched" class="text-danger">
-                Role Name is requied 
+                Role Name is required 
                              </small>
         </div>
         
@@ -69,14 +69,14 @@
         <div class="col-md-4">
               <!-- <label for="cmbOrganization"  class="form-label">Organization</label> -->
             <select  formControlName="Organization_id" #facility class="form-control" (change)="GetFecility(facility.value)" id="cmbOrganization"  name="Organization_id" >
-                <option  [selected]="true" hidden  >Organization*</option>
+                <!-- <option  hidden  >Organization*</option> -->
                
                 <option   *ngFor="let item of organization"   [value]="item.organizationId" >{{item.organization_Name}}</option>
                
                </select>
-               <small *ngIf="myform.get('Organization_id').pristine&& myform.get('Organization_id').touched" class="text-danger">
+               <!-- <small *ngIf="myform.get('Organization_id').pristine&& myform.get('Organization_id').touched" class="text-danger">
                 Organization is requied 
-                             </small>
+                             </small> -->
 
         </div>
         <div class="col-md-4">
@@ -88,18 +88,27 @@
                
                </select>
                <small *ngIf="myform.get('facility_id').pristine&& myform.get('facility_id').touched" class="text-danger">
-                Facility is requied 
+                Facility is required 
                              </small>
         </div>
         <div class="col-md-4"  [hidden]=isrefdoctor>
             <!-- <label for="txtusername" class="form-label">User name</label> -->
-            <input type="text"   formControlName="User_Name" class="form-control"name="User_Name" id="txtusername"  placeholder="User Name*">
+            <input maxlength="15" type="text" onpaste="return false"   formControlName="User_Name" (keyup)="CheckUsernameisExisted($event)" [disabled]="d" class="form-control"name="User_Name" id="txtusername"  placeholder="User Name*">
+            <span  *ngIf="isusernamevalid" class="fa fa-check errspan"></span>
+            <span  *ngIf="isusernameinvalid"  class="fa fa-exclamation-circle errspan2"></span>
+            <span class="text-danger" *ngIf="isusernameinvalid"  >User Name is already existed</span>
+            <!-- <span *ngIf="uservalid" class="text-danger" >User Name is Required </span> -->
+            <small *ngIf="myform.get('User_Name').touched&&myform.get('User_Name').hasError('required')" class="text-danger">
+              User Name is required
+             </small>
           
           </div>
           <div class="col-md-4" [hidden]=isrefdoctor>
             <!-- <label for="txtpassword" class="form-label">Password</label> -->
-            <input  type="password"  formControlName="Password" class="form-control" id="txtpassword" name="Password" placeholder="Password*" >
-           
+            <input maxlength="10"  type="password" onpaste="return false"  formControlName="Password" class="form-control" id="txtpassword" name="Password" placeholder="Password*" >
+            <small *ngIf="myform.get('Password').touched&&myform.get('Password').hasError('required')" class="text-danger">
+              Password is required
+             </small>
           </div>
          
         </div>
@@ -107,7 +116,7 @@
             <div   >
                 <button class="btn btn-primary" type="submit"  >Save User</button>
                 &nbsp;
-                <button type="button"   (click)="reset()"  id="reset" class="btn btn-danger waves-effect m-l-5">
+                <button type="reset"     id="reset" class="btn btn-danger waves-effect m-l-5">
                     Clear
                 </button>
               </div>

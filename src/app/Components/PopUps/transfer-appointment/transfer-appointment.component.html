@@ -1,7 +1,7 @@
-<form [formGroup]="Transferform"   class="form-control"#reg="ngForm" (ngSubmit)="Transfer(reg.value)">
+<form [formGroup]="Transferform"  #reg="ngForm" (ngSubmit)="Transfer(reg.value)" autocomplete="off">
    
-    <div class="title-bar">
-        <h2>Transfer</h2>
+    <div class="title-bar" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+        <h2>Transfer Appointment</h2>
         <button mat-icon-button [mat-dialog-close]="true">
           <mat-icon>close</mat-icon>
         </button>
@@ -19,7 +19,7 @@
                 <input type="text" placeholder="doctors Name" [value]="Data.doctor_Name"  disabled class="form-control">
                             </div>
                             <div class="col-md-4 mb-4">
-                                Appointment Date
+                               Previous Appointment Date
                                
                                     <input
                                 
@@ -42,68 +42,159 @@
                                         <option [selected]="true"  hidden    >Speciality*</option>
                                     <option  *ngFor="let d of specialityList"  value={{d.specialityID}}>{{d.speciality}}</option>
                                     </select>
-                                    <!-- <small *ngIf="myform.get('SpecialityID').pristine&& myform.get('SpecialityID').touched" class="text-danger">
+                                     <small *ngIf="Transferform.get('SpecialityID').pristine&& Transferform.get('SpecialityID').touched" class="text-danger">
                                         Speciality is requied
-                                                     </small> -->
+                                                     </small> 
+                                                     
                                 </div> 
                                 
                                     <div class="  col-md-4 mb-4">
                                         Transfer To
-                                    <select class="form-control" formControlName="DoctorId"   id="ddlDoctor"  name="DoctorId"  >
+                                    <select class="form-control" formControlName="DoctorId"   id="ddlDoctor" (change)="selectedDoctor()"  name="DoctorId"  >
                                        <option [selected]="true"  hidden   >Doctor*</option>
                                     <option  *ngFor="let d of doctorList"  value={{d.providerId}}>{{d.firstName}}</option>
                                     </select>
-                                    <!-- <small *ngIf="myform.get('DoctorId').pristine&& myform.get('DoctorId').touched" class="text-danger">
+                                     <small *ngIf="Transferform.get('DoctorId').pristine&& Transferform.get('DoctorId').touched" class="text-danger">
                                         Doctor is requied
-                                                     </small> --></div> 
+                                                     </small></div> 
 
 
-                                                     <div class="input-group col-md-4 mb-4">
+                                                     <!-- <div class="col-md-4 mb-4">
                                                         Appointment Date
                                                         <div class="input-group" >
                                                             <input
                                                                 class="form-control"
                                                                
                                                                 name="dp"
-                                                           [value]="appModel"
+                                                        
                                                             ngbDatepicker
-                                                               
+                                                               formControlName="AppointmentDate"
                                                                 #d="ngbDatepicker" 
                                                                 (dateSelect)="onDateSelecttodate($event)" 
                                                               
-                                                               id="Appdate"      name="FromDate"  placeholder="Select Date" 
+                                                               id="Appdate"      name="FromDate"  placeholder="Select Date*" 
                                                             />   <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
-                                                            </div></div>
-                                                            <div class="col-md-2 mb-2" >
+                                                            </div>
+                                                            <small *ngIf="Transferform.get('AppointmentDate').touched&&Transferform.get('AppointmentDate').hasError('required')" class="text-danger">
+                                                                Appointment Date is requied
+                                                                             </small>
+                                                        </div> -->
+                                                        <div class="col-md-4 mb-4">
+                                                            Appointment Date
+                                                            <div class="input-group" >
+                                                                <input  onpaste="return false"
+                                                                    class="form-control"
+                                                                    placeholder="Appointment Date" [minDate]="minDate"
+                                                                    name="dp"
+                                                               [value]="appModel"
+                                                                    ngbDatepicker
+                                                                 [maxDate]="maxDate"
+                                                                    #d="ngbDatepicker" 
+                                                                    (dateSelect)="onDateSelecttodate($event)" 
+                                                                    (keydown)="EndTimeKeyEvent($event)"
+                                                                  
+                                                                   id="Appdate"      name="FromDate"   
+                                                                />
+                                                              
+                                                                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                                                            </div>
+                                                            <!-- <small *ngIf="rescheduleform.get('AppointmentDate').touched&&rescheduleform.get('AppointmentDate').hasError('required')" class="text-danger">
+                                                                Appointment Date is requied
+                                                                             </small> -->
+                                                        </div>
+                                                        
+                                                            <!-- <div class="col-md-2 mb-2" >
     
                                                                 <label>
-                                                                 Start Time
+                                                                 Start Time*
                                                                 </label>
-                                                                <input type="time" class="form-control" #obj S formControlName="StartTime" id="stime">
-                                                                <!-- <small *ngIf="myform.get('StartTime').touched&&myform.get('StartTime').hasError('required')" class="text-danger">
+                                                                <input type="time" class="form-control" formControlName="StartTime" id="stime">
+                                                                 <small *ngIf="Transferform.get('StartTime').touched&&Transferform.get('StartTime').hasError('required')" class="text-danger">
                                                                     Start Time is required
-                                                                   </small> -->
-                                                              </div>
+                                                                   </small> 
+                                                              </div> -->
                                                             
-                                                             <div class="col-md-2 mb-2" >
+                                                             <!-- <div class="col-md-2 mb-2" >
                                                         
                                                                  <label>
-                                                                  End Time
+                                                                  End Time*
                                                                  </label>
                                                                  <input type="time" formControlName="EndTime" class="form-control"  id="etime">
                                                                 
-                                                                 <!-- <small *ngIf="myform.get('EndTime').touched&&myform.get('EndTime').hasError('required')" class="text-danger">
+                                                                 <small *ngIf="Transferform.get('EndTime').touched&&Transferform.get('EndTime').hasError('required')" class="text-danger">
                                                                     End Time is required
-                                                                   </small> -->
-                                                               </div>
+                                                                   </small>
+                                                               </div> -->
+                                                               <div class="col-md-4 mb-4">
+  
+                                                                <div    #StartTime> 
+                                                                 
+                                                                   Start Time
+                                                                    <div class="input-group">
+                                                                    <input type="text"  onpaste="return false"  class="form-control"  id="StartTime"    formControlName="StartTime"
+                                                                     name="mobilenumber" id="StartTime" [value]="starttime" (keydown)="EndTimeKeyEvent($event)"
+                                                                      placeholder="start time*" >
+                                                                      <button type="button" class="btn btn-outline-secondary" style="width: 30px;"></button>
+                                               
+                                                                      <i class="fa fa-clock-o fa-lg TimeSpan " aria-hidden="false"></i>
+                                                                      
+                                                                    
+                                                                    </div>
+                                                                    <small *ngIf="Transferform.get('StartTime').touched&&Transferform.get('StartTime').hasError('required')" class="text-danger">
+                                                                        Start Time is required
+                                                                       </small> 
+                                            
+                                                                  
+                                                                  
+                                                                
+                                                                
+                                                                                                     <!--table-->
+                                                                                                     <div *ngIf="showModal">
+                                                                                                      <div class="tableshow">
+                                                                                                          <table  class="table table-hover"  id="patients" >
+                                                                                                              
+                                                                                                  <tbody class="tablebody" >
+                                                                                                    <tr id="rd" *ngFor="let item of timeintarval;let k = index" (click)="ChangeTimeSlot(k, item)">
+                                                                
+                                                                                                     
+                                                                                                      <td style="font-weight: bold" ><label style="font-size: 10px;">{{item}}</label></td>
+                                                                                                     
+                                                                                                    </tr>
+                                                                                                  </tbody>
+                                                                                                </table>
+                                                                                                      </div>
+                                                                
+                                                                                                  
+                                                                                                  </div>
+                                                                
+                                                                                                 
+                                                                                                  
+                                                                                                  
+                                                        </div>
+                                                        </div>
+                                                            <div class="col-md-4 mb-4" >
+                                                                End Time 
+                                                                <div class="input-group">
+                                                            <input type="text"  onpaste="return false" class="form-control non-selectable" id="EndTime"  ngbTooltip="End Time Can't be Editable" [value]="endtime" formControlName="EndTime" (keydown)="EndTimeKeyEvent($event)">
+                                                            <!-- <button class="btn btn-outline-secondary non-selectable" type="button" style="width: 30px;"></button>
+                                               
+                                                            <i class="fa fa-clock-o fa-lg TimeSpan " aria-hidden="false"></i>
+                                                             -->
                                                           
+                                                        </div>
+                                                            <small *ngIf="Transferform.get('EndTime').touched&&Transferform.get('EndTime').hasError('required')" class="text-danger">
+                                                                End Time is required
+                                                               </small>  
+                                                        </div>
                                                             
                                                         
                                                         </div>
-                                                           
+                                                           <div class="form-row">
+                                              
+                                                           </div>
                                                        <div class="form-row">
                                                         <div  class="col-md-12" style="text-align: right;" >
-                                                            <button type="submit" [mat-dialog-close]="true"  
+                                                            <button type="submit"  [disabled]="btnisDesable" 
                                                             
                                                 
                                                             class="btn btn-primary waves-effect waves-light" id="btnSave" >

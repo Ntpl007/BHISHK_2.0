@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HimsServiceService } from 'src/app/Shared/hims-service.service';
@@ -19,7 +20,12 @@ isIscheulehide:any=false
 isdoctorhide:any=false
 ischargegrouphide:any=false
 ischargeItemhide:any=false
-  constructor(private service:HimsServiceService,private d:MatDialog) { }
+  constructor(private service:HimsServiceService,private d:MatDialog,private http: HttpClient) { 
+    this.http.get('src/assets/My.json').subscribe(config => {
+      
+    });
+
+  }
 
   // open()
   // {

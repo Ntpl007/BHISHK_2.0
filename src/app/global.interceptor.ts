@@ -30,6 +30,7 @@ export class GlobalInterceptor implements HttpInterceptor {
 
   return next.handle(request).pipe(
   	catchError((err) => {
+      debugger
    	 if (err instanceof HttpErrorResponse) {
        	 if (err.status === 401) {
        	 // redirect user to the logout page

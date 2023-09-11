@@ -1078,6 +1078,13 @@ body.enlarge-menu .page-wrapper {
     display: none;
   }
 }
+
+.buttons-right-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 .footer {
   border-top: 1px solid #e8ebf3;
   bottom: 0;
@@ -10971,8 +10978,29 @@ input:-webkit-autofill:focus {
   .sidebar {
     top: 70px;
   }
+  .buttons-right-row {
+    justify-content: center;
+}
 }/*# sourceMappingURL=style.css.map */
 
 .alignment{
     text-align: center;
+}
+
+.TimeSpan {
+  float: right;
+  /* margin-right: 6px; */
+  margin-top: 10px;
+  margin-left: -25px;
+  position: relative;
+  z-index: 2;
+  color: rgb(21, 22, 21);
+  }
+.btn-space{
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.body-text{
+ color:#525252
 }

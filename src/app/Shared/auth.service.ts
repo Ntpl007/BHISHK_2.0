@@ -4,6 +4,9 @@ import Swal from 'sweetalert2';
 import { HimsServiceService } from './hims-service.service';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt'; 
+import { LoadingPopupComponent } from '../Components/PopUps/loading-popup/loading-popup.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogcommunicationService } from './dialogcommunication.service';
 const helper=new JwtHelperService()
 
 @Injectable({
@@ -14,7 +17,8 @@ token:any
 decode:any
 userdata:any
 
-  constructor(private http:HttpClient,private service:HimsServiceService,private router:Router) { 
+  constructor(private http:HttpClient,private service:HimsServiceService,private router:Router,
+    private dialog:MatDialog,private dialogService:DialogcommunicationService,) { 
 
 
   }
@@ -22,7 +26,7 @@ userdata:any
   
   public isExpired():boolean
   {
-    debugger
+    
    
    this.token=  localStorage.getItem('token');
    var dt=helper.getTokenExpirationDate(this.token);
@@ -40,58 +44,25 @@ userdata:any
   }
 
   
+
+  closeAllDialogs(): void {
+    this.dialogService.closeAll();
+  }
+
+  openDialog(): void {
+    this.dialogService.open(LoadingPopupComponent, {
+      width: '150px', // Adjust the width as needed
+     
+     data:"Logging in....."
+    });
+  }
   public LoggedIn(user:any)
 {
  // debugger;
  
  return  this.http.post<any>(this.service.Serverbaseurl+'api/Account/Login',user)
-  .subscribe((result)=>{
- //debugger;
- if(result!=null)
- {
-  this.userdata=result
-let data=result; 
-localStorage.setItem('token',data.token)
-localStorage.setItem('organizationId',data.organization_Id)
-localStorage.setItem('facility',data.facility_Name)
-localStorage.setItem('organization',data.organization_Name)
-localStorage.setItem('facilityId',data.facility_Id)
-
-  
-localStorage.setItem('name',data.user_Name)
-
-
-
-
-this.decode=null;
-this.decode=helper.decodeToken<any>(data.token);
-localStorage.setItem('role',this.decode.role)
-//let a:any
-//var pathdata=this.service.GetPathList().subscribe((result : any)=>(a=result));;
-debugger
-if(this.decode.role=='Front Desk')
-{
-  this.router.navigateByUrl('/FrontDesk/OPD');
-}else
-if(this.decode.role=='Admin')
-{
-  
-  //debugger
-  this.router.navigateByUrl('/Admin/Add-User');
-}
- }
-
-},
-  error=> {
-    debugger
-  // catch 4xx error here and do whatever you want to do with it. Below log code 
-  // won't show it in red color though.
-  // Write your code here to notify the user about error.
-  localStorage.removeItem('token')
-  // alert(error.message);
-  Swal.fire('Invalid Credentials',error);
-}
-);
+ 
+this.closeAllDialogs();
 }
 public getRole()
 {

@@ -42,3 +42,23 @@ li{
     display:block;
     list-style: none;
 }
+
+
+.errspan {
+    float: right;
+    margin-right: 6px;
+    margin-top: -28px;
+    position: relative;
+    z-index: 2;
+    color: green;
+}
+
+
+.errspan2 {
+    float: right;
+    margin-right: 6px;
+    margin-top: -28px;
+    position: relative;
+    z-index: 2;
+    color: red;
+}

@@ -26,3 +26,125 @@
   .mattable th{
 padding: 20px;
   }
+
+
+  input[type="time"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 152px;
+  }
+
+  /* Style for the time picker arrow */
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    background-color: transparent;
+    cursor: pointer;
+    padding: 2px;
+    border: none;
+    margin-left: -6px;
+  }
+
+
+
+
+  /* popuptimer stles */
+  label {
+    font-size: 25px;}
+
+
+    fieldset,
+    img {
+      border: none;
+    }
+    
+    caption,
+    th {
+      text-align: left;
+    }
+    
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    
+    td {
+      vertical-align: top;
+    }
+    
+    
+    #patients thead, #patients tbody{
+      width: 100%;
+      border-collapse: collapse;
+      padding-left: 5px;
+      padding-right: 5px;
+     
+    }
+    #patients td {
+      /* border: 1px solid #ddd; */
+       padding-left: 9px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      text-align: left;
+      width: 20px;
+      overflow: hidden;
+      /* position: absolute; */
+     }  
+    
+    
+    .tablebody{
+      display: block;
+        max-height: 140px;
+      
+        overflow-y: scroll;
+       /* z-index: 999;  */
+    
+    
+    } 
+    
+     thead, tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      
+      /* even columns width , fix width of table too*/
+     } 
+    
+    .tableshow{
+      position: absolute;
+       z-index: 999;
+        background:#f1f5fa;
+        border: 1px solid #0075a9;
+        text-align: center;
+        border-radius: 5px;
+        max-height: 142px;
+    }
+    
+    
+  .m{
+    margin:100px;
+  }
+
+  /* timestyle end */
+
+  
+.TimeSpan {
+  float: right;
+  /* margin-right: 6px; */
+  margin-top: 10px;
+  margin-left: -22px;
+  position: relative;
+  z-index: 2;
+  color: rgb(21, 22, 21);
+}
+.non-selectable {
+  user-select: none; /* Prevent text selection */
+  cursor: not-allowed; /* Show disabled cursor */
+  background-color: #f0f0f0; /* Apply a background color */
+}
+
+.mat-icon-button{
+
+  outline: none;
+  font-size: 16px;
+}

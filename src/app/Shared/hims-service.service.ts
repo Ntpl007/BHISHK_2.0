@@ -48,7 +48,7 @@ readonly securityBaseUrl="http://10.10.20.25:84/";
   
 
 public GetDoctorbyspeciality(id:any) : Observable<any> {
-  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetDoctorsByspaciality?Id='+id);
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetDoctorsByspaciality?Id='+id);
 }
 
 public GetSchedulartypes() : Observable<RefDoctor[]> {
@@ -92,7 +92,7 @@ public GetRefDoctorbyspeciality(id:any) : Observable<RefDoctor[]> {
 }
 
 public getCorporate(Id:any) : Observable<Corporate[]> {
-  return this.http.get<Corporate[]>(this.securityBaseUrl+'FetchMasterData/GetCorporate?Id='+Id);
+  return this.http.get<Corporate[]>(this.Serverbaseurl+'FetchMasterData/GetCorporate?Id='+Id);
 }
 
 
@@ -143,7 +143,7 @@ public GetDistricts(Id:any) : Observable<any> {
 public checkAadhaarValid(aadhaar:any):Observable<any>
 {
   debugger
-   return this.http.get<any>('https://localhost:44336/'+ 'api/Home/CheckAadhaarValid?Aadhaar='+aadhaar)
+   return this.http.get<any>(this.Serverbaseurl+ 'api/Home/CheckAadhaarValid?Aadhaar='+aadhaar)
 }
 public GetFecility(id:any) : Observable<Fecility[]> {
   debugger
@@ -156,7 +156,7 @@ public GetOrganization() : Observable<Organization[]> {
 public SaveUser(User:any) : Observable<any> {
   User.CreatedBy=localStorage.getItem('name')
   debugger
-  return this.http.post<any>('https://localhost:44335/'+'api/Account/Register',User);
+  return this.http.post<any>(this.Serverbaseurl+'api/Account/Register',User);
 }
 
 public GetabhaStatus(obj:any)
@@ -176,7 +176,7 @@ public GetTotalFecilities() : Observable<TotalFacilities[]> {
 
 
 public SaveAppointments(Data:any):Observable<any>
-{ return this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
+{ return this.http.post<any>(this.Serverbaseurl+'api/Appointments/SaveAppointment',Data)
 
 }
 
@@ -184,7 +184,7 @@ public SaveAppointments(Data:any):Observable<any>
 public CancelAppointments(Data:any):Observable<any>
 { 
   debugger
-  return this.http.get<any>('https://localhost:44341/'+'api/Appointments/CancelAppointment?AppointmentId='+Data)
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/CancelAppointment?AppointmentId='+Data)
 
 }
 
@@ -235,7 +235,12 @@ public getAdminDashboard():Observable<any>
 
 
 public GetAppointments(Data:any):Observable<any>
-{ return this.http.post<any>('https://localhost:44395/'+'FetchMasterData/GetAppointments',Data)
+{ return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/GetAppointments',Data)
+
+}
+
+public GetAppointmentsToday():Observable<any>
+{ return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetAppointmentsToday')
 
 }
 
@@ -258,22 +263,69 @@ public GetPaymentMode():Observable<any>
 }
 
 public GetEditAppointmentdetails(Id:any):Observable<any>
-{ return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+{ return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
 
 }
 
 
 public UpdateAppointment(Appointment:any):Observable<any>
-{ return this.http.post<any>('https://localhost:44341/'+'api/Appointments/UpdateAppointment',Appointment)
+{ return this.http.post<any>(this.Serverbaseurl+'api/Appointments/UpdateAppointment',Appointment)
 
 }
 
 public RescheduleAppointment(Appointment:any):Observable<any>
-{ return this.http.post<any>('https://localhost:44341/'+'api/Appointments/RescheduleAppointment',Appointment)
+{ return this.http.post<any>(this.Serverbaseurl+'api/Appointments/RescheduleAppointment',Appointment)
 
 }
 public TransferAppointment(Appointment:any):Observable<any>
 {
-return this.http.post<any>('https://localhost:44341/'+'api/Appointments/TransferAppointment',Appointment)
+return this.http.post<any>(this.Serverbaseurl+'api/Appointments/TransferAppointment',Appointment)
 }
+public CheckUsernameIsExisted(username:any,OrganizationId:any):Observable<any>
+{
+return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/IsUsernameValid?UserName='+username+'&OrganizationId='+OrganizationId)
+}
+
+public GetTimeSlotsForTimePicker(AppointmentDate:any,TimeInterval:any):Observable<any>
+{
+return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetTimeSlotsForTimePicker?_Date='+AppointmentDate+'&TimeInterval='+TimeInterval)
+}
+
+
+
+//-----------------------------------
+
+isValidNumber(event:any)
+{
+  var charCode = (event.which) ? event.which : event.keyCode
+  if (charCode > 31 && (charCode < 48 || charCode > 57))
+    return false;
+  return true;
+  
+}
+
+
+onKeyDown(event: KeyboardEvent) {
+  // Allow numbers, backspace, and delete keys
+  if (
+    [46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
+    // Allow Ctrl+A
+    (event.keyCode === 65 && event.ctrlKey === true) ||
+    // Allow Ctrl+C
+    (event.keyCode === 67 && event.ctrlKey === true) ||
+    // Allow Ctrl+V
+    (event.keyCode === 86 && event.ctrlKey === true) ||
+    // Allow Ctrl+X
+    (event.keyCode === 88 && event.ctrlKey === true) ||
+    // Allow home, end, left, right arrow keys
+    (event.keyCode >= 35 && event.keyCode <= 39)
+  ) {
+    return;
+  }
+  // Allow only numeric input
+  if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) {
+    event.preventDefault();
+  }}
+//-----------------------------------
+
 }
