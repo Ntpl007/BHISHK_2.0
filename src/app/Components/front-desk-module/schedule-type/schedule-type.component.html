@@ -1,3 +1,4 @@
+<div class="card-body">
 <div class="form-body">
 <form >
     <div class="form-row">
@@ -21,7 +22,7 @@
     
     <select class="form-control "  id="ddlDoctor"  name="Doctor"  >
         <option [selected]="true"  hidden [value]="0" >Doctor*</option>
-       <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+       <option  *ngFor="let d of doctors"  value={{d.providerId}}+{{d.firstName}}>{{d.firstName}}</option>
     </select>
 </div>
 
@@ -42,11 +43,266 @@
 </div>
 
 </div>
-<div>
-    <button class="btn btn-primary"  >open</button>
+<div clas="form-row">
+    <div  class="col-md-12" style="text-align: right;" >
+        <button type="button" id="btnAddSchedule" (click)="OpenSchedulePopup()" class="btn btn-info waves-effect waves-light" >
+            Add Schedule
+          </button>
+          &nbsp;
+        <button type="submit" (click)="searchData()"  class="btn btn-primary waves-effect waves-light" id="btnSearch" >
+            Search   
+        </button>&nbsp;
+        <button type="reset"  id="reset" class="btn btn-danger waves-effect waves-light">
+            Clear
+        </button>
+    </div>
+    <div class="mt-2 col-md-12">
+    </div>
+    <div   class="row d-flex justify-content-center" >
+        <table id="tblfacility"  class="styled-table" style="margin-top: 0px;">
+            <thead>
+                <tr>
+                    <th style="text-align: center;width: 5%;">S.No</th>
+                    <th style="text-align: center;width: 15%;">Template</th>
+                    <th style="text-align: center;width: 15%;">Facility</th>
+                    <th style="text-align: center;width: 10%;">Effective Date</th>
+                    <th style="text-align: center;width: 10%;">Start Time</th>
+                    <th style="text-align: center;width: 10%;">End Time</th>
+                    <th style="text-align: center;width: 10%;">Expiration Date</th>
+                    <th style="text-align: center;width: 5%;">Interval[Min.]</th>
+                    <th style="text-align: center;width: 10%;">Appointments [Per Slot]</th>
+                    <th style="text-align: center;width: 5%;">Status</th>
+                    <th style="text-align: center;width: 5%">Edit</th>
+                </tr>
+            </thead>
+           <tbody class="as"> 
+            <tr *ngFor="let i=index  let rowlist of providerScheduleList | paginate: { itemsPerPage: 50, currentPage: p }">
+                <td style="text-align: center;width: 5%;">{{i+1}}</td>
+                <td style="text-align: center;width: 15%;">{{rowlist.sceheduleTemplateName}}</td>
+                <td style="text-align: center;width: 15%;">{{rowlist.facilityName}}</td>
+                <td style="text-align: center;width: 10%;">{{rowlist.scheduleTemplateEffectiveDate | date: "mediumDate"}}</td>
+                <td style="text-align: center;width: 10%;">{{rowlist.startTime}}</td>
+                <td style="text-align: center;width: 10%;">{{rowlist.endTime}}</td>
+                <td style="text-align: center;width: 10%;">{{rowlist.scheduleTemplateExpirationDate | date: "mediumDate"}}</td>
+                <td style="text-align: center;width: 10%;">{{rowlist.scheduleIntravel}}</td>
+                <td style="text-align: center;width: 10%;">{{rowlist.appointmentsPerSlots}}</td>
+                <td style="text-align: center;width: 5%;">Active</td>  
+                <td style="text-align: center;width: 5%;" >
+                    <i class="fa fa-edit" id="btnEditTemplate_{{i}}" (click)="EditTemplate(rowlist.scheduleTemplateId, i)"  aria-hidden="true" style="font-size:20px" ngbTooltip="Edit">&nbsp;</i>
+                    
+                </td>  
+            </tr>
+           </tbody>
+           <tfoot>
+           
+           </tfoot>
+        </table>
+    </div>
+    <div class="modal fade" id="exampleModalLong"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document" >
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Schedule Template</h5>
+              <button type="button" (click)="closeModel()"  class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Name:
+                                <label id="lblProviderName"   class="form-control">{{providerName}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                Facility:
+                                <label id="lblFacilityName" class="form-control">{{facilityname}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                TemplateName:
+                                <input type="text" id="txtTemplateName" class="form-control"/>
+                            </div>
+                            <div class="col-md-6">
+                                ScheduleInterval:
+                                <select class="form-control "  id="ddlScheduleInterval"  name="ScheduleInterval"  >
+                                    <option value="0">--Select--</option>
+                                    <option value="15">15</option>
+                                    <option value="30" >30</option>
+                                    <option value="60">60</option>
+                                </select>
+                            </div>
+                            <!-- *ngFor="let items of days;let j = index" -->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                Effective Date
+                                <div class="input-group">
+                                    <input
+                                    class="form-control"
+                                    placeholder="From Date"
+                                    name="dp"
+                                    [(ngModel)]="model"
+                                    ngbDatepicker
+                                    #d="ngbDatepicker"
+                                     id="fdate"  (dateSelect)="onDateSelectfromdate($event)" name="FromDate"  
+                                    />
+                                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                Schedule valid up to:
+                                <div class="input-group">
+                                    <input
+                                    class="form-control"
+                                    placeholder="To Date"
+                                    name="dp"
+                                    [(ngModel)]="model2"
+                                    ngbDatepicker
+                                    #d2="ngbDatepicker"
+    
+                                    value="{{today}}" id="toDate" (dateSelect)="onDateSelecttodate($event)"   name="ToDate"   
+                                    />     
+                                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="card">
+                      <div class="card-body">
+                        <div clas="row">
+                            <div class="col-md-12">
+                                <a  (click)="addTableCell()" style="color: skyblue;margin-left: 0%;">Add</a>
+                                <div class="table-responsive " >
+                                    <table class="styled-table" id="tableschedule">
+                                        <thead class="table-header-bg">
+                                            <tr>
+                                              <th style="text-align: center;width: 5%;">S No.</th>
+                                              <th style="text-align: center;width: 15%;">Start Time</th>
+                                              <th style="text-align: center;width: 15%;">End Time</th>
+                                              <th style="text-align: center; width: 44%;">Week Days</th>
+                                              <th style="text-align: center; width: 6%;">Status</th>
+                                              <th style="text-align: center; width: 15%;">Actions</th>
+                                             
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let row of scheduleArray; let i=index">
+                                                <td style="text-align: center;width: 5%;">{{i+1}}</td>
+                                                <td style="text-align: center;width: 15%;">
+                                                <input [(ngModel)]="row.schedulestarttime" id="txtStartTime_{{i}}" list="limittimeslist" name="notificationThreshold{{i}}" required class="form-control" type="time" />   
+                                                <datalist id="limittimeslist">
+                                                    <option  *ngFor="let d of limittimeslist"  value={{d}}></option>
+                                                   
+                                                  </datalist>
+                                                <!-- <div>
+                                                    <div #StartTime> 
+                                                            
+                                                            <input type="text" autocomplete="off" style="width: 150px;"  id="txtStartTime_{{i}}"   class="form-control" 
+                                                             name="mobilenumber"  [value]="starttime"  (keydown)="EndTimeKeyEvent($event)"
+                                                              placeholder="--:--"  onpaste="return false">
+                                                            
+                                                                    <div *ngIf="showModal2">
+                                                                    <div class="tableshow2">
+                                                                        <table  class="table table-hover"  id="patients2" >
+                                                                                                          
+                                                                            <tbody class="tablebody2" >
+                                                                            <tr id="rd" *ngFor="let item of timeintarval;let k = index" (click)="ChangeTimeSlot(k,item)">
+                                                                                <td style="font-weight: bold" ><label style="font-size: 15px;">{{item}}</label></td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    </div>
+                                                             
+                                                            </div>
+                                                        </div>    -->
+
+                                            </td>
+                                                <td style="text-align: center;width: 15%;">
+                                                    <input [(ngModel)]="row.scheduleendtime" id="txtEndTime_{{i}}" list="limittimeslist" name="notificationThreshold{{i}}" required class="form-control" type="time"/>   
+                                                    <datalist id="limittimeslist">
+                                                        <option  *ngFor="let d of limittimeslist"  value={{d}}></option>
+                                                        
+                                                      </datalist>
+                                                    <!-- <div>
+                                                        <div #EndTime> 
+                                                                
+                                                                <input type="text" autocomplete="off" style="width: 150px;"  id="txtEndTime_{{i}}"   class="form-control" 
+                                                                 name="mobilenumber"  [value]="endtime" (keydown)="EndTimeKeyEvent($event)"
+                                                                  placeholder="--:--"  onpaste="return false">
+            
+                                                                        <div *ngIf="showModal3">
+                                                                        <div class="tableshow2">
+                                                                            <table  class="table table-hover"  id="patients2" >
+                                                                                                              
+                                                                                <tbody class="tablebody2" >
+                                                                                <tr id="rd" *ngFor="let item of timeintarval;let k = index" (click)="ChangeTimeSlotEndDate(k,item)">
+                                                                                    <td style="font-weight: bold" ><label style="font-size: 15px;">{{item}}</label></td>
+                                                                                </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                        </div>
+                                                                 
+                                                                </div>
+                                                            </div>    -->
+
+                                                </td>
+                                                <td style="text-align: center; width: 44%;">
+                                                    <label id="lblDays_{{i}}_{{j}}" *ngFor="let items of days;let j = index">
+                                                        &nbsp;
+                                                        <input type="checkbox"    [checked]="items.selected"   id="{{items}}_{{i}}"  (change)="checkUncheckAll(items, i)">
+                    
+                                                        {{items}}
+                                                      </label>  
+                                                      &nbsp;
+                                                    
+                                                </td>
+                                                <td style="text-align: center; width: 6%;">
+                                                    <label>{{scheduleslotname}}</label>  
+                                                </td>
+                                                <td style="text-align: center; width: 15%;">
+                                                    <!-- <i class="fa fa-edit"  aria-hidden="true" style="font-size:20px" ngbTooltip="Edit">&nbsp;</i> -->
+                                                    <i class="fa fa-trash" id="iDelete_{{i}}" (click)="deleterow(i)"  style="font-size:20px;" aria-hidden="true" ngbTooltip="Delete" >&nbsp;</i>
+                                                    &nbsp;
+                                                    <i class="fa fa-remove"  id="iRemove_{{i}}" (click)="removerow(i)"  style="font-size:20px;display:none;" aria-hidden="true" ngbTooltip="Remove" >&nbsp;</i>
+                                                    &nbsp;
+                                                    <i class="fa fa-ban" id="iBlock_{{i}}" (click)="blockrow(i)"  style="font-size:20px;display:none;" aria-hidden="true" ngbTooltip="Block" >&nbsp;</i>
+                                                    &nbsp;
+                                                    <i class="fa fa-unlock-alt" id="iUnBlock_{{i}}" (click)="Unblockrow(i)"  style="font-size:20px;display:none;" aria-hidden="true" ngbTooltip="UnBlock" >&nbsp;</i>
+                                                    
+                                                    <!-- <i class="fa fa-ban"  style="font-size:20px;color:red" aria-hidden="true" ngbTooltip="Block">&nbsp;</i> -->
+                                                </td>
+
+                                            </tr>
+                                          </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" (click)="closeModel()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <div *ngIf="editStatus">
+                <button type="button"  (click)="SaveScheduleTemplate()"  class="btn btn-primary">Save</button>
+              </div>
+              <div *ngIf="!editStatus">
+                <button type="button" [attr.disabled]="!editStatus" (click)="UpdateScheduleTemplate()"  class="btn btn-primary">Update</button>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+
 </div>
 
 </form>
 
-
+</div>
 </div>

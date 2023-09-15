@@ -117,7 +117,7 @@
                     Search
                   
                 </button>
-                <button type="button" (click)="reset()"  id="reset" class="btn btn-danger waves-effect waves-light btn-space">
+                <button type="button" (click)="Reset()"  id="reset" class="btn btn-danger waves-effect waves-light btn-space">
                     Clear
                 </button>
                
@@ -157,7 +157,7 @@
                     </thead>
                    <tbody > 
                    
-                    <tr *ngFor="let i=index  let rowlist of patientList | paginate: { itemsPerPage: 50, currentPage: p }" >
+                    <tr *ngFor="let i=index  let rowlist of patientList | paginate: { itemsPerPage: 10, currentPage: p }" >
                         <td style="width:50px; padding-left: 10px;" >{{i+1}}</td>
                         <td class="dt" >{{rowlist.appointment_Date}}</td>
                         <td class="time">{{rowlist.start_Time}} - {{rowlist.end_Time}}</td>

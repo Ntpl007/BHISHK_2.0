@@ -2,7 +2,7 @@ import { Component, ElementRef, HostListener, Inject,OnInit, ViewChild } from '@
 import { NoopAnimationPlayer } from '@angular/animations';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DateService } from 'src/app/Shared/date.service';
 import { HimsServiceService } from 'src/app/Shared/hims-service.service';
 
@@ -12,6 +12,8 @@ import { Subscriber } from 'rxjs';
 import { Route, Router } from '@angular/router';
 import { DialogcommunicationService } from 'src/app/Shared/dialogcommunication.service';
 import { formatDate } from '@angular/common';
+import { CustomAdapter } from 'src/app/Shared/Dates/CustomAdapter ';
+import { CustomDateParserFormatter } from 'src/app/Shared/Dates/CustomDateParserFormatter ';
 
 @Component({
   selector: 'app-transfer-appointment',
@@ -19,7 +21,12 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./transfer-appointment.component.css',"../../../../css/buttons.bootstrap4.min.css" ,
   "../../../../css/dataTables.bootstrap4.min.css","../../../../css/bootstrap.min.css"
   ,"../../../../css/responsive.bootstrap4.min.css","../../../../css/buttons.bootstrap4.min.css" ,
-  "../../../../css/dataTables.bootstrap4.min.css","../../../../css/metisMenu.min.css"]
+  "../../../../css/dataTables.bootstrap4.min.css","../../../../css/metisMenu.min.css"],
+   
+ providers: [
+  { provide: NgbDateAdapter, useClass: CustomAdapter },
+  { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+],
 })
 export class TransferAppointmentComponent implements OnInit {
   Transferform:any
@@ -168,12 +175,6 @@ onDateSelecttodate(event:any) {
  this.appModel=actual
  this._AppointmentDate=this.dateservice.GlobalStringDateFormat(this.appModel);
  this.GetTimeSlotsForTimePicker(this._AppointmentDate,15)
- const current = new Date();
- this.minDate = {
-  year: current.getFullYear(),
-  month: current.getMonth()+1,
-  day: current.getDate()+1
-};
  }
  getId(data:any)
  {
@@ -272,7 +273,8 @@ ChangeTimeSlot(index:any,items:any)
   let splity=(<HTMLInputElement>document.getElementById('ddlSpecialityId')).value;
   let did=(<HTMLInputElement>document.getElementById('ddlDoctor')).value;
 
-  if(this.starttime!=this.Data.start_Time &&splity!="Speciality*"&&did!="Doctor*")
+
+  if(this.starttime>this.Data.start_Time &&splity!="Speciality*"&&did!="Doctor*")
   {
     this.btnisDesable=false;
   } else  this.btnisDesable=true;
@@ -309,6 +311,7 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
 }
  ngOnInit(): void {
   let today=new Date()
+  let dt=formatDate(today,'dd-MM-yyyy','en-Us')
   this.starttime=this.Data.start_Time;
   this.endtime=this.Data.end_Time;
   this.GetTimeSlotsForTimePicker(formatDate(today,'yyyy-MM-dd','en-Us'),15);
@@ -317,7 +320,7 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
     SpecialityID:['Speciality*',Validators.required],
     DoctorId:['Doctor*',Validators.required] ,
     StartTime:[ this.starttime,Validators.required],
-  AppointmentDate:[Validators.required],
+  AppointmentDate:[dt,[Validators.required,Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/)]],
   EndTime:[ this.endtime,Validators.required]
 
 
@@ -326,11 +329,10 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
 
   this.service.getSpeciality().subscribe((result)=>{this.speciality=result})
  
-  let dtString=formatDate(today,'dd-MM-yyyy','en-Us')
-  this.Transferform.get('AppointmentDate').patchValue(dtString)
+  this.Transferform.get('AppointmentDate').patchValue(dt)
   this.getSpeciality()
   this.model=this.Data.appointment_Date
-  this.appModel=dtString
+  this.appModel=dt;
  // (<HTMLInputElement>document.getElementById('Appdate')).value=dtString;
   this._AppointmentDate=this.dateservice.GlobalStringDateFormat(this.Data.appointment_Date)
   this.GetTimeSlotsForTimePicker(formatDate(today,'yyyy-MM-dd','en-Us'),15);
@@ -340,11 +342,11 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
   const current = new Date();
 if(this.dateservice.GlobalStringDateFormat(this.Data.appointment_Date)==formatDate(current,'yyyy-MM-dd','en-Us'))
 {
-  this.minDate = {
-    year: current.getFullYear(),
-    month: current.getMonth()+1,
-    day: current.getDate()+1
-  };
+  // this.minDate = {
+  //   year: current.getFullYear(),
+  //   month: current.getMonth()+1,
+  //   day: current.getDate()+1
+  // };
 }
  
 }
@@ -367,7 +369,7 @@ clickout(event: { target: any; }){
  
 
   if(this.StartTime.nativeElement.contains(event.target)){
-  this.GetTimeSlotsForTimePicker(this._AppointmentDate,15)
+  this.GetTimeSlotsForTimePicker(this.dateservice.GlobalStringDateFormat(this.appModel) ,15)
     
     this.showModal = true;
   }

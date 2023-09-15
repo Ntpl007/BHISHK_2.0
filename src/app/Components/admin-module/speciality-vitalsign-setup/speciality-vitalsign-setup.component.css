@@ -2,7 +2,7 @@
 .styled-table {
     border-collapse: collapse;
     margin: 25px 0;
-    font-size: 0.9em;
+  
     font-family: sans-serif;
   
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -10,32 +10,16 @@
     scroll-behavior: smooth;
   
     display: block;
-    overflow-y: auto;
+    
   
 }
 
-.styled-table2 {
-    border-collapse: collapse;
-    
-    font-size: 0.9em;
-    font-family: sans-serif;
-    display: block;
-   
-    border-radius: 5px 5px 0 0;
-    scroll-behavior: smooth;
-  
-    
-    
-   
-      
-}
 
 .styled-table tbody tr{
     margin-left: 1px;
 }
 .styled-table thead tr {
-    background-color: #0a4890;
-    color: #ffffff;
+   
     text-align: left;
 }
 
@@ -124,37 +108,31 @@ button{cursor: pointer;}
     #spin{
         overflow: hidden;
     }
-           
+    .sno{
+        width: 60px;padding-left: 10px;
+        text-align: center;
+     }
             .dt{
                 width: 90px;
             }
-            .mobile{
-                width: 110px;
+            .vitalsigns{
+                width: 12%;
             }
-            .mobileh{
-                width: 100px;
+            .value{
+                width: 15%;
+                text-align: center;
             }
-            .name{
-                width: 130px;
+            .unitmeasure{
+                width: 20%;
             }
-            .nameh{
-                width: 120px;
+            .order{
+                width: 10%;
+                text-align: center;
             }
-            .age{
-                width: 92px;
-            }
-            .time
-            {
-                width: 140px;
-
-            }
-            .time
-            {
-                width: 150px;
-
-            }
+           
+          
             .action{
-                width:185px;
+                width:20;
 
             }
             .action a{
@@ -198,51 +176,13 @@ button{cursor: pointer;}
   .material-icons:hover{
       color: #c9c9c9;
       cursor:pointer;
-      
-    
+     
   }
   
-  .tooltip {
-      position: relative;
-      display: inline-block;
-  }
-  .tooltip .tooltiptext {
-      visibility: hidden;
-      font-family:'Open Sans';
-      background-color: #E53F6D;
-      color: white;
-      text-align: center;
-      padding: 5px 0;
-      padding-left:5px;
-      padding-right:5px;
-      border-radius: 5px;
-      position: absolute;
-      z-index: 1;
-      top: 15px;
-      left: 60px;
-      opacity: 0;
-      transition: opacity 0.5s; 
-    
-  }
-  
-  .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-      
-  }
-  
-  .tooltip .tooltiptext::after {
-      content: " ";
-      position: absolute;
-      top: 50%;
-      right: 100%; 
-      margin-top: -8px;
-      border-width: 8px;
-      border-style: solid;
-      border-color: transparent #E53F6D transparent transparent;
-  }
-
   i.material-icons{
     padding-top: 0px; padding-left: 20px;
   
   }
+.fa-plus{
+color: green;
+}

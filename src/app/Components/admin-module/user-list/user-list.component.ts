@@ -11,7 +11,8 @@ import { DateService } from 'src/app/Shared/date.service';
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css',"../../../../css/style.css","../../../../css/bootstrap.min.css"
+  styleUrls: ['./user-list.component.css',"../../../../css/buttons.bootstrap4.min.css" ,
+  "../../../../css/style.css","../../../../css/bootstrap.min.css"
   ,"../../../../css/responsive.bootstrap4.min.css","../../../../css/buttons.bootstrap4.min.css" ,
   "../../../../css/dataTables.bootstrap4.min.css","../../../../css/metisMenu.min.css"]
 })

@@ -10,37 +10,37 @@
        
        <form [formGroup]="searchform" #search="ngForm" >
         
-        <div class="form-row">
+      
            
          <span style="font-weight: bold;">Total Users: {{userCount}}</span>
             <div   class="row d-flex justify-content-center" >
     
                 <table id="tblfacility"  class="styled-table">
-                    <thead>
+                  <thead style=" position: sticky;">
                         <tr>
-                            <th style="width: 60px;padding-left: 10px;" >S.No</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th >User Name</th>
-                            <th >Role</th>
+                            <th class="custum-col-sno"  >S.No</th>
+                            <th class="custum-col" >First Name</th>
+                            <th class="custum-col-100">Last Name</th>
+                            <th class="custum-col-100" >User Name</th>
+                            <th class="custum-col-100" >Role</th>
                            
-                            <th>Facility</th>
-                            <th>Created By</th>
-                            <th style="width: 200px;">Created Date</th>
+                            <th class="custum-col">Facility</th>
+                            <th class="custum-col">Created By</th>
+                            <th class="custum-col-100" >Created Date</th>
                             </tr>
                     </thead>
                    <tbody class="as">
                    
-                     <tr *ngFor="let i=index  let rowlist of userlist | paginate: { itemsPerPage: 50, currentPage: p }">
-                        <td style="width: 60px;padding-left: 10px;" >{{i+1}}</td>
-                        <td style="text-transform: capitalize;">{{rowlist.first_Name}}</td>
-                        <td style="text-transform: capitalize;">{{rowlist.last_Name}}</td>
-                        <td style="text-transform: capitalize;">{{rowlist.user_Name}} {{rowlist.gender}}</td> 
-                        <td style="text-transform: capitalize;">{{rowlist.role_Name}}</td>
-                        <td style="text-transform: capitalize;">{{rowlist.facilitY_NAME}}</td> 
+                     <tr *ngFor="let i=index  let rowlist of userlist | paginate: { itemsPerPage: 10, currentPage: p }">
+                        <td class="custum-col-sno" >{{i+1}}</td>
+                        <td  class="custum-col"style="text-transform: capitalize;">{{rowlist.first_Name}}</td>
+                        <td class="custum-col-100" style="text-transform: capitalize;">{{rowlist.last_Name}}</td>
+                        <td class="custum-col-100" style="text-transform: capitalize;">{{rowlist.user_Name}} {{rowlist.gender}}</td> 
+                        <td class="custum-col-100" style="text-transform: capitalize;">{{rowlist.role_Name}}</td>
+                        <td class="custum-col" style="text-transform: capitalize;">{{rowlist.facilitY_NAME}}</td> 
                       
-                        <td style="text-transform: capitalize;">{{rowlist.createdby}}</td> 
-                        <td style="width: 200px;">{{rowlist.createD_DATE}}</td>
+                        <td class="custum-col" style="text-transform: capitalize;">{{rowlist.createdby}}</td> 
+                        <td class="custum-col-100" >{{rowlist.createD_DATE}}</td>
                        
                         
                     </tr> 
@@ -51,7 +51,7 @@
                    </tfoot>
                 </table>
                 </div>
-    </div>
+    
     
         </form>
     </div>

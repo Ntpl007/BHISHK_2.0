@@ -11,12 +11,15 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { GlobalInterceptor } from 'src/app/global.interceptor';
 import { AppComponent } from 'src/app/app.component';
+import { SpecialityVitalsignSetupComponent } from './speciality-vitalsign-setup/speciality-vitalsign-setup.component';
 
 @NgModule({
   declarations: [
     AdminModuleComponent,
     AddUserComponent,
-    UserListComponent
+    UserListComponent,
+    
+    SpecialityVitalsignSetupComponent
   ],
   imports: [
     CommonModule,

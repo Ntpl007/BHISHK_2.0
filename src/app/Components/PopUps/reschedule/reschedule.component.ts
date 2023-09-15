@@ -146,7 +146,14 @@ onDateSelecttodate(event:any) {
    this.btnisDesable=true;
  } 
  else this.btnisDesable=false;
+let dt=new Date(this.dateservice.GlobalStringDateFormat(this.model))
 
+let dt1=formatDate(dt,'yyyy-MM-dd','en-Us')
+
+ if(dt1<convertedDatenow)
+ {
+  this.btnisDesable=true;
+ }
  const current = new Date();
     this.minDate = {
       year: current.getFullYear(),

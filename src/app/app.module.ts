@@ -34,13 +34,15 @@ import { LoadingPopupComponent } from './Components/PopUps/loading-popup/loading
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Import the module
 import { CustomNgbDateAdapter } from './CustomClass/CustomNgbDateParserFormatter';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { FacilityVitalsignComponent } from './Components/PopUps/admin/facility-vitalsign/facility-vitalsign.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RescheduleComponent,
     TransferAppointmentComponent,
-    LoadingPopupComponent
+    LoadingPopupComponent,
+    FacilityVitalsignComponent
     
   ],
   imports: [

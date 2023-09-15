@@ -4,16 +4,30 @@
     margin: 25px 0;
     font-size: 0.9em;
     font-family: sans-serif;
-  
+    display: block;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-radius: 5px 5px 0 0;
     scroll-behavior: smooth;
- 
-  max-height: 300px;
+    
     display: block;
     overflow-y: auto;
-    overflow-x: auto;
+      
+}
+
+.styled-table2 {
+    border-collapse: collapse;
+    
+    font-size: 0.9em;
+    font-family: sans-serif;
+    display: block;
+   
+    border-radius: 5px 5px 0 0;
+    scroll-behavior: smooth;
   
+    
+    
+   
+      
 }
 
 .styled-table tbody tr{
@@ -26,10 +40,10 @@
 }
 
 .styled-table th{
-    padding: 8px 5px;
+    padding: 6px 4px;
 }
 .styled-table td {
-    padding: 5px 3px;
+    padding: 3px 2px;
 }
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;

@@ -60,7 +60,7 @@ export class EditAppointmentsComponent implements OnInit {
 
   AppointmentIdBynavigate:any
 
-
+  islload=false;
   nationality:any
   _patientid:any
   PatientData:any
@@ -240,6 +240,7 @@ DateSelected(date:any)
 UpdateAppointment(Appointment:any)
 {
   debugger
+  this.islload=true
   Appointment.ModifiedBy=this.user?.getUserName();
   Appointment.OrganizationId=this.user?.getOrganizationId();
   Appointment.FacilityId=this.user?.getFacilityId();
@@ -286,15 +287,16 @@ Appointment.AppointmentId=localStorage.getItem('editappointmentId');
        {
        Swal.fire('Success','Updated Successfully','success')
        this.router.navigateByUrl('/FrontDesk/Search-Appointments')
+       this.islload=false;
        }else{
-         
+        this.islload=false;
        Swal.fire('Failed',"Something wen't wrong ,Re try",'error')
        }
        }
        )
     }
   }
- 
+  
 }
 
 formatSelectedDate(selectedDate:any): string {

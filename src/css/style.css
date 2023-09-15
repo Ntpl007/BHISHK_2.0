@@ -1085,6 +1085,13 @@ body.enlarge-menu .page-wrapper {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.buttons-left-row {
+  display: flex;
+  justify-content:flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 .footer {
   border-top: 1px solid #e8ebf3;
   bottom: 0;

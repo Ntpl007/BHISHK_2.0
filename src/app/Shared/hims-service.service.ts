@@ -17,6 +17,7 @@ import { Organization } from '../Model/Organization';
 import { AuthService } from './auth.service';
 import { TotalFacilities } from '../Model/TotalFacilities';
 import { formatDate } from '@angular/common';
+import { ScheduleTemplate } from '../Model/ScheduleTemplate';
 
 
 @Injectable({
@@ -304,28 +305,35 @@ isValidNumber(event:any)
   
 }
 
+public SaveAppointmentSchedule(ScheduleTemplateData:ScheduleTemplate[]):Observable<any>
+{ 
+  return  this.http.post<any>(this.Serverbaseurl+'api/Appointments/SaveScheduleTemplate',ScheduleTemplateData);
+  //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
 
-onKeyDown(event: KeyboardEvent) {
-  // Allow numbers, backspace, and delete keys
-  if (
-    [46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
-    // Allow Ctrl+A
-    (event.keyCode === 65 && event.ctrlKey === true) ||
-    // Allow Ctrl+C
-    (event.keyCode === 67 && event.ctrlKey === true) ||
-    // Allow Ctrl+V
-    (event.keyCode === 86 && event.ctrlKey === true) ||
-    // Allow Ctrl+X
-    (event.keyCode === 88 && event.ctrlKey === true) ||
-    // Allow home, end, left, right arrow keys
-    (event.keyCode >= 35 && event.keyCode <= 39)
-  ) {
-    return;
-  }
-  // Allow only numeric input
-  if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) {
-    event.preventDefault();
-  }}
-//-----------------------------------
+}
 
+public GetProviderScheduleTeamplateData(providerId:any) : Observable<any> {
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/GetProviderScheduleTeamplateData?providerId='+providerId);
+  //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetUserList?providerId='+providerId);
+}
+
+public GetScheduleTemplatePeriodData(scheduleTemplateId:any) : Observable<any> {
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/GetScheduleTemplatePeriodData?scheduleTemplateId='+scheduleTemplateId);
+  //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetUserList?providerId='+providerId);
+}
+
+
+public RemoveScheduleTemplatePeriodDataByUsingScheduleTemplatePeriodId(scheduleTemplatePeriodId:any):Observable<any>
+{ 
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/RemoveScheduleTemplatePeriodDataByUsingScheduleTemplatePeriodId?scheduleTemplatePeriodId='+scheduleTemplatePeriodId);
+}
+
+public BlockScheduleTemplatePeriod(scheduleTemplatePeriodId:any):Observable<any>
+{ 
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/BlockScheduleTemplatePeriod?scheduleTemplatePeriodId='+scheduleTemplatePeriodId);
+}
+public UnBlockScheduleTemplatePeriod(scheduleTemplatePeriodId:any):Observable<any>
+{ 
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/UnBlockScheduleTemplatePeriod?scheduleTemplatePeriodId='+scheduleTemplatePeriodId);
+}
 }

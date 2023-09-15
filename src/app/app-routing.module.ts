@@ -28,7 +28,14 @@ const routes: Routes = [
    },
 
   },
-    
+  { path: 'NursingStation',
+  loadChildren: () => import('./Components/nursingstation/nursingstation.module').then(m => m.NursingstationModule),
+  data:{
+   role:'Admin'
+
+ },
+
+},
     
   
 //   {

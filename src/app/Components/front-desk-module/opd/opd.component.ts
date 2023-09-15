@@ -411,7 +411,14 @@ SaveOp(data :any)
     this.isrestart=false;
     debugger;
      this.MyInputData=data;
-
+    let sex=(<HTMLInputElement>document.getElementById('ddlSex')).value;
+     if(data.conamount.trim()!="")
+     {
+       this.opform.get('conamount').setErrors(null);
+      
+     }else{
+      this.opform.get('conamount').setErrors('required');
+     }
    
    if(data.PaymentCategoryId=="1")
    {
@@ -463,6 +470,7 @@ else  this.opform.get('DoctorId').setErrors({ customError: true });
  
 
 }
+this.MyInputData.Sex=sex;
 //#endregion 
 debugger
  this.controlpath='CreateOP/SaveOp'
@@ -580,18 +588,16 @@ this.listOfDisplayData=null
 
   }
 
-   public Clear(){
-    debugger
-    this._conamount="0"
-   
+public Clear(){
+  debugger
+this._conamount="0"
+this.districts=null;
 this.mobile05accaptable=false
 this.aadhaar01accaptable=false
-
 this.opform=this.formbuilder.group({
-  FirstName:['',Validators.required],
-
-  dob:["",Validators.required],
-  Sex:[{value:'0',disabled: true}],
+ FirstName:['',Validators.required],
+ dob:["",Validators.required],
+ Sex:[{value:'0',disabled: true}],
   Aadhaar:['',[Validators.required,Validators.pattern(/^[2-9]\d{11}$/)]],
   MobileNumber:['',[Validators.required,Validators.pattern(/^[6-9]\d{9}$/)]],
   ReligionId:['0',Validators.required],
@@ -614,9 +620,11 @@ this.opform=this.formbuilder.group({
   Comments:[''],
   PaymentCategoryId:['0',Validators.required],
   EmailId: ['', Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i)])],
-  conamount:['0',[Validators.required,Validators.pattern(/^[0-9]\d{9}$/)]]
+  conamount:['0',[Validators.required,Validators.pattern(/^[0-9]\d{9}$/)]],
+  txtRefDoctor:['']
 
 });
+
 this.iscorporateenable=false
 this.isconsultdoctorhide=true;
 (<HTMLInputElement>document.getElementById('customRadio7')).checked=false
@@ -1010,40 +1018,10 @@ this.opform=this.formbuilder.group({
   Comments:[''],
   PaymentCategoryId:['0',Validators.required],
   EmailId: ['', Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i)])],
-  conamount:['0',[Validators.required,Validators.pattern(/^[0-9]\d{9}$/)]]
+  conamount:['0',[Validators.required,Validators.pattern(/^[0-9]\d{9}$/)]],
+  txtRefDoctor:['']
 
 });
-
-// this.opform=this.formbuilder.group({
-//   FirstName:['',Validators.required],
-
-//   dob:["",Validators.required],
-//   Sex:[{value:'Gender*',disabled: true}],
-//   Aadhaar:['',[Validators.required,Validators.minLength(12)]],
-//   MobileNumber:['',[Validators.required,Validators.minLength(10)]],
-//   ReligionId:['Religion*',Validators.required],
-//   NationalityId:['Nationality*',Validators.required],
-//   HouseNo:['',Validators.required],
-//   State:['State*',Validators.required],
-//   District:['District*',Validators.required],
-//   City:[''],
-//   Village:[''],
-//   Pincode:['',[Validators.required,Validators.minLength(6)]],
-//   SpacialityId:['Speciality*',Validators.required],
-//   DoctorId:['Doctor*',Validators.required],
-//   RefDoctorId:['Ref Doctor*',Validators.required],
-//   Prefix:['Prefix*',Validators.required],
-//   Occupation:['Occupation*',Validators.required],
-//   CorporateId:["0",Validators.required],
-//   BenificiaryId:['',Validators.required],
-//   PaymentAmount:['',Validators.required],
-//   PaymentMode:['PaymentMode*',Validators.required],
-//   Comments:[''],
-//   PaymentCategoryId:['Payment category*',Validators.required],
-//   EmailId: ['', Validators.compose([Validators.required,Validators.email,Validators.pattern(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)])],
-//   conamount:['0',Validators.required]
-
-// });
 
 
   }

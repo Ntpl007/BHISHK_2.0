@@ -20,6 +20,7 @@ import { CustomAdapter } from 'src/app/Shared/Dates/CustomAdapter ';
 import { CustomDateParserFormatter } from 'src/app/Shared/Dates/CustomDateParserFormatter ';
 //import { TransferAppointmentComponent } from 'src/app/Components/PopUps/transfer-appointment/transfer-appointment.component';
 import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-search-appointment',
   templateUrl: './search-appointment.component.html',
@@ -34,20 +35,19 @@ import * as XLSX from 'xlsx';
 ],
 })
 export class SearchAppointmentComponent implements OnInit  {
+ //#region Declerations
   mydate?:NgbDate
   private dialogClosedSubscription?: Subscription;
-  redirectObject:any
+  
   todayfrom:any// formatDate(new Date(), 'yyyy-MM-dd', 'en-US'); // dateofbirth;
   todayTo:any
   isDateDisabled=false;
   title="OPD Search"
   model?: NgbDateStruct;
   model2?: NgbDateStruct;
+ 
 searchform:any
-itemsObject:any
-ob:any
 islload:boolean=false
-myclass:any
 datenow=new Date();
 norecords:any
 patientList:any
@@ -62,13 +62,12 @@ _todate:any
 _todate2:any
 _fromdate2:any
 id:string="";
-dct?:0
-astatus?:0
 appointmentstatus:any
 paymentcategory:any
 loadData:any;
 isfdateempty=false
 istdateempty=false
+//array
 pulldata={
 AppointmentStatusId:0,
 DoctorId:0,
@@ -78,19 +77,21 @@ MobileNumber:"",
 PatientName:""
 
 }
+//-----------------
 setdateload:any
 iscancelled?:false
 isvi:boolean=false
   maxDate: { year: number; month: number; day: number; };
   minDate: { year: number; month: number; day: number; };
-  constructor(private pop:MatDialog,private dateservice:DateService, private datePipe:DatePipe,
-     private formbuilder:FormBuilder,private himsservice:HimsServiceService,
-     private config: NgbDatepickerConfig,private rout:Router,
-    private dialogCommunicationService:DialogcommunicationService,
-    private ngbDateParserFormatter: NgbDateParserFormatter,
-     private dateAdapter: NgbDateAdapter<string>,
-    
-  
+  //#endregion
+ //#region constructor
+  constructor(private pop:MatDialog,
+     private dateservice:DateService,
+     private datePipe:DatePipe,
+     private formbuilder:FormBuilder,
+     private himsservice:HimsServiceService,
+     private rout:Router,
+     private dialogCommunicationService:DialogcommunicationService
     ) {
 
     const current = new Date();
@@ -112,26 +113,14 @@ isvi:boolean=false
       this.methodToFireAfterDialogClosed();
     });
    }
-   formatDate2(date: NgbDateStruct): string {
-    if (date) {
-      return this.ngbDateParserFormatter.format(date);
-    }
-    return '';
+   //#endregion
+  //#region Methods
+   exportToExcel(): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.patientList);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'exported-data.xlsx');
   }
-  setdate(event:any)
-  {
-    debugger
-    this.todayfrom="03-09-2023"
-
-  }
-
-
-  // exportToExcel(): void {
-  //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.patientList);
-  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  //   XLSX.writeFile(wb, 'exported-data.xlsx');
-  // }
    onDateSelectfromdate(event:any):any {
     debugger
     let year = event.year;
@@ -157,50 +146,7 @@ isvi:boolean=false
         this.isfdateempty=false
       }
       
-    // this.mydate=new NgbDate(event.year,event.month,event.day)
-    // this.todayfrom=this._fromdate
-    
-     
-     debugger
-      
    }
-   formatNgbDate(date: NgbDate): string|null {
-    if (date) {
-      // Convert NgbDate to JavaScript Date
-      const jsDate = new Date(date.year, date.month - 1, date.day);
-
-      // Format the JavaScript Date using DatePipe
-      return this.datePipe.transform(jsDate, 'dd-MM-yyyy');
-    }
-    return '';
-  }
-   
-localDateStringFormat(date:any):string
-{
-debugger
- let response= this.dateservice.LocalStringDateFormat(date);
- return response;
-
-//   debugger
-// let fuldatesplit=date.split('-',3)
-//   let year = fuldatesplit[0];
-//   let month = fuldatesplit[1];
-//   let day =fuldatesplit[2];
-//   let dateset  = day + "-" + month + "-" + year;
-//   return  dateset
-
-}
-
-
-GlobalDateStringFormat(date:any):string
-{
-  let response= this.dateservice.GlobalStringDateFormat(date);
-  return  response;
-
-}
-
-
-
    
    onDateSelecttodate(event:any) {
     debugger
@@ -217,20 +163,9 @@ GlobalDateStringFormat(date:any):string
     
     }else  {this.isvi=false ; this.istdateempty=false}
     this.todayTo=this._todate2
-
-    const currentDay = new Date();
-     
-    this.minDate = {
-      year: currentDay.getFullYear(),
-      month: currentDay.getMonth()+1,
-      day: currentDay.getDate()
-    };
-
-
-    
    }
-
-   reset()
+  
+   Reset()
    {
     debugger
     let date=new Date();
@@ -243,101 +178,88 @@ GlobalDateStringFormat(date:any):string
       MobileNumber:[null],
       PatientName:[null],
       AppointmentStatusId:['Appointment Status'],
-      
       DoctorId:['Doctor']
     });
     
     this.isvi=false
   this.istdateempty=false
    }
-
-   
-  transformDate(date:any) {
-    return this.datePipe.transform(date, 'yyyy-MM-dd');
-  }
-
-
   validateallformfields(formgroup:FormGroup)
   {
     debugger
    Object.keys(formgroup.controls).forEach(fields=>{
-  const control=formgroup.get(fields)
-  if(control instanceof FormControl)
-  {
-    control.markAsTouched({onlySelf:true})
+   const control=formgroup.get(fields)
+   if(control instanceof FormControl)
+   {
+     control.markAsTouched({onlySelf:true})
   }else if(control instanceof FormGroup)
   {
     this.validateallformfields(control)
   }
   })
   }
-setData()
-{
-  
-  this.pulldata.FromDate=(<HTMLInputElement>document.getElementById('fdate')).value;
-  this.pulldata.ToDate=(<HTMLInputElement>document.getElementById('toDate')).value
-  this.pulldata.PatientName=(<HTMLInputElement>document.getElementById('PatientName')).value
-  
-  this.pulldata.MobileNumber=(<HTMLInputElement>document.getElementById('MobileNumber')).value
-  let did=(<HTMLInputElement>document.getElementById('DoctorId')).value
-  let sid=(<HTMLInputElement>document.getElementById('AppointmentStatusId')).value
-  if(did=="Doctor")
+  setData()
   {
-    this.pulldata.DoctorId=0;
-  }else this.pulldata.DoctorId=Number(did)
+  
+     this.pulldata.FromDate=(<HTMLInputElement>document.getElementById('fdate')).value;
+     this.pulldata.ToDate=(<HTMLInputElement>document.getElementById('toDate')).value
+     this.pulldata.PatientName=(<HTMLInputElement>document.getElementById('PatientName')).value
+     this.pulldata.MobileNumber=(<HTMLInputElement>document.getElementById('MobileNumber')).value
+     let did=(<HTMLInputElement>document.getElementById('DoctorId')).value
+     let sid=(<HTMLInputElement>document.getElementById('AppointmentStatusId')).value
+     if(did=="Doctor")
+      {
+        this.pulldata.DoctorId=0;
+      } else this.pulldata.DoctorId=Number(did)
 
-  if(sid=="Appointment Status")
+     if(sid=="Appointment Status")
+      {
+        this.pulldata.AppointmentStatusId=0;
+      } else this.pulldata.AppointmentStatusId=Number(sid)
+
+  }
+SearchAppointments(data:any)
   {
-    this.pulldata.AppointmentStatusId=0;
-  }else this.pulldata.AppointmentStatusId=Number(sid)
-
-  
-  
-  
-  
-}
-   SearchAppointments(data:any)
-   {
-    debugger
-     
-    if(data.AppointmentStatusId=='Appointment Status')
+  debugger
+  let b=this.model2
+  if(data.AppointmentStatusId=='Appointment Status')
     {
       data.AppointmentStatusId=0;
-    }else  if(data.AppointmentStatusId==null)
+  } else  if(data.AppointmentStatusId==null)
     {
       data.AppointmentStatusId=0;
     }
     if(data.DoctorId=='Doctor')
     {
       data.DoctorId=0
-    }else if(data.DoctorId==null)
+    } else if(data.DoctorId==null)
     {
       data.DoctorId=0;
     }
    
     if(this.isvi==false&&(this.isfdateempty==false&&this.istdateempty==false))
     {
-    debugger
-   
-    this.pulldata=data;
-  
-    debugger
-   // var a=this.searchform.get('FromDate').value
-    debugger   
-    data.FromDate=this.GlobalDateStringFormat(data.FromDate) ;
+      debugger
+     this.pulldata=data;
+     let check=data.FromDate.split('-');
 
-    data.ToDate=this.GlobalDateStringFormat(data.ToDate);
+     if(check[0].length<4)
+     {
 
+     
+     data.FromDate=this.dateservice.GlobalStringDateFormat(data.FromDate) ;
+     data.ToDate=this.dateservice.GlobalStringDateFormat(data.ToDate);
+     }
     if(this.searchform.invalid)
     {
       this.validateallformfields(this.searchform);
     }
-    else{
-      this.himsservice.GetAppointments(data).subscribe((result)=>
-      {
-        this.islload=true
-        debugger
-        if(result.length!=0)
+     else{
+          this.himsservice.GetAppointments(data).subscribe((result)=>
+        {
+       this.islload=true
+       debugger
+      if(result.length!=0)
         {
           for(var i=0;i<result.length;i++)
           {
@@ -358,34 +280,23 @@ setData()
           this.patientList=result
           this.rowscount=result.length
           this.norecords=true
-  
-          Swal.fire('','No Patients at this date range','info')
+        //  Swal.fire('','No Patients at this date range','info')
           this.islload=false
-          
           this.patientList.forEach((element: number,index: any)=>{
             if(element==2) this.patientList.splice(index,1);
             
-      this.islload=false
-         });
-  
-        
+          this.islload=false
+            });
         }
        
-      }
-      
-      
-      )
+      })
     }
-   
-    
     
     this.islload=false
   }
 
-   }
+}
 
-
-   
    SearchAppointmentsToday()
    {
     this.islload=true
@@ -473,8 +384,6 @@ setData()
 
    }
 
-   
-
    public EditAppointment(index: any, SelectedPatient: any )
    {
     debugger
@@ -484,26 +393,6 @@ setData()
 
    }
 
-  //  EndTimeKeyEvent(event: KeyboardEvent) {
-  //   debugger
-  //   if (
-  //     (event.keyCode === 9)||
-  //    // [46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
-  //     // Allow Ctrl+A
-  //     (event.keyCode === 65 && event.ctrlKey === true) ||
-  //     // Allow Ctrl+C
-  //    // (event.keyCode === 67 && event.ctrlKey === true) ||
-  //     // Allow Ctrl+V
-  //  //   (event.keyCode === 86 && event.ctrlKey === true) ||
-  //     // Allow Ctrl+X
-  //     (event.keyCode === 88 && event.ctrlKey === true) ||
-  //     // Allow home, end, left, right arrow keys
-  //     (event.keyCode >= 35 && event.keyCode <= 39)
-  //   ) {
-  //     return;
-  //   }
-  //   event.preventDefault();
-  // }
   
 reschedule(index:any,row:any)
 {
@@ -529,29 +418,23 @@ debugger
 
 }
 
-  Transfer(index:any,row:any)
-  {
-
-    debugger
-    const dialogRef=this.pop.open(TransferAppointmentComponent,{
+Transfer(index:any,row:any)
+{
+  debugger
+  const dialogRef=this.pop.open(TransferAppointmentComponent,{
        width:"65%",
        height:"550px",
        data:row
-    
-   }
+       }
    )
-   dialogRef.afterClosed().subscribe(result => {
+  dialogRef.afterClosed().subscribe(result => {
     // This code will execute when the dialog is closed
     if (result === 'someValue') {
     debugger
       this.SearchAppointments(this.pulldata);
-    }
-  });
-
-  debugger
- 
-
   }
+});
+}
 
 //keydown event for accept only numbers and starting with 6 to 9 --madhu
   AcceptMobilenumberOnly(event: KeyboardEvent) {
@@ -593,8 +476,6 @@ debugger
     
     }
 
-
-
     //keydown event for accept only Characters--madhu
   AcceptCharactersOnly(event:KeyboardEvent)
   {
@@ -617,50 +498,6 @@ debugger
       event.preventDefault();
     }
   }
-  
-  ngOnInit(): void {
-    debugger
-    localStorage.setItem('header','Search Appointments')
-    this.patientList=[]
-    debugger
-    let dt=formatDate(this.datenow,'dd-MM-yyyy','en-Us') 
-    this.todayfrom=dt//{ year: 2023, month: 9, day: 5 }; //this.setdateload;
-   
-    this.todayTo=dt
-
-//let Datenow=new Date();
-
-    this.searchform=this.formbuilder.group({
-      FromDate:[dt,[Validators.required,Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/)]],
-     ToDate:[dt,[Validators.required,Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/)]],
-      MobileNumber:[''],
-      PatientName:[''],
-      AppointmentStatusId:['Appointment Status'],
-      
-      DoctorId:['Doctor']
-    });
-    
-    this.SearchAppointmentsToday();
-
-  
-    localStorage.removeItem('editappointmentId')
-this.himsservice.getDoctors().subscribe((result)=>{this.doctors=result})
-this.himsservice.GetAppointmentsStatus().subscribe((result)=>{this.appointmentstatus=result})
-  debugger
-  this.setData();
-  var f=(<HTMLInputElement>document.getElementById('fdate')).value;
-  //var t=(<HTMLInputElement>document.getElementById('toDate')).value
-  const currentDay = new Date();
-  if(this.dateservice.GlobalStringDateFormat(f)==formatDate(currentDay,'yyyy-MM-dd','en-Us'))
-  {
-    this.minDate = {
-      year: currentDay.getFullYear(),
-      month: currentDay.getMonth()+1,
-      day: currentDay.getDate()+1
-    };
-  }
-  
-  }
   methodToFireAfterDialogClosed() {
     // Your method logic here
     debugger
@@ -669,5 +506,36 @@ this.himsservice.GetAppointmentsStatus().subscribe((result)=>{this.appointmentst
     debugger
    this.SearchAppointments(this.pulldata)
   }
+  //#endregion
+ 
+  ngOnInit(): void {
+    debugger
+    localStorage.setItem('header','Search Appointments')
+    this.patientList=[]
+    debugger
+    let dt=formatDate(this.datenow,'dd-MM-yyyy','en-Us') 
+    this.todayfrom=dt//{ year: 2023, month: 9, day: 5 }; //this.setdateload;
+    this.todayTo=dt
+     //configurations for validations and default vallues for form fields
+    this.searchform=this.formbuilder.group({
+      FromDate:[dt,[Validators.required,Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/)]],
+      ToDate:[dt,[Validators.required,Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/)]],
+      MobileNumber:[''],
+      PatientName:[''],
+      AppointmentStatusId:['Appointment Status'],
+      DoctorId:['Doctor']
+    });
+    
+    this.SearchAppointmentsToday();
+    localStorage.removeItem('editappointmentId')
+    this.himsservice.getDoctors().subscribe((result)=>{this.doctors=result})
+    this.himsservice.GetAppointmentsStatus().subscribe((result)=>{this.appointmentstatus=result})
+    debugger
+   this.setData();
+   var f=(<HTMLInputElement>document.getElementById('fdate')).value;
+  //var t=(<HTMLInputElement>document.getElementById('toDate')).value
+    
+  }
+ 
 
 }

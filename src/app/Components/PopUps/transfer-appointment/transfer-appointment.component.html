@@ -1,7 +1,7 @@
 <form [formGroup]="Transferform"  #reg="ngForm" (ngSubmit)="Transfer(reg.value)" autocomplete="off">
    
     <div class="title-bar" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
-        <h2>Transfer Appointment</h2>
+        <h4>Transfer Appointment</h4>
         <button mat-icon-button [mat-dialog-close]="true">
           <mat-icon>close</mat-icon>
         </button>
@@ -84,6 +84,7 @@
                                                             <div class="input-group" >
                                                                 <input  onpaste="return false"
                                                                     class="form-control"
+                                                                    formControlName="AppointmentDate"
                                                                     placeholder="Appointment Date" [minDate]="minDate"
                                                                     name="dp"
                                                                [value]="appModel"
@@ -91,13 +92,20 @@
                                                                  [maxDate]="maxDate"
                                                                     #d="ngbDatepicker" 
                                                                     (dateSelect)="onDateSelecttodate($event)" 
-                                                                    (keydown)="EndTimeKeyEvent($event)"
+                                                                   
                                                                   
                                                                    id="Appdate"      name="FromDate"   
                                                                 />
                                                               
                                                                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
                                                             </div>
+                                                            <small *ngIf="Transferform.get('AppointmentDate').touched&&Transferform.get('AppointmentDate').hasError('required')" class="text-danger">
+                                                                Appointment Date is required
+                                                               </small> 
+                                                           
+                                                               
+                                                            <small class="text-danger" *ngIf="Transferform.get('AppointmentDate').errors?.pattern">Invalid Date format</small>
+                                                       
                                                             <!-- <small *ngIf="rescheduleform.get('AppointmentDate').touched&&rescheduleform.get('AppointmentDate').hasError('required')" class="text-danger">
                                                                 Appointment Date is requied
                                                                              </small> -->

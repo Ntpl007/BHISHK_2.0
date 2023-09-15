@@ -1,4 +1,6 @@
+import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,7 +9,7 @@ import { Observable } from 'rxjs';
 export class DateService {
 
   time_15min:any;
-  constructor() { }
+  constructor(private datePipe:DatePipe) { }
 
   public LocalStringDateFormat(date:any)
   {
@@ -143,6 +145,18 @@ export class DateService {
   "11:45 PM"
     ]
 
+  }
+
+  
+  formatNgbDateToString(date: NgbDate): string|null {
+    if (date) {
+      // Convert NgbDate to JavaScript Date
+      const jsDate = new Date(date.year, date.month - 1, date.day);
+
+      // Format the JavaScript Date using DatePipe
+      return this.datePipe.transform(jsDate, 'dd-MM-yyyy');
+    }
+    return '';
   }
 
 

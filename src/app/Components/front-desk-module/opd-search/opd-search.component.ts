@@ -97,7 +97,13 @@ onDateSelectfromdate(event:any) {
     {
 
         this.isvi=true
-    }else  this.isvi=false
+        
+      this.searchform.get('FromDate').setErrors('required')
+      this.searchform.get('ToDate').setErrors('required')
+    }else  {this.isvi=false
+      this.searchform.get('FromDate').setErrors(null)
+      this.searchform.get('ToDate').setErrors(null)
+    }
     this.model=this._fromdate1
      this.fromdatemodel=localdate
   
@@ -212,12 +218,17 @@ if(control instanceof FormControl)
     let day = event.day <= 9 ? '0' + event.day : event.day;;
     this._todate2 = year + "-" + month + "-" + day;
     let localdate=day+ "-" + month + "-" +year;
-    this._fromdate2=(<HTMLInputElement>document.getElementById('fdate')).value;
+    this._fromdate2=this.dateservice.GlobalStringDateFormat( (<HTMLInputElement>document.getElementById('fdate')).value);
+    
     if(this._todate2<this._fromdate2)
     {
       this.isvi=true
-      
-
+      this.searchform.get('FromDate').setErrors('required')
+      this.searchform.get('ToDate').setErrors('required')
+    }else{
+      this.isvi=false
+      this.searchform.get('FromDate').setErrors(null)
+      this.searchform.get('ToDate').setErrors(null)
     }
     this.model2=this._todate2
     this.todatemodel=localdate
@@ -245,9 +256,9 @@ if(control instanceof FormControl)
     debugger
     this.islload=true
     
-      Dates.FromDate=this.dateservice.GlobalStringDateFormat(this.fromdatemodel);
+      Dates.FromDate=this.dateservice.GlobalStringDateFormat(Dates.FromDate);
 
-      Dates.ToDate=this.dateservice.GlobalStringDateFormat(this.todatemodel);
+      Dates.ToDate=this.dateservice.GlobalStringDateFormat(Dates.ToDate);
     
     debugger
     if(this.searchform.invalid)
@@ -278,7 +289,7 @@ if(control instanceof FormControl)
           this.rowscount=result.length
           this.norecords=true
   
-          Swal.fire('','No Patients at this date range','info')
+         // Swal.fire('','No Patients at this date range','info')
           this.islload=false
           
           this.patientList.forEach((element: number,index: any)=>{

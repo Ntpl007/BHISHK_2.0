@@ -1,0 +1,81 @@
+<div class="card-body">
+   <form>
+    <div class="form-row">
+        <div class="col-md-4">
+            <select class="form-control">
+                <option selected>
+                    Speciality*
+                </option>
+                <option *ngFor="let list of specialityList" value={{list.specialityID}}>{{list.speciality}}</option>
+            </select>
+        </div>
+       
+       
+       
+    </div><br>
+    <div class="form-row">
+        <div class="col">
+            Total Count: &nbsp;<a>0</a>
+        </div>
+        <div class="col-auto ml-auto">
+            <div class="form-group">
+              
+               <a><i class="fa fa-plus"></i> Add VitalSigns</a> 
+            </div>
+                      
+           
+            
+        </div>
+    </div>
+    
+<table class="table">
+    <thead><tr>
+      <th class="sno" >S.No</th>
+      <th class="vitalsigns">Vital Sign</th>
+      <th class="value">Min Value</th>
+      <th class="value">Max Value</th>
+      <th class="unitmeasure">Unit Of Measure</th>
+      <th class="order">Order</th>
+      <th class="action">Action</th>
+     
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="sno">1</td>
+        <td class="vitalsigns">Dinesh</td>
+        <td class="value">34</td>
+        <td class="value">50</td>
+        <td class="unitmeasure">Passed</td>
+        <td class="order">1</td>
+        <td class="action" >Remove</td>
+       
+      </tr>
+      <tr>
+        <td class="sno">2</td>
+        <td class="vitalsigns">Dinesh</td>
+        <td class="value">34</td>
+        <td class="value">50</td>
+        <td class="unitmeasure">Passed</td>
+        <td class="order">1</td>
+        <td class="action">Remove</td>
+       
+      </tr>
+      <tr>
+        <td class="sno">3</td>
+        <td class="vitalsigns">Dinesh</td>
+        <td class="value">34</td>
+        <td class="value">50</td>
+        <td class="unitmeasure">Passed</td>
+        <td class="order">1</td>
+        <td class="action">Remove</td>
+      
+      </tr>
+  
+     
+    </tbody>
+  </table>
+  
+   </form>
+</div>
+

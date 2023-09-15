@@ -96,7 +96,7 @@
 
             <!-- <div   class="row d-flex justify-content-center" >
      -->
-     <div   class="row d-flex justify-content-center " >
+     <div    >
     
         <table id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
             <thead style=" position: sticky;">
@@ -115,7 +115,7 @@
             </thead>
            <tbody > 
            
-            <tr *ngFor="let i=index  let rowlist of patientList | paginate: { itemsPerPage: 50, currentPage: p }">
+            <tr *ngFor="let i=index  let rowlist of patientList | paginate: { itemsPerPage: 10, currentPage: p }">
                 <td class="custum-col-sno" >{{i+1}}</td>
                 <td class="custum-col">{{rowlist.patientMrn}}</td>
                 <td class="custum-col">{{rowlist.name}}</td>
@@ -135,6 +135,8 @@
             <tr><td> <pagination-controls (pageChange)="p = $event"></pagination-controls></td></tr>
            </tfoot>
         </table>
+        
+       
         </div>
                 <!-- </div> -->
     

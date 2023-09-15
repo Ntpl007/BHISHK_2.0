@@ -9,10 +9,10 @@
     border-radius: 5px 5px 0 0;
     scroll-behavior: smooth;
  
-  max-height: 300px;
     display: block;
     overflow-y: auto;
-    overflow-x: auto;
+   
+   
   
 }
 
@@ -236,7 +236,15 @@ button{cursor: pointer;}
   .custum-col{
     width: 150px;
   }
+  
+  .custum-col-100{
+    width: 100px;
+  }
   .custum-col-sno{
     width:60px;
      padding-left: 10px;
+  }
+  
+  .custum-col-facility{
+    width: 200px;
   }
