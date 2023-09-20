@@ -58,6 +58,9 @@ if(r>0)
   Swal.fire('Vital Sign Added','','success');
   (<HTMLInputElement>document.getElementById('vitalsins')).value="Vital signs*";
   this.ishide=true
+}else if(r==0)
+{
+  Swal.fire('Already Added','','info');
 }
 
 })

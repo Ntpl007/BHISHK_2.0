@@ -362,12 +362,17 @@ public LoadVitalsignsData(obj:any):Observable<any>
 
 public RemoveVitalsignForSpeciality(obj:any):Observable<any>
 {
-  return this.http.get<any>('https://localhost:44336/'+'api/Home/RemoveVitalsignForSpeciality?Id='+obj)
+  return this.http.get<any>(this.Serverbaseurl+'api/Home/RemoveVitalsignForSpeciality?Id='+obj)
 }
 
 public UpdateVitalsignsOrder(obj:any):Observable<any>
 {
-  return this.http.post<any>('https://localhost:44336/'+'api/Home/UpdateVitalsignOrder',obj)
+  return this.http.post<any>(this.Serverbaseurl+'api/Home/UpdateVitalsignOrder',obj)
+}
+
+public SavePatientVitalSigns(obj:any):Observable<any>
+{
+  return this.http.post<any>(this.Serverbaseurl+'api/Home/SavePatientVitalSigns',obj)
 }
 
 
