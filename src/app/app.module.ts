@@ -27,14 +27,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTableModule} from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import { MatDialog } from '@angular/material/dialog';
 import { RescheduleComponent } from './Components/PopUps/reschedule/reschedule.component';
 import { TransferAppointmentComponent } from './Components/PopUps/transfer-appointment/transfer-appointment.component';
 import { LoadingPopupComponent } from './Components/PopUps/loading-popup/loading-popup.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Import the module
 import { CustomNgbDateAdapter } from './CustomClass/CustomNgbDateParserFormatter';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { FacilityVitalsignComponent } from './Components/PopUps/admin/facility-vitalsign/facility-vitalsign.component';
+import { SpecialityVitalsignComponent } from './Components/PopUps/Admin/speciality-vitalsign/speciality-vitalsign.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,8 +42,11 @@ import { FacilityVitalsignComponent } from './Components/PopUps/admin/facility-v
     RescheduleComponent,
     TransferAppointmentComponent,
     LoadingPopupComponent,
-    FacilityVitalsignComponent
+    SpecialityVitalsignComponent,
     
+    
+    
+     
   ],
   imports: [
     BrowserModule,

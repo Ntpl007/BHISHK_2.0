@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\Components",
+    "\\src\\app\\Components\\front-desk-module",
+    "\\src\\app\\Components\\front-desk-module\\opd-search"
+  ],
+  "SelectedNode": "\\src\\app\\Components\\front-desk-module\\opd-search\\opd-search.component.ts",
+  "PreviewInSolutionExplorer": false
+}

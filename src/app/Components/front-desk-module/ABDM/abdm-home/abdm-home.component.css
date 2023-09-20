@@ -5,8 +5,8 @@
     font-size: 40px;
     border: 1px solid rgb(13, 136, 66);
     text-align: center;
-    color: rgb(239, 243, 249);
-    background-color: rgba(72, 69, 81, 0.831);
+    color: rgb(26 221 241);
+    background-color:rgb(213 197 196 / 18%);
     text-shadow:3px 3px rgb(87, 144, 249) ;
   }
   .container-info{
@@ -50,4 +50,6 @@
     font-size: 17px;
   } */
 
-  
+  button{
+    width: 240px;
+  }

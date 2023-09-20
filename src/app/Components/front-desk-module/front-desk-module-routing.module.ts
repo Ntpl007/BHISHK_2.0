@@ -16,6 +16,10 @@ import { ScheduleTypeComponent } from './schedule-type/schedule-type.component';
 import { EditAppointmentsComponent } from './Appointments/edit-appointments/edit-appointments.component';
 import { CreateAppointmentComponent } from './Appointments/create-appointment/create-appointment.component';
 import { SearchAppointmentComponent } from './Appointments/search-appointment/search-appointment.component';
+import { AbhastatusComponent } from './ABDM/Level1/abhastatus/abhastatus.component';
+import { FindABHANoComponent } from './ABDM/Level1/find-abha-no/find-abha-no.component';
+import { FindAbhaComponent } from './ABDM/Level1/Forgot-Abha/find-abha/find-abha.component';
+import { ForgotAbhaVerifyAadhaarOtpComponent } from './ABDM/Level1/Forgot-Abha/forgot-abha-verify-aadhaar-otp/forgot-abha-verify-aadhaar-otp.component';
 
 const routes: Routes = [{ path: '', component: FrontDeskModuleComponent },
 {
@@ -24,13 +28,15 @@ const routes: Routes = [{ path: '', component: FrontDeskModuleComponent },
     { path: 'OPD', component: OpdComponent,canActivate:[AuthguardGuard], },
     { path: 'OPD-Search', component: OpdSearchComponent ,canActivate:[AuthguardGuard],},
     { path: 'ABDM', component: AbdmHomeComponent ,canActivate:[AuthguardGuard],},
-    { path: 'ABDM/ABHA-Status', component: ABHAStatusComponent ,canActivate:[AuthguardGuard],},
+    { path: 'ABDM/ABHA-Status', component: AbhastatusComponent ,canActivate:[AuthguardGuard],},
     { path: 'ABDM/ABDM-Profile', component: ABHAProfileComponent ,canActivate:[AuthguardGuard],},
     {path:'ABDM/Create-ABHA',component:CreateABHAComponent ,canActivate:[AuthguardGuard],},
     {path:'ABDM/Verify-Aadhaar',component:VerifyAadhaarComponent ,canActivate:[AuthguardGuard],},
     {path:'ABDM/Check-And-Generate-Mobile-otp',component:CheckAndGenerateMotpComponent ,canActivate:[AuthguardGuard],},
     {path:'ABDM/BHA-Input',component:ABHAInputComponent ,canActivate:[AuthguardGuard],},
-
+    {path:'ABDM/Find-Abha-number',component:FindAbhaComponent ,  canActivate:[AuthguardGuard],},
+    {path:'ABDM/Verify-Aadhaar-OTP',component:ForgotAbhaVerifyAadhaarOtpComponent ,  canActivate:[AuthguardGuard],},
+   
     {path:'Scheduling',component:ScheduleTypeComponent ,  canActivate:[AuthguardGuard],},
     
     {path:'Search-Appointments',component:SearchAppointmentComponent ,  canActivate:[AuthguardGuard],},

@@ -1,80 +1,85 @@
 <div class="card-body">
-   <form>
+   <form [formGroup]="myform" #event="ngForm" (ngSubmit)="openPopup(event.value)">
     <div class="form-row">
         <div class="col-md-4">
-            <select class="form-control">
-                <option selected>
+            <select #id (change)="LoadVitalSignsData(id.value)" class="form-control" formControlName="SpecialityId" name="SpecialityId" >
+                <option [selected]="true" [value]="0" hidden >
                     Speciality*
                 </option>
                 <option *ngFor="let list of specialityList" value={{list.specialityID}}>{{list.speciality}}</option>
             </select>
+            <small *ngIf="myform.get('SpecialityId').pristine&& myform.get('SpecialityId').touched" class="text-danger">
+                State is required
+                             </small>
         </div>
        
        
        
     </div><br>
-    <div class="form-row">
-        <div class="col">
+    <div class="form-row" style="margin-left: 50px;margin-right: 70px;">
+        <div class="col" hidden>
             Total Count: &nbsp;<a>0</a>
         </div>
         <div class="col-auto ml-auto">
             <div class="form-group">
               
-               <a><i class="fa fa-plus"></i> Add VitalSigns</a> 
+                <button type="submit" class="btn btn-link"><i class="fa fa-plus">&nbsp;Add</i> </button> 
             </div>
                       
            
             
         </div>
     </div>
+
+
+    <div   class="row d-flex justify-content-center" >
     
-<table class="table">
-    <thead><tr>
-      <th class="sno" >S.No</th>
-      <th class="vitalsigns">Vital Sign</th>
-      <th class="value">Min Value</th>
-      <th class="value">Max Value</th>
-      <th class="unitmeasure">Unit Of Measure</th>
-      <th class="order">Order</th>
-      <th class="action">Action</th>
+      <table id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+         
+        <thead >
+            <tr>
+              <th class="sno" >S.No</th>
+              <th class="vitalsigns">Vital Sign</th>
+              <th class="value">Min Value</th>
+              <th class="value">Max Value</th>
+              <th class="unitmeasure">Unit Of Measure</th>
+              <th class="order">Order No.</th>
+              <th class="action">Action</th>
+              <th hidden>Vital Sign Id</th>
+              <th hidden>Vital Sign</th>
+            </tr>
+          </thead>
+         <tbody > 
+            <tr *ngFor="let i=index let  list of BindTabledata"  [hidden]="isfootertrue" >
+            <td class="sno">{{i+1}}</td>
+            <td class="vitalsigns">{{list.vitalSign}}</td>
+            <td class="value">{{list.minValue}}</td>
+            <td class="value">{{list.maxValue}}</td>
+            <td class="unitmeasure">{{list.unitOfMeasure}}</td>
+            <td class="order"><input  [value]="list.orderNumber"  type="text" (keyup)="updateModel(i,$event)"  maxlength="2" id="txt_{{i}}"  class="form-control"></td>
+            <td class="action"><button type="button" (click)="Remove(i,list)" class="button-37 btn-sm" role="button">Remove</button>
+            </td>
+            <td hidden class="value">{{list.vitalSignId}}</td>
+            <td hidden >{{list.vitalSfacilityVitalSignIdignId}}</td>
+        </tr>
+          <tr *ngIf="isfootertrue">
+              <td>No Records Found</td>
+
+          </tr>
+         </tbody>
+        
+    
+      </table>
      
-    </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="sno">1</td>
-        <td class="vitalsigns">Dinesh</td>
-        <td class="value">34</td>
-        <td class="value">50</td>
-        <td class="unitmeasure">Passed</td>
-        <td class="order">1</td>
-        <td class="action" >Remove</td>
+
+      </div>
+
+      <div style="display: flex;justify-content: right;margin-top: 10px;margin-right: 18px;">
        
-      </tr>
-      <tr>
-        <td class="sno">2</td>
-        <td class="vitalsigns">Dinesh</td>
-        <td class="value">34</td>
-        <td class="value">50</td>
-        <td class="unitmeasure">Passed</td>
-        <td class="order">1</td>
-        <td class="action">Remove</td>
-       
-      </tr>
-      <tr>
-        <td class="sno">3</td>
-        <td class="vitalsigns">Dinesh</td>
-        <td class="value">34</td>
-        <td class="value">50</td>
-        <td class="unitmeasure">Passed</td>
-        <td class="order">1</td>
-        <td class="action">Remove</td>
-      
-      </tr>
-  
+        <button [disabled]="!BindTabledata" type="button" (click)="UpdateVitalsOrder()"  class="btn btn-primary btn-sm btn-width">Update Vital Signs</button>
+               
+      </div>
      
-    </tbody>
-  </table>
   
    </form>
 </div>

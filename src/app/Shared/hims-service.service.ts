@@ -192,7 +192,7 @@ public CancelAppointments(Data:any):Observable<any>
 
 public SendOtp(Number:any) : Observable<any> {
  
-  let a=Number.Number
+  let a=Number
   if(a.length >10)
   {
     return this.http.get<any>(this.Serverbaseurl+'api/M1_2/GenerateAdhaarOtpForForgotABHANo?adhaarNo='+a);
@@ -293,7 +293,6 @@ return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetTimeSlotsForTim
 }
 
 
-
 //-----------------------------------
 
 isValidNumber(event:any)
@@ -336,4 +335,41 @@ public UnBlockScheduleTemplatePeriod(scheduleTemplatePeriodId:any):Observable<an
 { 
   return this.http.get<any>(this.Serverbaseurl+'api/Appointments/UnBlockScheduleTemplatePeriod?scheduleTemplatePeriodId='+scheduleTemplatePeriodId);
 }
+
+
+public GetVitalSigns():Observable<any>
+{
+return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetVitalSigns')
+}
+
+
+public GetVitalSignsDetails(Id:any):Observable<any>
+{
+return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetVitalSignsDetails?Id='+Id)
+}
+
+
+public AddVitalSignsToSpeciality(Obj:any):Observable<any>
+{
+  return this.http.post<any>(this.Serverbaseurl+'api/Home/AddVitalsTosepciality',Obj)
+}
+
+
+public LoadVitalsignsData(obj:any):Observable<any>
+{
+  return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/LoadVitalSignsData',obj)
+}
+
+public RemoveVitalsignForSpeciality(obj:any):Observable<any>
+{
+  return this.http.get<any>('https://localhost:44336/'+'api/Home/RemoveVitalsignForSpeciality?Id='+obj)
+}
+
+public UpdateVitalsignsOrder(obj:any):Observable<any>
+{
+  return this.http.post<any>('https://localhost:44336/'+'api/Home/UpdateVitalsignOrder',obj)
+}
+
+
+
 }

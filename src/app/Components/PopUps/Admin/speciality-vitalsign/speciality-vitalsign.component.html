@@ -1,0 +1,55 @@
+
+<div class="container">
+    <div class="first-element">Vital Signs</div>
+    <div class="second-element"><a  [mat-dialog-close]="true" ><i class="fa fa-close"></i> </a></div>
+  </div>
+  <br>
+  <form>
+    <div class="form-row">
+        <div class="col-md-4">
+            <!-- <label for="cmbFecility" class="form-label">Facility</label> -->
+            <select #id id="vitalsins"  (change)="BindVitalsignDetails(id.value)"  class="form-control"    id="Vitalsigns"  name="Vitalsigns" >
+                <option  [selected]="true"   hidden  >Vital signs*</option>
+               
+                <option *ngFor="let list of vitalsignslist" [value]="list.vitaL_SIGN_ID" >{{list.vitaL_SIGN}}</option>
+               
+               </select>
+             <a></a>
+        </div>
+    </div>
+    <br>
+   
+
+
+    <table>
+      
+      <thead>
+        <tr>
+          <th scope="col" hidden>Vital Sign Id</th>
+          <th scope="col">Vital Sign</th>
+          <th scope="col">Min Value</th>
+          <th scope="col">Max Value</th>
+          <th scope="col">Unit Of Measure</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="vitalsignsdetails">
+        <tr  *ngFor="let list of vitalsignsdetails">
+          <td data-label="Vital Sign" hidden>{{list.vitaL_SIGN}}</td>
+          <td data-label="Vital Sign">{{list.vitaL_SIGN}}</td>
+          <td data-label=">Min Value">{{list.miN_VALUE}}</td>
+          <td data-label="Max Value">{{list.maX_VALUE}}</td>
+          <td data-label="Action">{{list.uniT_OF_MEASURE}}</td>
+          <td data-label="Action"><button class="button-41" (click)="AddVitalDetails()" [mat-dialog-close]="true" role="button">Add</button></td>
+        </tr>
+       
+      </tbody>
+    </table>
+
+    
+  </form>
+
+        
+         
+      
+    

@@ -17,6 +17,8 @@ export class UserService {
   
    private FacilityId=localStorage.getItem('facilityId');
 
+   
+
   // setUserName(value: string) {
   //   this.UserName = value;
   // }
@@ -57,7 +59,7 @@ export class UserService {
 
   
   getFacilityId(): any {
-    return this.FacilityId;
+    return localStorage.getItem('facilityId');
   }
 
   

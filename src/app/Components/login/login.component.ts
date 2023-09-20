@@ -83,7 +83,7 @@ Login(user:any)
    
     if(result!=null)
     {
-    
+    debugger
      this.userdata=result
    let data=result; 
    localStorage.setItem('token',data.token)

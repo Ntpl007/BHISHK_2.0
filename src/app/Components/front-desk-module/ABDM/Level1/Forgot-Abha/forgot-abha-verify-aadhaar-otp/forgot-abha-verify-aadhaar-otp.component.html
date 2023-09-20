@@ -1,0 +1,28 @@
+<div class="card-body">
+    
+    <form [formGroup]="_form" (ngSubmit)="SendOtp(_form.value)">
+        
+    <div class="row d-flex justify-content-center">
+        
+       
+                
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="input-group">
+                <input type="text" enabled="false" maxlength="12"  formControlName="otp" class="form-control"  placeholder="OTP*"/> &nbsp;
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Go!</button>
+                </span>
+            </div><!-- /input-group -->
+            <small *ngIf="_form.get('otp').touched&&_form.get('otp').hasError('required')" class="text-danger">
+                OTP is required
+               </small>
+               <small *ngIf="_form.get('otp').touched&&_form.get('otp').hasError('minlength')" class="text-danger">
+                OTP Must be 6 digits
+               </small>
+        </div><!-- /.col-lg-4 -->
+       
+       
+    </div><!-- /.row -->
+
+</form>
+</div>

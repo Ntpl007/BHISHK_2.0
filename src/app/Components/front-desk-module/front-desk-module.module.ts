@@ -24,12 +24,16 @@ import { ScheduleTypeComponent } from './schedule-type/schedule-type.component';
 import { SearchAppointmentComponent } from './Appointments/search-appointment/search-appointment.component'; 
 import { EditAppointmentsComponent } from './Appointments/edit-appointments/edit-appointments.component';
 import { CreateAppointmentComponent } from './Appointments/create-appointment/create-appointment.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import {MatIconModule} from '@angular/material/icon';
 import { CustomNgbDateAdapter } from 'src/app/CustomClass/CustomNgbDateParserFormatter';
+import { AbhastatusComponent } from './ABDM/Level1/abhastatus/abhastatus.component';
+import { FindAbhaComponent } from './ABDM/Level1/Forgot-Abha/find-abha/find-abha.component';
+import { ForgotAbhaVerifyAadhaarOtpComponent } from './ABDM/Level1/Forgot-Abha/forgot-abha-verify-aadhaar-otp/forgot-abha-verify-aadhaar-otp.component';
+import { ShowAbhaNumberComponent } from './ABDM/Abdm-Popups/show-abha-number/show-abha-number.component';
 @NgModule({
   declarations: [
     FrontDeskModuleComponent,
@@ -46,13 +50,12 @@ import { CustomNgbDateAdapter } from 'src/app/CustomClass/CustomNgbDateParserFor
     SearchAppointmentComponent,
     EditAppointmentsComponent,
     CreateAppointmentComponent,
+    AbhastatusComponent,
     
-    
-    
-    
-    
-    
-        
+    FindAbhaComponent,
+         ForgotAbhaVerifyAadhaarOtpComponent,
+         ShowAbhaNumberComponent,
+         
   ],
   imports: [
     CommonModule,
@@ -65,6 +68,7 @@ import { CustomNgbDateAdapter } from 'src/app/CustomClass/CustomNgbDateParserFor
     MatIconModule,
     NgbTimepickerModule,
      JsonPipe,
+     MatDialogModule
     
         
   ],

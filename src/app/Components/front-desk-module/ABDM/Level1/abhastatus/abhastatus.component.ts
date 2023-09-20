@@ -1,31 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup , Validators } from '@angular/forms';
+import { FormBuilder,FormGroup,FormControl, Validators } from '@angular/forms';
 import { HimsServiceService } from 'src/app/Shared/hims-service.service';
-
-import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-@Component({
-  selector: 'app-abha-status',
-  templateUrl: './abha-status.component.html',
-  styleUrls: ['./abha-status.component.css',"../../../../../../css/style.css","../../../../../../css/bootstrap.min.css"
-  ,"../../../../../../css/responsive.bootstrap4.min.css","../../../../../../css/buttons.bootstrap4.min.css" ,
-  "../../../../../../css/dataTables.bootstrap4.min.css","../../../../../../css/metisMenu.min.css"]
-})
-export class ABHAStatusComponent implements OnInit {
 
-  myform:any
+@Component({
+  selector: 'app-abhastatus',
+  templateUrl: './abhastatus.component.html',
+  styleUrls: ['./abhastatus.component.css']
+})
+export class AbhastatusComponent implements OnInit {
+myform:any
+
 obj:any
-hid:any
-hidnumber:any
-status:any
-name:any
+hid:any="--"
+hidnumber:any="--"
+status:any="--"
+name:any="--"
 ishide:any
 isActive:boolean=false
-  constructor(private service:HimsServiceService,private formbulder:FormBuilder) { 
-    this.myform=this.formbulder.group({
-  
-    })
-  }
+  constructor(private fb:FormBuilder,
+    private service:HimsServiceService) { }
 
   validateallformfields(formgroup:FormGroup)
   {
@@ -80,10 +74,11 @@ this.status=this.obj.status
    
     localStorage.setItem('header','Abha status')
     
-    this.myform=this.formbulder.group({
+    this.myform=this.fb.group({
       healthID:['',Validators.required]
     })
   }
   
 
 }
+

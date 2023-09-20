@@ -2,19 +2,27 @@
 .styled-table {
     border-collapse: collapse;
     margin: 25px 0;
-  
+    font-size: 0.9em;
+   
     font-family: sans-serif;
-  
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 20px rgba(160, 130, 244, 0.81);
     border-radius: 5px 5px 0 0;
-    scroll-behavior: smooth;
-  
-    display: block;
     
+    overflow-y: auto;
+    scrollbar-width: thin;
+    
+   width: 90%;
+   
   
 }
-
-
+.styled-table thead tbody{
+    scroll-behavior: smooth;
+    overflow-y: auto;
+    display: block;
+}
+.styled-table thead{
+    background-color: aliceblue;
+}
 .styled-table tbody tr{
     margin-left: 1px;
 }
@@ -29,20 +37,20 @@
 .styled-table td {
     padding: 3px 2px;
 }
-.styled-table tbody tr {
+/* .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
    
     
-}
+} */
 /* 
 .styled-table tbody{
     display: block;
 overflow-x:auto;
 max-height: 280px;
  } */
-.styled-table tbody tr:nth-of-type(even) {
+/* .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
-}
+} */
 
 
 .styled-table tbody tr:last-of-type {
@@ -109,35 +117,34 @@ button{cursor: pointer;}
         overflow: hidden;
     }
     .sno{
-        width: 60px;padding-left: 10px;
+        width: 100px;padding-left: 10px;
         text-align: center;
      }
-            .dt{
-                width: 90px;
-            }
+           
             .vitalsigns{
-                width: 12%;
+                width: 120px;
             }
             .value{
-                width: 15%;
-                text-align: center;
+                width: 130px;
+                
             }
             .unitmeasure{
-                width: 20%;
+                width: 140px;
             }
             .order{
-                width: 10%;
-                text-align: center;
+                width: 70px;
+             
             }
            
           
             .action{
-                width:20;
-
+                width:130px;
+                text-align: center;
             }
             .action a{
                 color:#2451f4;
                 font-weight: bold;
+                
             }
              /* .styled-table tr td{
                 border: solid 1px black;
@@ -186,3 +193,46 @@ button{cursor: pointer;}
 .fa-plus{
 color: green;
 }
+.btn-link:hover{
+    text-decoration: none;
+}
+
+
+
+/* CSS */
+.button-37 {
+    background-color: #f64141;
+    border: 1px solid #f64141;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+    outline: 0;
+    padding: 10px 25px;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 150ms, box-shadow 150ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-37:hover {
+    box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+    transform: translateY(-2px);
+  }
+  
+  @media (min-width: 768px) {
+    .button-37 {
+      padding: 10px 30px;
+    }
+  }
+
+  .btn-width{
+    width: 150px;
+  }

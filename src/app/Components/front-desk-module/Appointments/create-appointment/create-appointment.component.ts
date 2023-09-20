@@ -263,20 +263,6 @@ EndTimeKeyEvent(event: KeyboardEvent) {
     }
     
     
-    if(Data.StartTime!=null && Data.StartTime!="")
-    {
-      let stTimeam=Data.StartTime.includes('AM')
-      let stTimepm=Data.StartTime.includes('PM')
-    
-    
-    
-    
-    if(stTimeam==true||stTimepm==true)
-    {
-      Data.StartTime= this.convertTo24HourFormat(Data.StartTime);
-      Data.EndTime= this.convertTo24HourFormat(Data.StartTime);
-    }
-  }
     if(localStorage.getItem('patId')!=null)
     {
 

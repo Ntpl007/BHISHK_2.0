@@ -1,25 +1,25 @@
 <div class="card-body">
    
     
-    <form    (ngSubmit)="GetAbhaStatus(myform.value)"  >
+    <form [formGroup]="myform"   (ngSubmit)="GetAbhaStatus(myform.value)"  >
        
-       
-        <div align="center">
-          <table class="tblInput">
-            <tr><td width="80%">
+        <div class="form-row" style="display: flex; justify-content: center;" >
+            <div class="col-md-3">
                 <input  type="text" formControlName="healthID" class="form-control" placeholder="Enter health id number">
-                <!-- <small *ngIf="myform.get('healthID').touched&&myform.get('healthID').hasError('required')" class="text-danger">
+                <small *ngIf="myform.get('healthID').touched&&myform.get('healthID').hasError('required')" class="text-danger">
                     Health Id Number is required
-                   </small> -->
-            </td>
-        <td width="20%"> 
-             <button type="submit" class="btn btn-primary waves-effect waves-light" style="width: 150px;" >
-                Submit
-              
-            </button>
-        </td>
-        </tr>
-          </table>
+                   </small> 
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary waves-effect waves-light" >
+                    Submit
+                  
+                </button>
+            </div>
+
+        </div>
+        <div align="center">
+         
              
           <div class="reslt-div">
                 <table>
@@ -45,9 +45,9 @@
                         <td>
                             Status
                         </td><td width="10px">:</td>
-                        <!-- <td  *ngIf="isActive" style="color: rgb(7, 133, 7);text-shadow: azure 20px;font-weight: bold;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"> {{status}}</td>
+                         <td  *ngIf="isActive" style="color: rgb(7, 133, 7);text-shadow: azure 20px;font-weight: bold;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"> {{status}}</td>
                         <td *ngIf="!isActive" style="color: rgb(247, 46, 32);text-shadow: azure 20px;font-weight: bold;"> {{status}}</td>
-                    </tr> -->
+                    </tr>
                 </table>
               </div>   
                    
