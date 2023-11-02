@@ -1,4 +1,5 @@
 import { TitleCasePipe, formatDate } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener,ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
@@ -36,12 +37,15 @@ export class OpdComponent implements OnInit {
 ;
   minDate: { year: number; month: number; day: number; };
   maxDate:{ year: number; month: number; day: number; };
+  
   constructor(private service:HimsServiceService,
     private dialogService:DialogcommunicationService,
     private http:HttpClient,private router:Router,
     private formbuilder:FormBuilder,
     private dateservice:DateService ,
-    private userservice:UserService
+    private userservice:UserService,
+    private datePipe: DatePipe
+   
     ) {
     const current = new Date();
     this.minDate = 
@@ -56,6 +60,8 @@ export class OpdComponent implements OnInit {
       day: current.getDate()
     };
    }
+   
+   
    //#region
    isaadhaarvalid:boolean=false
    isaadhaarvalidsymbol?:boolean
@@ -105,6 +111,7 @@ export class OpdComponent implements OnInit {
     name?: FormControl<any>;
     registerForm:any
   val:any |TitleCasePipe
+  datepipe?:Date |TitleCasePipe
     @ViewChild('reg')
     public createform :NgForm | undefined;
     @ViewChild('Mobilenumsearch')
@@ -182,7 +189,7 @@ options: string[] = ['One', 'Two', 'Three'];
    //this.RGA="50";
     this.text =this.n.toString()
     this.finalamount=this.n.toString();
-
+   
   }
 
 
@@ -253,26 +260,54 @@ checkMobileisInteger(event:any)
 
 
   }
-
+  conAmountisReadobly=true;
   showRowconsult()
   {
+
     debugger
     if( this.isconsultdoctorhide==false)
     {
       this.isconsultdoctorhide=true
       this.iscontxtdisable=true
       this._conamount="0"
-      var RegAmount=(<HTMLInputElement>document.getElementById('txtRegAmount')).value
-      this.finalamount=parseFloat(RegAmount) +parseFloat(this._conamount) +""
+    //   var RegAmount=(<HTMLInputElement>document.getElementById('txtRegAmount')).value
+    //   this.finalamount=parseFloat(RegAmount) +parseFloat(this._conamount) +""  ;    
+    
+    //  (<HTMLInputElement>document.getElementById('txtPaymentAmount')).value=this.finalamount
+     
+      this.conAmountisReadobly=true
+
 
     }else{
       this.isconsultdoctorhide=false
       this.iscontxtdisable=false
+      // var RegAmount=(<HTMLInputElement>document.getElementById('txtRegAmount')).value
+      // this.finalamount=parseFloat(RegAmount) +parseFloat(this._conamount) +""  ;    
+      // (<HTMLInputElement>document.getElementById('txtPaymentAmount')).value=this.finalamount
+      this.conAmountisReadobly=false
+    
 
     }
 
   }
 
+  
+ clearField()
+ {
+  debugger
+  (<HTMLInputElement>document.getElementById('BenificiaryId')).value='';
+  this.opform.get('BenificiaryId').setErrors('required');
+ }
+  UpdateConAmount(event:any)
+  {
+    debugger
+    let text=(<HTMLInputElement>document.getElementById('txtconamount')).value;
+    if(text=="")
+    {
+      (<HTMLInputElement>document.getElementById('txtconamount')).value="0";
+    }let convertedText=Number(text);
+    (<HTMLInputElement>document.getElementById('txtconamount')).value=convertedText.toString();
+  }
 
    public gotoAbhaCreation()
    {
@@ -406,6 +441,21 @@ if(this.PatientData[0].relationtype!=null && this.PatientData[0].relationtype!="
 
 SaveOp(data :any)
   {
+
+    if((data.City==undefined&&data.Village==undefined)||(data.City==""&&data.Village==""))
+  {
+    Swal.fire('Please fill City / Village any one of them','','info')
+  }else{
+    if(data.City!="")
+    {
+      data.City=this.service.ToCapital(data.City);
+    }
+    if(data.Village!="")
+    {
+      data.Village=this.service.ToCapital(data.Village);
+    }
+   
+  }
       //#region 
     this.isChecked=false
     this.isrestart=false;
@@ -479,29 +529,46 @@ debugger
   this.validateallformfields(this.opform)
  }else
  {
+  if(this.MyInputData.City.trim()!=""||this.MyInputData.Village.trim()!="")
+  {
   this.openDialog();
+
   this.http.post<any>(this.service.Serverbaseurl+ this.controlpath,this.MyInputData).subscribe(
     (result)=>{
+      debugger;
       var msg=result;
-      if(msg.message=='Success')
+      if(msg.encounterID=="" && msg.opID==0)
       {
-    if(this.MyInputData.PaymentAmount=="")
+      this.http.get<any>(this.service.Serverbaseurl+'api/Home/GetRegistrationPaymentDetails?PatientId='+msg.patientID).subscribe((result1)=>
+      { 
+        debugger
+        if(result1.length!=0)
+        {
+         
+        this.ShowingRegPaymentReceipt(result1[0]);
+        }
+      })
+    }
+    
+    else
     {
-      this._payamount="0";
-    }else  this._payamount=this.MyInputData.PaymentAmount
-      this.InputData=result;
-
+      if(this.MyInputData.PaymentAmount=="")
+      {
+        this._payamount="0";
+      }else  this._payamount=this.MyInputData.PaymentAmount
+        this.InputData=result;
       this.InputDataaray=[
         {
           PatienTId:this.InputData.patientID,
           encounterId:this.InputData.encounterID,
           Comments:this.MyInputData.Comments,
-          createdBy:"admin",
-          PaymentModeId:this.MyInputData.PaymentModeId,
-          PaymentAmount:this._payamount,
+          createdBy:localStorage.getItem('name'),
+          PaymentModeId:this.MyInputData.PaymentMode,
+          // PaymentAmount:this._payamount,
           DoctorId:this.MyInputData.DoctorId,
           RefDoctorId:this.MyInputData.RefDoctorId,
           PaymentCategoryId:this.MyInputData.PaymentCategoryId,
+          PaymentAmount:(<HTMLInputElement>document.getElementById('txtPaymentAmount')).value,
           ChargeAmount:(<HTMLInputElement>document.getElementById('txtfinalamount')).value
       }
 
@@ -513,9 +580,45 @@ debugger
       //}
        //input.reset();
        var objpatinput=this.InputDataaray;
-      this.http.post<void>(this.service.Serverbaseurl+"Payments/SavePayments",objpatinput).subscribe( );
+      this.http.post<void>(this.service.Serverbaseurl+"Payments/SavePayments",objpatinput).subscribe((result)=>{
+      debugger 
+      this.http.get<any>(this.service.Serverbaseurl+'api/Home/GetRegistrationandConsulatationPaymentDetails?PatientId='+msg.patientID+'&EncounterId='+msg.encounterID).subscribe((result2)=>
+        { debugger
+          if(result2.length!=0)
+          {
+           
+          this.ShowingRegConsultationPaymentReceipt(result2[0]);
+          }
+        })
+      });
+     
+    }
+   
       this.isaadhaarvalidsymbol=false
-         Swal.fire('Thank you...','Saved Successfuly','success')
+      Swal.fire('Thank you...','Saved Successfuly','success')
+  //   if(msg.encounterID=="" && msg.opID==0)
+  //   {
+  //     this.http.get<any>('https://localhost:44336/'+'api/Home/GetRegistrationPaymentDetails?PatientId='+msg.patientID).subscribe((result1)=>
+  //   { 
+  //     debugger
+  //     if(result1.length!=0)
+  //     {
+       
+  //     this.ShowingRegPaymentReceipt(result1[0]);
+  //     }
+  //   })
+  // }
+  // else{
+  //     this.http.get<any>('https://localhost:44336/'+'api/Home/GetRegistrationandConsulatationPaymentDetails?PatientId='+msg.patientID+'&EncounterId='+msg.encounterID).subscribe((result2)=>
+  //     { debugger
+  //       if(result2.length!=0)
+  //       {
+         
+  //       this.ShowingRegConsultationPaymentReceipt(result2[0]);
+  //       }
+  //     })
+  //   }
+  
         debugger;
         this.isnewchecked=false
          this.text=""
@@ -531,7 +634,7 @@ debugger
         this.Clear();
         this.closeAllDialogs();
 
-      }
+      // }
       debugger
 
 
@@ -585,7 +688,7 @@ console.log(data)
 this.listOfDisplayData=null
 //this.init='select'
  }
-
+ }
   }
 
 public Clear(){
@@ -615,7 +718,7 @@ this.opform=this.formbuilder.group({
   Occupation:['0',Validators.required],
   CorporateId:['0',Validators.required],
   BenificiaryId:['',Validators.required],
-  PaymentAmount:['',Validators.required],
+  PaymentAmount:[this.RGA,Validators.required],
   PaymentMode:['0',Validators.required],
   Comments:[''],
   PaymentCategoryId:['0',Validators.required],
@@ -648,12 +751,11 @@ this.isconsultdoctorhide=true;
   public getCorporate(Id:any)
   {
     debugger
+    this.opform.get('BenificiaryId').patchValue('');
     if(Id.target.value=="3" || Id.target.value=="4"|| Id.target.value=="2" )
     {
 
-
-
-this.opform.get('CorporateId').setErrors('required');
+      this.opform.get('CorporateId').setErrors('required');
 
       this.iscorporateenable=true;
       this.service.getCorporate(Id.target.value).subscribe((result)=>this.corporateList=result)
@@ -667,6 +769,13 @@ this.opform.get('CorporateId').setErrors('required');
     }
 
 
+  }
+
+  public dropdownchange(event:any)
+  {
+    debugger
+    this.opform.get('BenificiaryId').patchValue('');
+   
   }
 
   public checkIsinteger(evt:any):boolean
@@ -719,17 +828,7 @@ public checkVAlidAadhaar(event:any)
     }
   }
 
-// // Custom email validator
-// customEmailValidator(control:any) {
-//   const value = control.value;
-//   if (value) {
-//     const lowercaseValue = value.toLowerCase();
-//     if (!/^([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4})$/.test(lowercaseValue)) {
-//       return { invalidEmail: true };
-//     }
-//   }
-//   return null;
-// }
+
 
   onKeyDownForMobile(event: KeyboardEvent) {
     debugger
@@ -969,7 +1068,10 @@ onKeyDownForPincode(event: KeyboardEvent) {
   ngOnInit(): void {
     debugger
     this.RGA='50'
-    this.finalamount=this.RGA
+    this.finalamount=this.RGA;
+    
+    (<HTMLInputElement>document.getElementById('txtPaymentAmount')).value=this.RGA
+   
 
     localStorage.setItem('header','Detailed OP Registration')
 
@@ -988,8 +1090,10 @@ onKeyDownForPincode(event: KeyboardEvent) {
 
 this.service.GetPaymentCategory().subscribe((result)=>{this.paymentcategory=result})
 
-this.service.GetPaymentMode().subscribe((result)=>{this.paymentMode=result})
+this.service.GetPaymentMode().subscribe((result)=>{this.paymentMode=result});
+const emailPattern = new RegExp('\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*');
 
+//let pattern = "\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
 
 this.opform=this.formbuilder.group({
   FirstName:['',Validators.required],
@@ -1013,12 +1117,14 @@ this.opform=this.formbuilder.group({
   Occupation:['0',Validators.required],
   CorporateId:['0',Validators.required],
   BenificiaryId:['',Validators.required],
-  PaymentAmount:['',Validators.required],
+  PaymentAmount:[this.RGA,Validators.required],
   PaymentMode:['0',Validators.required],
   Comments:[''],
   PaymentCategoryId:['0',Validators.required],
-  EmailId: ['', Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i)])],
-  conamount:['0',[Validators.required,Validators.pattern(/^[0-9]\d{9}$/)]],
+ // EmailId: ['', Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i)])],
+ EmailId: ['', Validators.compose([Validators.required,Validators.pattern(emailPattern)])],
+ 
+ conamount:['0',[Validators.required,Validators.pattern(/^[0-9]\d{9}$/)]],
   txtRefDoctor:['']
 
 });
@@ -1041,13 +1147,212 @@ this.opform=this.formbuilder.group({
       this.dialogService.closeAll();
     }
     openDialog(): void {
+      debugger
       this.dialogService.open(LoadingPopupComponent, {
        // width: '250px', // Adjust the width as needed
        data:"Saving....."
       });
+      const dialogRef = this.dialogService.open(LoadingPopupComponent);
+
+  dialogRef.afterClosed().subscribe((result) => {
+    debugger
+    if (result === 'OK') {
+      console.log('OK was clicked');
+      // this.ShowingPaymentReceipt('12');
+    }
+    });
+  }
 
 
 
+     ShowingRegPaymentReceipt(test:any) {
+      debugger;             
 
-}
+                var address=''
+                if((test.village!= null && test.village!="")&& (test.city!=null && test.city!="")) 
+                {
+                address=test.village+','+test.city;
+                } 
+                else if((test.village== null || test.village=="")&& (test.city!=null && test.city!="")) 
+                {
+                address=test.city;
+                } 
+                else if((test.village!= null && test.village!="")&& (test.city==null || test.city=="")) 
+                {
+                address=test.village;
+                }  
+                else{
+                address='-------';
+                }       
+
+              //  var result= numToWords(test.registrationAmount);
+             
+                var PaymentMode="";
+                if(test.paymentMode==1)
+                {
+                  PaymentMode="Payment(CASH)";
+
+                }
+                else if(test.paymentMode==2)
+                {
+                  PaymentMode="Payment(DEBIT/CREDIT CARD)";
+                }
+                else if(test.paymentMode==5)
+                {
+                  PaymentMode="Payment(CHEQUE)";
+                }
+                else if(test.paymentMode==9)
+                {
+                  PaymentMode="Payment(RTGS)";
+                }
+                else if(test.paymentMode==8)
+                {
+                  PaymentMode="Payment(NEFT)";
+                }
+                else if(test.paymentMode==10)
+                {
+                  PaymentMode="Payment(UPI)";
+                }
+                else 
+                {
+                  PaymentMode="Payment(Payments From IP)";
+                }
+                const inputDateString = test.createdDate;
+                const inputDate = new Date(inputDateString);
+                var formattedDate = this.datePipe.transform(inputDate, 'dd/MM/yyyy  HH:mm a');
+                var HeaderFields = " <table style='font-size:20px' width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr><td width='2%'></td><td>"  + "</td><td><b>Bill No:" +test.receiptNumber + "</b></td><td align='right'><img src='assets/img/bhishak.png' style='height:85px;width:150px'/> </td><td width='5%'></td></tr><tr><td width='2%'></td></tr><tr><td colspan='5' align='center'><hr /> </td></tr></table>"
+                var PatientDetails = "<table style='font-size:12px' width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr><td width='2%'></td><td width='8%' align='left'><b>Patient</b></td><td width='1%' align='center'><b>:</b></td><td width='20%' align='left'>" + test.name + "</td><td  width='8%' align='left'><b>Patient Id  </b></td><td align='center' ><b>:</b></td><td  width='19%' align='left'>" + test.patientMrn + "</td><td width='8%' align='left'><b>Mobile</b></td><td  width='34%'><b>: </b>" + test.mobileNumber + "</td></tr><tr><td width='2%'></td><td align='left' width='8%'><b>Age/Gender</b></td><td align='center' width='1%' ><b>:</b></td><td align='left' width='20%'>" + ''
+                + test.age+" "+ test.ageModeId + "/" + test.gender + "</td><td align='left' width='8%'><b>OP ID</b></td><td align='center'><b>:</b></td><td align='left' width='19%'>" + "-------"+ "</td><td align='left' width='8%'><b>Bill Date</b></td><td width='34%'><b> :</b> " + formattedDate+ "</td></tr><tr><td width='2%'></td><td align='left' width='8%' ><b>Address</b></td><td align='center' width='1%'><b>:</b></td><td align='left' width='20%'>" +address  + "</td><td align='left' width='8%'><b>Corporate</b></td><td align='center' ><b>:</b></td><td align='left' width='19%'>" + "----" + "</td><td align='left' width='8%'><b>Ref.Doctor</b></td><td width='34%'><b>:</b> " + "-----" + "</td></tr><tr><td width='2%'></td><td width='8%' align='left'><b>Doctor</b></td><td width='1%' align='center'><b>:</b></td><td width='70%' align='left' colspan='6'>" + "---------" + "</td></tr><tr><td colspan='9'><hr/></td></tr></table>"
+                var ParticularsHeader = "<table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td width='5%'></td><td width='45%'><strong>Particulars</strong></td><td width='15%'><strong>No.of Units</strong></td><td width='30%' align='right'><strong>Amount</strong></td><td width='5%'></td></tr><tr><td colspan='5'><hr/></td></tr>"          
+                var Particulars = "";
+                var Notes = "";
+                var Footer = "";
+                var TotalCharges = 0;                
+                var encId='';
+                var IsReview=false;                
+                const numWords = require('num-words') 
+                const amountInWords = numWords(test.regPaidAmount) 
+                var Review=0;
+                Particulars = Particulars + "<tr><td width='5%'></td><td width='45%'>" + 'Registration' + "</td><td width='15%'>" + '1' + " </td><td width='30%' align='right'>" + test.registrationAmount + ".00</td><td width='5%'></td></tr>";
+                Notes = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.registrationAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.regPaidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" +amountInWords+" "+ 'Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
+                 + "</td><td align='right'>Authorised Signature</td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td colspan='4' align='center'>16-11-404/16, SBI Officers Colony Rd,Moosarambagh, Hyderabad-500036</td></tr>";
+                Footer = "<tr> </tr>";
+                var mywindow = window.open('', 'Payment Voucher', 'height=512,width=960');
+                mywindow?.document.write('<html><head><style type="text/css">@media print    {.printView        {            display: none;        }    }    @page    {        size: A4;       margin: 1;    }</style><style>@media print    {#printpagebutton        {            display: none;        }    } </style><style>@media print    {#OPprintpagebutton        {            display: none;        }    } </style><title>Payment Voucher</title>');
+                mywindow?.document.write("<script type='text/javascript'>function printpage(){ window.open('PrintPages/PatientEncounterPrescriptionPagePreviewNew.aspx?EncounterId=" + encId + "&WithHeader=" + false + ",width=1000,height=525');}");
+                mywindow?.document.write('\<\/script\>');
+                mywindow?.document.write("<script type='text/javascript'>function OPprintpage(){ window.open('PrintPages/OPConsultationPrescription.aspx?EncounterId=" + encId + "&IsReview=" + IsReview + "&WithHeader=" + false + ",width=1000,height=525');}");
+                mywindow?.document.write('\<\/script\>');
+                mywindow?.document.write('</head><body >');
+                mywindow?.document.write(HeaderFields + PatientDetails + ParticularsHeader + Particulars + Notes + Footer);
+                mywindow?.document.write('</table></body></html>');
+                mywindow?.print();
+         
+    }
+
+ 
+    ShowingRegConsultationPaymentReceipt(test:any) {
+      debugger;             
+
+                var address=''
+                if((test.village!= null && test.village!="")&& (test.city!=null && test.city!="")) 
+                {
+                address=test.village+','+test.city;
+                } 
+                else if((test.village== null || test.village=="")&& (test.city!=null && test.city!="")) 
+                {
+                address=test.city;
+                } 
+                else if((test.village!= null && test.village!="")&& (test.city==null || test.city=="")) 
+                {
+                address=test.village;
+                }  
+                else{
+                address='-------';
+                }       
+
+             
+                var PaymentMode="";
+                if(test.paymentMode==1)
+                {
+                  PaymentMode="Payment(CASH)";
+
+                }
+                else if(test.paymentMode==2)
+                {
+                  PaymentMode="Payment(DEBIT/CREDIT CARD)";
+                }
+                else if(test.paymentMode==5)
+                {
+                  PaymentMode="Payment(CHEQUE)";
+                }
+                else if(test.paymentMode==9)
+                {
+                  PaymentMode="Payment(RTGS)";
+                }
+                else if(test.paymentMode==8)
+                {
+                  PaymentMode="Payment(NEFT)";
+                }
+                else if(test.paymentMode==10)
+                {
+                  PaymentMode="Payment(UPI)";
+                }
+                else 
+                {
+                  PaymentMode="Payment(Payments From IP)";
+                }
+
+              
+                const inputDateString = test.createdDate;
+                const inputDate = new Date(inputDateString);
+                var formattedDate = this.datePipe.transform(inputDate, 'dd/MM/yyyy  HH:mm a');
+                var HeaderFields = " <table style='font-size:20px' width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr><td width='2%'></td><td>"  + "</td><td><b>Bill No:" +test.receiptNumber + "</b></td><td align='right'><img src='assets/img/bhishak.png' style='height:85px;width:150px'/> </td><td width='5%'></td></tr><tr><td width='2%'></td></tr><tr><td colspan='5' align='center'><hr /> </td></tr></table>"
+                var PatientDetails = "<table style='font-size:12px' width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr><td width='2%'></td><td width='8%' align='left'><b>Patient</b></td><td width='1%' align='center'><b>:</b></td><td width='20%' align='left'>" + test.name + "</td><td  width='8%' align='left'><b>Patient Id  </b></td><td align='center' ><b>:</b></td><td  width='19%' align='left'>" + test.patientMrn + "</td><td width='8%' align='left'><b>Mobile</b></td><td  width='34%'><b>: </b>" + test.mobileNumber + "</td></tr><tr><td width='2%'></td><td align='left' width='8%'><b>Age/Gender</b></td><td align='center' width='1%' ><b>:</b></td><td align='left' width='20%'>" + ''
+                + test.age+" "+ test.ageModeId + "/" + test.gender + "</td><td align='left' width='8%'><b>OP ID</b></td><td align='center'><b>:</b></td><td align='left' width='19%'>" + "-------"+ "</td><td align='left' width='8%'><b>Bill Date</b></td><td width='34%'><b> :</b> " + formattedDate + "</td></tr><tr><td width='2%'></td><td align='left' width='8%' ><b>Address</b></td><td align='center' width='1%'><b>:</b></td><td align='left' width='20%'>" +address  + "</td><td align='left' width='8%'><b>Corporate</b></td><td align='center' ><b>:</b></td><td align='left' width='19%'>" + "----" + "</td><td align='left' width='8%'><b>Ref.Doctor</b></td><td width='34%'><b>:</b> " + "-----" + "</td></tr><tr><td width='2%'></td><td width='8%' align='left'><b>Doctor</b></td><td width='1%' align='center'><b>:</b></td><td width='70%' align='left' colspan='6'>" + "---------" + "</td></tr><tr><td colspan='9'><hr/></td></tr></table>"
+                var ParticularsHeader = "<table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td width='5%'></td><td width='45%'><strong>Particulars</strong></td><td width='15%'><strong>No.of Units</strong></td><td width='30%' align='right'><strong>Amount</strong></td><td width='5%'></td></tr><tr><td colspan='5'><hr/></td></tr>"          
+                var Particulars = "";
+                var Notes = "";
+                var Footer = "";
+                var TotalCharges = 0;                
+                var encId='';
+                var IsReview=false;                
+                const numWords = require('num-words') 
+                const amountInWords = numWords(test.regPaidAmount) 
+                var Review=0;
+                Particulars = Particulars + "<tr><td width='5%'></td><td width='45%'>" + 'Registration' + "</td><td width='15%'>" + '1' + " </td><td width='30%' align='right'>" + test.registrationAmount + ".00</td><td width='5%'></td></tr>";
+                Notes = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.registrationAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.regPaidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" + amountInWords+" "+'Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
+                 + "</td><td align='right'>Authorised Signature</td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td colspan='4' align='center'>16-11-404/16, SBI Officers Colony Rd,Moosarambagh, Hyderabad-500036</td></tr>";
+                Footer = "<tr> </tr>";
+
+                var HeaderFields1 = " <table style='font-size:20px' width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr><td width='2%'></td><td>"  + "</td><td><b>Token Number:&#160;&#160;" + '' + "</b></td><td><b>Bill No:" +test.finalBillingId + "</b></td><td align='right'><img src='assets/img/bhishak.png' style='height:85px;width:150px'/> </td><td width='5%'></td></tr><tr><td width='2%'></td><td colspan='4' style='font-size:20px'><b>Chamber No:" + "" + "</b></td></tr><tr><td colspan='5' align='center'><hr /> </td></tr></table>"
+                var PatientDetails1 = "<table style='font-size:12px' width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr><td width='2%'></td><td width='8%' align='left'><b>Patient</b></td><td width='1%' align='center'><b>:</b></td><td width='20%' align='left'>" + test.name + "</td><td  width='8%' align='left'><b>Patient Id  </b></td><td align='center' ><b>:</b></td><td  width='19%' align='left'>" + test.patientMrn + "</td><td width='8%' align='left'><b>Mobile</b></td><td  width='34%'><b>: </b>" + test.mobileNumber + "</td></tr><tr><td width='2%'></td><td align='left' width='8%'><b>Age/Gender</b></td><td align='center' width='1%' ><b>:</b></td><td align='left' width='20%'>" + ''
+                + test.age+" "+ test.ageModeId + "/" + test.gender + "</td><td align='left' width='8%'><b>OP ID</b></td><td align='center'><b>:</b></td><td align='left' width='19%'>" + test.opId+ "</td><td align='left' width='8%'><b>Bill Date</b></td><td width='34%'><b> :</b> " + formattedDate + "</td></tr><tr><td width='2%'></td><td align='left' width='8%' ><b>Address</b></td><td align='center' width='1%'><b>:</b></td><td align='left' width='20%'>" +address  + "</td><td align='left' width='8%'><b>Corporate</b></td><td align='center' ><b>:</b></td><td align='left' width='19%'>" + "</td><td align='left' width='8%'><b>Ref.Doctor</b></td><td width='34%'><b>:</b> " + ((test.refDoctorName != "" &&test.refDoctorName != null) ? test.refDoctorName : "-----------") + "</td></tr><tr><td width='2%'></td><td width='8%' align='left'><b>Doctor</b></td><td width='1%' align='center'><b>:</b></td><td width='70%' align='left' colspan='6'>" + test.listName + "</td></tr><tr><td colspan='9'><hr/></td></tr></table>"
+                var ParticularsHeader1 = "<table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td width='5%'></td><td width='45%'><strong>Particulars</strong></td><td width='15%'><strong>No.of Units</strong></td><td width='30%' align='right'><strong>Amount</strong></td><td width='5%'></td></tr><tr><td colspan='5'><hr/></td></tr>"          
+                var Particulars1 = "";
+                var Notes1 = "";
+                var Footer1 = "";
+                var TotalCharges = 0;                
+                var encId='';
+                var IsReview=false;                
+                const numWords1 = require('num-words') 
+                const amountInWords1 = numWords(test.paidAmount) 
+                var Review=0;
+                Particulars1 = Particulars1 + "<tr><td width='5%'></td><td width='45%'>" + 'Consultation' + "</td><td width='15%'>" + '1' + " </td><td width='30%' align='right'>" + test.totalBilledAmount + ".00</td><td width='5%'></td></tr>";
+                Notes1 = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.totalBilledAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.paidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" + amountInWords1+" "+'Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
+                 + "</td><td align='right'>Authorised Signature</td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td colspan='4' align='center'>16-11-404/16, SBI Officers Colony Rd,Moosarambagh, Hyderabad-500036</td></tr>";
+                Footer1 = "<tr> </tr>";
+
+                var mywindow = window.open('', 'Payment Voucher', 'height=512,width=960');
+                mywindow?.document.write('<html><head><style type="text/css">@media print    {.printView        {            display: none;        }    }    @page    {        size: A4;       margin: 1;    }</style><style>@media print    {#printpagebutton        {            display: none;        }    } </style><style>@media print    {#OPprintpagebutton        {            display: none;        }    } </style><title>Payment Voucher</title>');
+                mywindow?.document.write("<script type='text/javascript'>function printpage(){ window.open('PrintPages/PatientEncounterPrescriptionPagePreviewNew.aspx?EncounterId=" + encId + "&WithHeader=" + false + ",width=1000,height=525');}");
+                mywindow?.document.write('\<\/script\>');
+                mywindow?.document.write("<script type='text/javascript'>function OPprintpage(){ window.open('PrintPages/OPConsultationPrescription.aspx?EncounterId=" + encId + "&IsReview=" + IsReview + "&WithHeader=" + false + ",width=1000,height=525');}");
+                mywindow?.document.write('\<\/script\>');
+                mywindow?.document.write('</head><body >');
+                mywindow?.document.write(HeaderFields + PatientDetails + ParticularsHeader + Particulars + Notes + Footer+HeaderFields1 + PatientDetails1 + ParticularsHeader1 + Particulars1 + Notes1 + Footer1);
+                mywindow?.document.write('</table></body></html>');
+                mywindow?.print();
+         
+    }
 }

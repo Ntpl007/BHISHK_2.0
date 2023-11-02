@@ -1,0 +1,52 @@
+
+<div mat-dialog-content class="custom-dialog">
+    <div class="title-bar" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+      <h4>Edit Organization</h4>
+      <button class="btnclass" mat-icon-button [mat-dialog-close]="true">
+        <!-- <mat-icon>close</mat-icon> --><i class="fa fa-close"></i>
+      </button>
+    </div>
+    
+<div id="overlay" style="display:none;">
+  <div class="spinner"></div>
+  <br/>
+  Loading...
+</div>
+    <br>
+    <form [formGroup]="fcontrol" #formdata="ngForm" (ngSubmit)="Update(formdata.value)">
+    <div class="form-row">
+      <div class="col-md-6 mb-2"  hidden>
+        <label formControlName="OrganizationId" id="Organization">{{Data.organizationId}}</label>
+        </div>
+        <div class="col-md-6 mb-2">
+            <input formControlName="Organization" type="text" id="Organization"  class="form-control" placeholder="Organization Name*">
+            <small *ngIf="fcontrol.get('Organization').touched&&fcontrol.get('Organization').hasError('required')" class="text-danger">
+                Organization is required
+               </small> 
+              
+        </div>
+       
+    </div>
+    <div class="form-row" >
+        <div class="col-md-6">
+           <textarea  style="height: 60px;"  formControlName="Address" name="Address" id="Address" placeholder="Address*" cols="3" rows="3" class="form-control"></textarea>
+           <small *ngIf="fcontrol.get('Address').touched&&fcontrol.get('Address').hasError('required')" class="text-danger">
+            Address is required
+           </small> 
+        </div>
+       
+    </div>
+    <div class="form-row">
+        <div style="display: flex;justify-content: right;width: 100%;">
+                 <button type="submit" 
+                 class="btn btn-primary waves-effect waves-light btn-space" id="btnSave" >
+                   Save Changes
+                 </button>
+           
+        </div>
+    
+    
+        </div>
+    
+</form>
+        </div>

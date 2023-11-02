@@ -108,7 +108,7 @@
                 <th class="custum-col">OP ID</th>
                 <th class="custum-col">Mobile Number</th>
                 <th class="custum-col">Date Of Visit</th>
-                   
+               <th class="custum-col">Action</th> 
                     <!-- <th>Appointment Type</th> -->
                     
                     </tr>
@@ -123,7 +123,7 @@
                 <td class="custum-col">{{rowlist.opId}}</td>
                 <td class="custum-col">{{rowlist.mobileNumber}}</td> 
                 <td class="custum-col">{{rowlist.dateOfVisit}}</td>
-               
+              <td class="custum-col"><i style="font-size:10px;" class="material-icons" style="color: rgb(13, 8, 41);height: 10px;"  ngbTooltip="Print" (click)="printThisPage(i, rowlist)" >print </i></td> 
                
             </tr>
             <tr *ngIf=norecords>

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-abdm-home',
   templateUrl: './abdm-home.component.html',
-  styleUrls: ['./abdm-home.component.css']
+  styleUrls: ['./abdm-home.component.css','../../../../../css/style.css']
 })
 export class AbdmHomeComponent implements OnInit {
 

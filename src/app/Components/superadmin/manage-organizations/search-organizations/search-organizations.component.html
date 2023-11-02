@@ -1,0 +1,85 @@
+<div class="card-body">
+    <form [formGroup]="fcontrol" #data="ngForm" (ngSubmit)="openModal(data.value)"  autocomplete="off">
+       
+    <div class="form-row">
+       
+        <div class="col-md-4">
+            <!-- <label for="cmbOrganization"  class="form-label">Organization</label> -->
+          <select  formControlName="Organization" #facility class="form-control" (change)="ChangeOrganization($event)"  id="cmbOrganization"  name="Organization_id" >
+               <option  hidden value="0" [selected]="true">Organization*</option> 
+             
+              <option   *ngFor="let item of OrganizationsList"   [value]="item.organizationId" >{{item.organization_Name}}</option>
+             
+             </select>
+             <!-- <small *ngIf="myform.get('Organization_id').pristine&& myform.get('Organization_id').touched" class="text-danger">
+              Organization is requied 
+                           </small> -->
+
+      </div>
+    </div>
+   
+    <div class="form-row">
+    <div  class="col-md-12 buttons-right-row">
+             
+        <button type="button" (click)="Reset()" id="reset" class="btn btn-danger waves-effect waves-light btn-space">
+                Clear
+        </button>
+    </div>
+
+
+    </div>
+    <div   class="row d-flex justify-content-center " >
+    
+        <table id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+            <thead style=" position: sticky;">
+                <tr>
+                    <th style="width: 50px;padding-left: 10px;" >S.No</th>
+                    <th hidden > Organization Id</th>
+                    <th style="width: 150px;" > Organization Name</th>
+                    <th class="dt" >No Of Facilities</th>
+                    <th class="dt">Address</th>
+                    <th class="dt">Created By</th>
+                    <th class="dt">Created Date</th>
+                    <th class="action">Action</th>
+                  
+                    </tr>
+            </thead>
+           <tbody > 
+            <!-- *ngFor="let item of rowlist,let i=index" id="{{i}}" -->
+            <tr *ngFor="let i=index let item of organizationData | paginate: { itemsPerPage: 5, currentPage: p }">
+              
+                <td  style="width: 50px;padding-left: 10px;">{{i+1}}</td>
+                <td hidden ><label>{{item.organizationId}}</label>
+                </td>
+                <td style="width: 150px;"><label>{{item.organizationName}}</label>
+                </td>
+                <td class="dt" ><label>{{item.facilityCount}}</label></td>
+                <td class="dt" ><label>{{item.address}}</label></td>
+                <td class="dt" ><label>{{item.createdBy}}</label></td>
+                <td class="dt" ><label>{{item.createdDate}}</label></td>
+                <td class="action">
+                    <!-- <a (click)="encodeQueryString(item)"   ngbTooltip="View Facilities">
+                    <i class="fa fa-eye"></i></a> -->
+                    <!-- <a (click)="openEditOrganizationPopup(i,item)" ngbTooltip="Edit"><i class="fa fa-edit" ></i></a></td> -->
+             <a (click)="encodeQueryString(item)"  ngbTooltip="Edit"><i class="fa fa-edit" ></i></a></td>
+               
+            </tr>
+            <tr *ngIf="!selectedOrganizationData">
+                <td>No Records Found</td>
+    
+            </tr>
+           </tbody>
+           <tfoot>
+            <tr><td> <pagination-controls (pageChange)="p = $event"></pagination-controls></td></tr>
+           </tfoot>
+          
+        </table>
+        <div>
+    
+        </div>
+        </div>
+        
+</form>
+
+    
+</div>

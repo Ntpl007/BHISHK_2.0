@@ -1,0 +1,530 @@
+
+    <!-- <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title> -->
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="https://mannatthemes.com/metrica_mvc5/default/assets/images/favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- DataTables -->
+   
+
+
+<body class="{{bodyclass}}">
+    
+    <div class="main-content {{bodydivclass}}">
+        <!-- Top Bar Start -->
+    <div class="topbar">
+        <div class="logo-section">
+            <div class="topbar-left">
+                <a  class="logo">
+                    <span>
+                        <img src="../../../assets/img/bhishak.png" alt="logo-large" class="logo-lg logo-dark">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!-- Navbar -->
+        <nav class="navbar-custom">
+            <ul class="list-unstyled topbar-nav float-right mb-0">
+                <li class="top-brand-relate">
+                    <!-- <span><strong>Welcome:</strong> {{organization}} Hospital</span> -->
+                    <!-- <span><strong>Branch:</strong> {{facility}}</span> -->
+                   
+                    <span><strong> Date:</strong> {{datenow}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                </li>
+              
+
+                <li class="dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown"
+                        href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <img src="../../../assets/img/user-4.jpg" alt="profile-user" class="rounded-circle">
+                        <span class="ml-1 nav-user-name hidden-sm">{{name}} <i class="fa fa-angle-down"
+                                aria-hidden="true"></i> </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <!-- <a class="dropdown-item" href="#"><i class="dripicons-user text-muted mr-2"></i> Profile</a>
+                        <a class="dropdown-item" href="#"><i class="dripicons-wallet text-muted mr-2"></i> My
+                            Wallet</a>
+                        <a class="dropdown-item" href="#"><i class="dripicons-gear text-muted mr-2"></i>
+                            Settings</a>
+                        <a class="dropdown-item" href="#"><i class="dripicons-lock text-muted mr-2"></i> Lock
+                            screen</a> -->
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" (click)="Logout()"><i class="dripicons-exit text-muted mr-2"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+            <!--end topbar-nav-->
+
+            <ul class="list-unstyled topbar-nav mb-0">
+                <li>
+                    <a >
+                        <span class="responsive-logo">
+                            <img src="../../../assets/img/favicon1.png" alt="logo-small" class="logo-sm align-self-center" height="34">
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <button class="button-menu-mobile nav-link" (click)="navButton()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-menu align-self-center">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </li>
+               <!-- <li class="hide-phone app-search">
+                    <form role="search" class="">
+                        <input type="text" id="AllCompo" placeholder="Search..."
+                            class="form-control ui-autocomplete-input" autocomplete="off">
+                        <a href=""><i class="fa fa-search"></i></a>
+                    </form>
+                </li> -->
+            </ul>
+          
+        </nav>
+        <!-- end navbar-->
+    </div>
+    <!-- Top Bar End -->
+        <div class="sidebar">
+           
+            <div class="slimScrollDiv mm-active active">
+                <div class="menu-body slimscroll scroll-bar-wrap mm-show">
+                    <div class="sidebar-navigation scroll-box">
+                        <ul>
+                        
+                     <!-- <li>
+                                <a routerLink="/Admin/AddUser" class="active-menu">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-Add_User">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="Add_User" data-name="Add  User" clip-path="url(#clip-Add_User)">
+                                            <g id="Icon_ionic-ios-person-add" data-name="Icon ionic-ios-person-add"
+                                                transform="translate(0.501 0.5)">
+                                                <path id="Path_10441" data-name="Path 10441"
+                                                    d="M17.67,17.7a19.1,19.1,0,0,0-2.135-.41,2.17,2.17,0,0,1-.988-.455,7.5,7.5,0,0,1-.07-1.935.425.425,0,0,1,.045-.156,6.049,6.049,0,0,0,.422-.82,9.3,9.3,0,0,0,.312-1.365.319.319,0,0,1,.164-.23.746.746,0,0,0,.32-.549,5.807,5.807,0,0,0,.3-1.373.58.58,0,0,0-.131-.389.309.309,0,0,1-.082-.3,8.643,8.643,0,0,0,.213-1.869A3.376,3.376,0,0,0,12.374,4.5,3.358,3.358,0,0,0,8.7,7.845a9.015,9.015,0,0,0,.209,1.869.326.326,0,0,1-.082.3.559.559,0,0,0-.131.389A5.807,5.807,0,0,0,9,11.779a.755.755,0,0,0,.32.549.327.327,0,0,1,.164.23A9.3,9.3,0,0,0,9.8,13.923a6.282,6.282,0,0,0,.422.82.289.289,0,0,1,.045.156,7.487,7.487,0,0,1-.07,1.935,2.17,2.17,0,0,1-.988.455,19.1,19.1,0,0,0-2.135.41c-.582.2-2.267.84-2.562,2.144a.328.328,0,0,0,.324.4H19.912a.327.327,0,0,0,.32-.4C19.936,18.538,18.252,17.9,17.67,17.7Z"
+                                                    transform="translate(0)" fill="" />
+                                                <path id="Path_10442" data-name="Path 10442"
+                                                    d="M28.7,19.732H27.452V18.485A.485.485,0,0,0,26.967,18h0a.485.485,0,0,0-.485.485v1.247H25.235a.485.485,0,0,0-.485.485h0a.485.485,0,0,0,.485.485h1.247V21.95a.485.485,0,0,0,.485.485h0a.485.485,0,0,0,.485-.485V20.7H28.7a.485.485,0,0,0,.485-.485h0A.485.485,0,0,0,28.7,19.732Z"
+                                                    transform="translate(-8.945 -5.964)" fill="" />
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    Add User</a>
+                            </li> -->
+                           <li ><a style="text-align: center;">
+                            Dashboard</a>
+                           </li>
+                            <li >
+                                <a [ngClass]="['bntStyle']" (click)="style()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                    <defs>
+                                        <clipPath id="clip-Reporting_Module">
+                                            <rect width="25" height="25" />
+                                        </clipPath>
+                                    </defs>
+                                    <g id="Reporting_Module" data-name="Reporting Module"
+                                        clip-path="url(#clip-Reporting_Module)">
+                                        <path id="Icon_awesome-folder-open" data-name="Icon awesome-folder-open"
+                                            d="M19.015,9.7l-2.4,4.122a2.125,2.125,0,0,1-1.836,1.054H1.495a.8.8,0,0,1-.688-1.2l2.4-4.122A2.125,2.125,0,0,1,5.047,8.5h13.28a.8.8,0,0,1,.688,1.2ZM5.047,7.438H15.938V5.844A1.594,1.594,0,0,0,14.344,4.25H9.031L6.906,2.125H1.594A1.594,1.594,0,0,0,0,3.719v9.232L2.294,9.019A3.2,3.2,0,0,1,5.047,7.438Z"
+                                            transform="translate(3 3.875)" fill="" />
+                                    </g>
+                                </svg>
+                                    Users <em class="mdi mdi-chevron-down"></em></a>
+                                <ul> 
+                                    <li>
+                                        <a routerLink="/SuperAdmin/Add-User" class="">
+
+                                            Add User</a>
+
+                                    </li>
+                                    <li>
+                                        <a routerLink="/SuperAdmin/User-List" class="">
+
+                                            User-List</a>
+
+                                    </li>
+                                   
+                                    
+                                    
+
+                                    
+                                    
+                                   
+                                   
+                                    
+                                    <!-- <li>
+                                        <a routerLink="/Admin/Add-facility" class="">
+                                           
+                                            Add Facility</a>
+
+                                    </li> -->
+                                    
+                                    
+                                </ul>
+                            </li>
+                            <li hidden>
+                                <a [ngClass]="['bntStyle']" (click)="style()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                    <defs>
+                                        <clipPath id="clip-Reporting_Module">
+                                            <rect width="25" height="25" />
+                                        </clipPath>
+                                    </defs>
+                                    <g id="Reporting_Module" data-name="Reporting Module"
+                                        clip-path="url(#clip-Reporting_Module)">
+                                        <path id="Icon_awesome-folder-open" data-name="Icon awesome-folder-open"
+                                            d="M19.015,9.7l-2.4,4.122a2.125,2.125,0,0,1-1.836,1.054H1.495a.8.8,0,0,1-.688-1.2l2.4-4.122A2.125,2.125,0,0,1,5.047,8.5h13.28a.8.8,0,0,1,.688,1.2ZM5.047,7.438H15.938V5.844A1.594,1.594,0,0,0,14.344,4.25H9.031L6.906,2.125H1.594A1.594,1.594,0,0,0,0,3.719v9.232L2.294,9.019A3.2,3.2,0,0,1,5.047,7.438Z"
+                                            transform="translate(3 3.875)" fill="" />
+                                    </g>
+                                </svg>
+                                    Manage Facilities <em class="mdi mdi-chevron-down"></em></a>
+                                <ul>
+                                    <li>
+                                        <a routerLink="/SuperAdmin/Add-Facilities" class="">
+
+                                            Add Facilities</a>
+
+                                    </li>
+                                    Facility-List
+                                    
+                                    
+                                   
+                                   
+                                    
+                                    <!-- <li>
+                                        <a routerLink="/Admin/Add-facility" class="">
+                                           
+                                            Add Facility</a>
+
+                                    </li> -->
+                                    
+                                    
+                                </ul>
+                            </li>
+                            <li>
+                                <a [ngClass]="['bntStyle']" (click)="style()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                    <defs>
+                                        <clipPath id="clip-Reporting_Module">
+                                            <rect width="25" height="25" />
+                                        </clipPath>
+                                    </defs>
+                                    <g id="Reporting_Module" data-name="Reporting Module"
+                                        clip-path="url(#clip-Reporting_Module)">
+                                        <path id="Icon_awesome-folder-open" data-name="Icon awesome-folder-open"
+                                            d="M19.015,9.7l-2.4,4.122a2.125,2.125,0,0,1-1.836,1.054H1.495a.8.8,0,0,1-.688-1.2l2.4-4.122A2.125,2.125,0,0,1,5.047,8.5h13.28a.8.8,0,0,1,.688,1.2ZM5.047,7.438H15.938V5.844A1.594,1.594,0,0,0,14.344,4.25H9.031L6.906,2.125H1.594A1.594,1.594,0,0,0,0,3.719v9.232L2.294,9.019A3.2,3.2,0,0,1,5.047,7.438Z"
+                                            transform="translate(3 3.875)" fill="" />
+                                    </g>
+                                </svg>
+                                    Organization <em class="mdi mdi-chevron-down"></em></a>
+                                <ul>
+                                    <li>
+                                        <a routerLink="/SuperAdmin/Add-Organizations" class="">
+
+                                            Add Organizations</a>
+
+                                    </li>
+                                    <li>
+                                        <a routerLink="/SuperAdmin/Organization-List" class="">
+
+                                            Organization List</a>
+
+                                    </li>
+                                   
+                                    
+                                    
+                                   
+                                   
+                                    
+                                    <!-- <li>
+                                        <a routerLink="/Admin/Add-facility" class="">
+                                           
+                                            Add Facility</a>
+
+                                    </li> -->
+                                    
+                                    
+                                </ul>
+                            </li>
+                            <!-- <li>
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-Add_Location">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="Add_Location" data-name="Add  Location"
+                                            clip-path="url(#clip-Add_Location)">
+                                            <path id="Icon_material-add-location" data-name="Icon material-add-location"
+                                                d="M14.775,3A7.283,7.283,0,0,0,7.5,10.275c0,5.456,7.275,13.51,7.275,13.51s7.275-8.054,7.275-13.51A7.283,7.283,0,0,0,14.775,3Zm4.157,8.314H15.814v3.118H13.735V11.314H10.618V9.235h3.118V6.118h2.078V9.235h3.118Z"
+                                                transform="translate(-2.501 -1)" fill="" />
+                                        </g>
+                                    </svg>
+                                    Add Location</a>
+                            </li> -->
+                            <!-- <li>
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-View_Location">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="View_Location" data-name="View Location"
+                                            clip-path="url(#clip-View_Location)">
+                                            <path id="Icon_map-location-arrow" data-name="Icon map-location-arrow"
+                                                d="M13.867,19.819l-2.846-8.384H1.773L19.558,1.581Z"
+                                                transform="translate(2.227 1.418)" fill="" />
+                                        </g>
+                                    </svg>
+                                    View Location</a>
+                            </li> -->
+                            <!-- <li>
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-Add_Forms">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="Add_Forms" data-name="Add  Forms" clip-path="url(#clip-Add_Forms)">
+                                            <path id="Icon_awesome-file-alt" data-name="Icon awesome-file-alt"
+                                                d="M7.529,4.571V0H.807A.8.8,0,0,0,0,.807V16.4a.8.8,0,0,0,.807.807H12.1a.8.8,0,0,0,.807-.807V5.378H8.335A.809.809,0,0,1,7.529,4.571ZM9.68,12.5a.4.4,0,0,1-.4.4H3.63a.4.4,0,0,1-.4-.4v-.269a.4.4,0,0,1,.4-.4H9.276a.4.4,0,0,1,.4.4Zm0-2.151a.4.4,0,0,1-.4.4H3.63a.4.4,0,0,1-.4-.4v-.269a.4.4,0,0,1,.4-.4H9.276a.4.4,0,0,1,.4.4Zm0-2.42V8.2a.4.4,0,0,1-.4.4H3.63a.4.4,0,0,1-.4-.4V7.932a.4.4,0,0,1,.4-.4H9.276A.4.4,0,0,1,9.68,7.932ZM12.906,4.1V4.3H8.6V0h.205a.806.806,0,0,1,.571.235l3.29,3.294A.8.8,0,0,1,12.906,4.1Z"
+                                                transform="translate(6 4.001)" fill="" />
+                                        </g>
+                                    </svg>
+                                    Add Forms</a>
+                            </li> -->
+                            <!-- <li >
+                                <a >
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-Add_Schedules_Assign_Assessor">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="Add_Schedules_Assign_Assessor"
+                                            data-name="Add  Schedules/Assign  Assessor"
+                                            clip-path="url(#clip-Add_Schedules_Assign_Assessor)">
+                                            <path id="Icon_awesome-calendar" data-name="Icon awesome-calendar"
+                                                d="M.429,6.375H15.6a.416.416,0,0,1,.429.4v8.633A1.66,1.66,0,0,1,14.312,17H1.717A1.66,1.66,0,0,1,0,15.406V6.773A.416.416,0,0,1,.429,6.375Zm15.6-1.461v-1.2a1.66,1.66,0,0,0-1.717-1.594H12.595V.4a.416.416,0,0,0-.429-.4H10.734A.416.416,0,0,0,10.3.4V2.125H5.725V.4A.416.416,0,0,0,5.3,0H3.864a.416.416,0,0,0-.429.4V2.125H1.717A1.66,1.66,0,0,0,0,3.719v1.2a.416.416,0,0,0,.429.4H15.6A.416.416,0,0,0,16.03,4.914Z"
+                                                transform="translate(4.001 4)" fill="" />
+                                        </g>
+                                    </svg>
+                                    Add Schedules <em class="mdi mdi-chevron-down" ></em></a>
+                            <ul  >
+                                    <li><a href="#">Approval / Deny</a></li>
+                                    <li><a href="#">Assign Assessor</a></li>
+                                </ul>
+                            </li> -->
+                            <!-- <li>
+                                <a>
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                    <defs>
+                                        <clipPath id="clip-Reporting_Module">
+                                            <rect width="25" height="25" />
+                                        </clipPath>
+                                    </defs>
+                                    <g id="Reporting_Module" data-name="Reporting Module"
+                                        clip-path="url(#clip-Reporting_Module)">
+                                        <path id="Icon_awesome-folder-open" data-name="Icon awesome-folder-open"
+                                            d="M19.015,9.7l-2.4,4.122a2.125,2.125,0,0,1-1.836,1.054H1.495a.8.8,0,0,1-.688-1.2l2.4-4.122A2.125,2.125,0,0,1,5.047,8.5h13.28a.8.8,0,0,1,.688,1.2ZM5.047,7.438H15.938V5.844A1.594,1.594,0,0,0,14.344,4.25H9.031L6.906,2.125H1.594A1.594,1.594,0,0,0,0,3.719v9.232L2.294,9.019A3.2,3.2,0,0,1,5.047,7.438Z"
+                                            transform="translate(3 3.875)" fill="" />
+                                    </g>
+                                </svg>
+                                    Front Desk <em class="mdi mdi-chevron-down"></em></a>
+                                <ul>
+                                    <li><a routerLink="/Admin/op">OP Registration</a></li>
+                                    <li><a routerLink="/front-desk/IP">IP Registration</a></li>
+                                </ul>
+                            </li> -->
+
+
+                            <!-- <li>
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-Reporting_Module">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="Reporting_Module" data-name="Reporting Module"
+                                            clip-path="url(#clip-Reporting_Module)">
+                                            <path id="Icon_awesome-folder-open" data-name="Icon awesome-folder-open"
+                                                d="M19.015,9.7l-2.4,4.122a2.125,2.125,0,0,1-1.836,1.054H1.495a.8.8,0,0,1-.688-1.2l2.4-4.122A2.125,2.125,0,0,1,5.047,8.5h13.28a.8.8,0,0,1,.688,1.2ZM5.047,7.438H15.938V5.844A1.594,1.594,0,0,0,14.344,4.25H9.031L6.906,2.125H1.594A1.594,1.594,0,0,0,0,3.719v9.232L2.294,9.019A3.2,3.2,0,0,1,5.047,7.438Z"
+                                                transform="translate(3 3.875)" fill="" />
+                                        </g>
+                                    </svg>
+                                    Reporting Module</a>
+                            </li> -->
+                            <!-- <li>
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-Payroll">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="Payroll" clip-path="url(#clip-Payroll)">
+                                            <path id="Icon_awesome-money-check-alt"
+                                                data-name="Icon awesome-money-check-alt"
+                                                d="M18.547,1.25H.976A.976.976,0,0,0,0,2.226V13.94a.976.976,0,0,0,.976.976H18.547a.976.976,0,0,0,.976-.976V2.226A.976.976,0,0,0,18.547,1.25ZM5.369,10.276v.492a.244.244,0,0,1-.244.244H4.637a.244.244,0,0,1-.244-.244v-.5a1.747,1.747,0,0,1-.957-.346.244.244,0,0,1-.017-.37l.358-.342a.25.25,0,0,1,.309-.022.734.734,0,0,0,.391.113h.858a.384.384,0,0,0,.36-.4.4.4,0,0,0-.268-.388L4.054,8.1a1.381,1.381,0,0,1-.963-1.324A1.358,1.358,0,0,1,4.392,5.4V4.911a.244.244,0,0,1,.244-.244h.488a.244.244,0,0,1,.244.244v.5a1.744,1.744,0,0,1,.957.346.244.244,0,0,1,.017.37l-.358.342a.25.25,0,0,1-.309.022.732.732,0,0,0-.391-.113H4.427a.384.384,0,0,0-.36.4.4.4,0,0,0,.268.388l1.373.412A1.381,1.381,0,0,1,6.671,8.9,1.358,1.358,0,0,1,5.369,10.276Zm7.321-.484a.244.244,0,0,1-.244.244H9.03a.244.244,0,0,1-.244-.244V9.3a.244.244,0,0,1,.244-.244h3.417a.244.244,0,0,1,.244.244Zm4.881,0a.244.244,0,0,1-.244.244h-2.44a.244.244,0,0,1-.244-.244V9.3a.244.244,0,0,1,.244-.244h2.44a.244.244,0,0,1,.244.244Zm0-2.929a.244.244,0,0,1-.244.244H9.03a.244.244,0,0,1-.244-.244V6.375a.244.244,0,0,1,.244-.244h8.3a.244.244,0,0,1,.244.244Z"
+                                                transform="translate(3 4.75)" fill="" />
+                                        </g>
+                                    </svg>
+                                    Payroll</a>
+                            </li> -->
+                            <!-- <li>
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-clock">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="clock" clip-path="url(#clip-clock)">
+                                            <g id="noun-clock-746589" transform="translate(-69.186 -35.203)">
+                                                <path id="Path_13566" data-name="Path 13566"
+                                                    d="M118.075,39.2a8.875,8.875,0,1,0,8.875,8.875A8.875,8.875,0,0,0,118.075,39.2Zm0,2.27a.413.413,0,0,1,.413.413v5.779h5.366a.413.413,0,0,1,0,.826h-5.779a.413.413,0,0,1-.413-.413V41.886a.413.413,0,0,1,.413-.413Z"
+                                                    transform="translate(-36.015)" />
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    Shift Info</a>
+                            </li> -->
+                            <!-- <li>
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-_Scheduling_Rules">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="_Scheduling_Rules" data-name=" Scheduling Rules"
+                                            clip-path="url(#clip-_Scheduling_Rules)">
+                                            <g id="Group_49" data-name="Group 49"
+                                                transform="translate(2315.699 -78.119)">
+                                                <g id="noun-report-1547851" transform="translate(-2309.744 81.537)">
+                                                    <path id="Path_110" data-name="Path 110"
+                                                        d="M148.2,1.482V18.167h13.091V1.482h-3.45V3.068a.385.385,0,0,1-.385.385h-5.422a.385.385,0,0,1-.385-.385V1.482H148.2Zm4.22,1.2h4.651v-1.2h-.847a.385.385,0,0,1-.385-.385,1.09,1.09,0,0,0-.32-.773v0a1.094,1.094,0,0,0-1.867.775.385.385,0,0,1-.385.385h-.847v1.2ZM152.3,7.175l2,1.688L157.146,5.5a.384.384,0,1,1,.587.5l-1.626,1.92L154.637,9.65a.383.383,0,0,1-.539.046l-2.3-1.935a.383.383,0,1,1,.493-.587Zm-1.53,5.3h7.957a.385.385,0,1,1,0,.77h-7.957a.385.385,0,0,1,0-.77Zm0,2.736h7.957a.385.385,0,1,1,0,.77h-7.957a.385.385,0,1,1,0-.77Z"
+                                                        transform="translate(-148.198 -0.004)" fill-rule="evenodd" />
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    Scheduling Rules</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                        <defs>
+                                            <clipPath id="clip-Calendar1">
+                                                <rect width="25" height="25" />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="Calendar1" clip-path="url(#clip-Calendar1)">
+                                            <g id="noun-calendar-327708" transform="translate(-67.697 -32.615)">
+                                                <path id="Path_109" data-name="Path 109"
+                                                    d="M112.978,53.353H99.011a1.706,1.706,0,0,1-1.711-1.7V40.142a1.706,1.706,0,0,1,1.711-1.7h1.058v.789a1.571,1.571,0,0,0,3.142,0v-.789h5.568v.789a1.571,1.571,0,0,0,3.142,0v-.789h1.058a1.706,1.706,0,0,1,1.711,1.7V51.651a1.707,1.707,0,0,1-1.711,1.7Zm.56-10.333H98.358v8.694h15.181Zm-11.728,5.26H99.6v-1.64h2.208Zm0,2.227H99.6v-1.64h2.208Zm3.546-4.641h-2.209v-1.64h2.209Zm0,2.413h-2.209v-1.64h2.209Zm0,2.227h-2.209v-1.64h2.209Zm3.453-4.641H106.6v-1.64h2.208Zm0,2.413H106.6v-1.64h2.208Zm0,2.227H106.6v-1.64h2.208Zm3.546-4.641h-2.209v-1.64h2.209Zm0,2.413h-2.209v-1.64h2.209Zm0,2.227h-2.209v-1.64h2.209ZM110.38,40.018a.791.791,0,0,1-.793-.789V37.4a.793.793,0,0,1,1.586,0V39.23A.791.791,0,0,1,110.38,40.018Zm-8.772,0a.791.791,0,0,1-.793-.789V37.4a.793.793,0,0,1,1.586,0V39.23A.791.791,0,0,1,101.608,40.018Z"
+                                                    transform="translate(-25.603)" fill-rule="evenodd" />
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    Calendar</a>
+                            </li> -->
+                        </ul>
+                    </div>
+                    <div class="cover-bar"></div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end leftbar-tab-menu-->
+
+        
+
+        <div class="page-wrapper page-content">
+
+            <!-- Page Content-->
+            <div class="page-content-tab">
+
+                <div class="container-fluid">
+                    <!-- Page-Title -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="page-title-box">
+
+                                <h4 class="page-title">{{header}}</h4>
+                                <!-- <div class="">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="javascript:void(0);">Patient Encounters</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0);">OP Billing </a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0);">Lab Billing </a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0);">IP Billing | </a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0);">Ward
+                                                Management(Graphical
+                                            </a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0);">Provider Schedules
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0);">Patient Encounters
+                                            </a>
+                                        </li>
+
+                                    </ol>
+                                </div> -->
+                            </div>
+                            <!--end page-title-box-->
+                        </div>
+                        <!--end col-->
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- <div class="go-to-links">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="javascript:void(0);">Go To Billing</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript:void(0);">Go To OP Lab Billing</a>
+                                    </li>
+                                </ol>
+                            </div> -->
+                            <div class="card">
+                              <router-outlet>
+                              </router-outlet>
+                                <!--end card-body-->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title end breadcrumb -->
+                </div><!-- container -->
+
+            </div>
+            <!-- end page content -->
+        </div>
+        <!-- end page-wrapper -->
+
+    </div>
+

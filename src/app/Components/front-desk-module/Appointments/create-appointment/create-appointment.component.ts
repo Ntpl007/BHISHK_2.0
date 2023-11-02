@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Nationality } from 'src/app/Model/Nationality';
 import { Religion } from 'src/app/Model/Religion';
 import { Speciality } from 'src/app/Model/Speciality';
-import { NgbDateStruct, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { HimsServiceService } from 'src/app/Shared/hims-service.service';
 import { ViewEncapsulation, Inject,  ViewChild } from '@angular/core';
 import { NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
@@ -13,10 +13,14 @@ import { DatePipe, formatDate } from '@angular/common';
 import Swal from 'sweetalert2';
 import { timeInterval } from 'rxjs';
 import { DateService } from 'src/app/Shared/date.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef,MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoadingPopupComponent } from 'src/app/Components/PopUps/loading-popup/loading-popup.component';
 import { DialogcommunicationService } from 'src/app/Shared/dialogcommunication.service';
+import { CustomAdapter } from 'src/app/Shared/Dates/CustomAdapter ';
+import { CustomDateParserFormatter } from 'src/app/Shared/Dates/CustomDateParserFormatter ';
+import { RefreshCommunicationService } from 'src/app/Shared/refresh-communication.service'
+
 @Component({
   selector: 'app-create-appointment',
   templateUrl: './create-appointment.component.html',
@@ -24,19 +28,32 @@ import { DialogcommunicationService } from 'src/app/Shared/dialogcommunication.s
   "../../../../../css/dataTables.bootstrap4.min.css","../../../../../css/style.css","../../../../../css/bootstrap.min.css"
   ,"../../../../../css/responsive.bootstrap4.min.css","../../../../../css/buttons.bootstrap4.min.css" ,
   "../../../../../css/dataTables.bootstrap4.min.css","../../../../../css/metisMenu.min.css"],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+  ],
 })
 export class CreateAppointmentComponent implements OnInit {
   _dob:any
   isLoading = false;
-  starttime:any
+  iconDisabled: boolean = true; 
+  starttime:string = '';
+  Assumeddate:any
   endtime:any
+  ScheduleTypeId: number = 0;
+  SpecialityID: number = 0;
   timeintarval:any
-  _AppointmentDate:any
+  DoctorId: number = 0;
+  docId : number = 0;
+  AppointmentDate:any
+  isStartTimeDisabled: boolean = true
   @ViewChild('StartTime')
   StartTime!: ElementRef;
   my:any=0
   showModal2: boolean = false;
+  scheduleid: number = 0;
+  Specialityid: number = 0;
   minDatefordob: { year: number; month: number; day: number; };
   minDate: { year: number; month: number; day: number; };
   maxDate: { year: number; month: number; day: number; };
@@ -44,8 +61,10 @@ export class CreateAppointmentComponent implements OnInit {
   maxDateForAppointment: { year: number; month: number; day: number; };
   content: any;
   constructor(private modalService: NgbModal, private service:HimsServiceService,private http:HttpClient,private router:Router,private formbulder:FormBuilder,private datePipe: DatePipe,
-    private dateservice:DateService,private dialogService:DialogcommunicationService,
-    private dialog: MatDialog
+    private dateservice:DateService,private dialogCommunicationService:DialogcommunicationService,private refreshCommunicationService: RefreshCommunicationService,private el: ElementRef,
+    public dialogRef: MatDialogRef<CreateAppointmentComponent>,
+    @Inject(MAT_DIALOG_DATA) public Data: any,
+   
     ) {
 
     const current = new Date();
@@ -54,21 +73,33 @@ export class CreateAppointmentComponent implements OnInit {
     month:1,
     day: 1
    }
-    this.minDate = {
-      year: current.getFullYear(),
-      month: current.getMonth()+1,
-      day: current.getDate()
-    };    
-    this.maxDate = {
-      year: current.getFullYear(),
-      month: current.getMonth()+1,
-      day: current.getDate()
-    };
-    this.maxDateForAppointment= {
-      year: current.getFullYear(),
-      month: current.getMonth()+4,
-      day: current.getDate()
-    };
+   this.minDate = {
+    day: current.getDate(),
+    month: current.getMonth(),
+    year: current.getFullYear()
+  };    
+
+  // this.maxDate = {
+  //   day: current.getDate(),
+  //   month: current.getMonth()+1,
+  //   year: current.getFullYear(),
+    
+    
+  // };
+  this.maxDate = {
+    day: current.getDate(),
+    month: current.getMonth()+4,
+    year: current.getFullYear(),
+    
+    
+  };
+  this.maxDateForAppointment= {
+    day: current.getDate(),
+    month: current.getMonth()+4,
+   year: current.getFullYear()
+   
+   
+ };
     this.myform=formbulder.group({
      // customControl: new FormControl('', [])
     })
@@ -142,6 +173,7 @@ Mobile:any
   ischecktrue=false
   allocateid:any
   istartdatetouched=true
+
   getId(data:any)
   {
 debugger
@@ -191,12 +223,34 @@ debugger
 }
   public getDoctors(Id:any)
   {
-    let spid=Id.target.value;
     debugger
+    
+      // let spid=Id.target.value;
+      let spid=Id;
+   
+    this.service.GetDoctorbyspeciality(spid).subscribe((result)=>{
+      if(this.Data[2].split('=')[1] == "" ||this.Data[2].split('=')[1] == null  ){
+        this.doctors=result
+      }
+      else{
+        this.doctors=result;
+        this.docId = this.Data[2].split('=')[1];
+        this.doctors = this.doctors.filter((item: { providerId: number; }) => item.providerId == this.docId);
+        this.DoctorId = this.doctors[0].providerId;
+        this.myform.get('DoctorId').markAsDirty();
 
-    this.service.GetDoctorbyspeciality(spid).subscribe((result)=>{this.doctors=result})
-    debugger
+      }
+
+    })
   }
+iconClick(event: Event) {
+  debugger
+  if (!this.iconDisabled) {
+    // Handle the click logic here
+    // You can prevent the button from submitting the form by calling event.preventDefault() if needed
+  }
+}
+
   convertTo24HourFormat(time12Hour: string): string {
     //const [time, period]
     let timeperiodsplit = time12Hour.split(' ');
@@ -246,7 +300,7 @@ EndTimeKeyEvent(event: KeyboardEvent) {
     this.submittrue=false;
     Data.Age=(<HTMLInputElement>document.getElementById('txtAge')).value
     Data.AgeModId=(<HTMLInputElement>document.getElementById('AgeModId')).value
-    Data.AppointmentDate=this.dateservice.GlobalStringDateFormat((<HTMLInputElement>document.getElementById('AppointmentDate')).value)
+    Data.AppointmentDate=this.dateservice.GlobalStringDateFormat((<HTMLInputElement>document.getElementById('AppDate')).value)
     Data.DateOfBirth=this.dateservice.GlobalStringDateFormat((<HTMLInputElement>document.getElementById('dob')).value)
     Data.Gender=(<HTMLInputElement>document.getElementById('ddlSex')).value;
     let facilityid=localStorage.getItem('facilityId')
@@ -263,6 +317,20 @@ EndTimeKeyEvent(event: KeyboardEvent) {
     }
     
     
+    if(Data.StartTime!=null && Data.StartTime!="")
+    {
+      let stTimeam=Data.StartTime.includes('AM')
+      let stTimepm=Data.StartTime.includes('PM')
+    
+    
+    
+    
+    if(stTimeam==true||stTimepm==true)
+    {
+      Data.StartTime= this.convertTo24HourFormat(Data.StartTime);
+      Data.EndTime= this.convertTo24HourFormat(Data.EndTime);
+    }
+  }
     if(localStorage.getItem('patId')!=null)
     {
 
@@ -290,41 +358,34 @@ EndTimeKeyEvent(event: KeyboardEvent) {
       Data.SpecialityID=0
       Data.DoctorId=0
     }
-    // if(Data.DoctorId!="Doctor*")
-    // {
-    //   this.submittrue=true;
-    // }else
-    // if(Data.ChargeItemId!="Charge Item*")
-    // {
-    //   this.submittrue=true;
-    // }else  {this.submittrue=false}
-
-
-    
-  
-    debugger
-
-    // if(Data.SpecialityID=="Speciality*")
-    // {
-    //   Data.SpecialityID=0
-      
-    // }
-    // if(Data.DoctorId=="Doctor*")
-    // {
-    //   Data.DoctorId=0
-    //   this.myform.invalid
-    // }
-    // if(Data.ChargegroupId=="Charge Group*")
-    // {
-    //   Data.ChargegroupId=0
-    // }
-    // if(Data.ChargeItemId=="Charge Item*")
-    // {
-    //   Data.ChargeItemId=0
-    // }
+    if(Data.SpecialityID=="Speciality*")
+    {
+      Data.SpecialityID= (<HTMLInputElement>document.getElementById('ddlSpecialityId')).value;
+      this.submittrue=true;
+    }
+    if(Data.DoctorId=="Doctor*")
+    {
+      Data.DoctorId= (<HTMLInputElement>document.getElementById('ddlDoctor')).value;
+      this.submittrue=true;
+    }
+    if(Data.ScheduleTypeId=="ScheduleType*")
+    {
+      Data.ScheduleTypeId= (<HTMLInputElement>document.getElementById('ddlScheduleType')).value;
+      this.submittrue=true;
+    }
     if(Data.AgeModId=="Age Mode*")
     {
       Data.AgeModId=0
+    }
+    if(Data.ChargegroupId=="Charge Group*")
+    {
+      Data.ChargegroupId= 0;
+      this.submittrue=true;
+    }
+    if(Data.ChargeItemId=="Charge Item*")
+    {
+      Data.ChargeItemId= 0;
+      this.submittrue=true;
     }
   
 
@@ -341,18 +402,32 @@ EndTimeKeyEvent(event: KeyboardEvent) {
         this.openDialog();
     this.service.SaveAppointments(Data).subscribe((result)=>
     {
+      debugger;
       this.response=result;
       if(this.response>0)
       {
         this.submittrue=false;
       
        
-        (<HTMLInputElement>document.getElementById('Mobilenumsearch')).value=""
+       // (<HTMLInputElement>document.getElementById('Mobilenumsearch')).value=""
        
-        this.closeAllDialogs();
-        Swal.fire('Success','Appointment Successfully Booked','success')
+       // this.closeAllDialogs();
+        this.dialogCommunicationService.sendSuccessSignal();
+        this.refreshCommunicationService.sendRefreshSignal();
+
+    // Show Swal success alert
+    //Swal.fire('Success', 'Appointment Successfully Booked', 'success');
+
+    // Close the MatDialog
+    //this.dialogRef.close();
+      //  //Swal.fire('Success','Appointment Successfully Booked','success')
+       Swal.fire('Success', 'Appointment Successfully Booked', 'success').then(() => {
+        this.clear();
+        this.dialogRef.close();
+       // Close the MatDialog after the user acknowledges the success message
+      });
        
-        this.clear()
+        
       } else{
         
         Swal.fire('info','Something went wrong','info')
@@ -379,7 +454,7 @@ EndTimeKeyEvent(event: KeyboardEvent) {
   {
     debugger
     this.istartdatetouched=false
-this.myform.get('StartTime').markAsDirty;
+this.myform.get('StartTime').markAsDirty();
     console.log(items.Id);
     this.starttime=items
   
@@ -421,7 +496,7 @@ this.isexistedpatientHide=false
       MobileNumber:['',Validators.required],
       RelegionId:['Religion*',Validators.required],
       NationalityId:['Nationality*',Validators.required],
-      HouseNo:[''],
+      HouseNo:['',[Validators.required,Validators.pattern(/^[A-Za-z0-9 :,-/]+$/)]],
       StateId:[0,Validators.required],
       DistrictId:['District*',Validators.required],
       City:[''],
@@ -437,7 +512,7 @@ this.isexistedpatientHide=false
       Age:[''],
       AgeModId:['Age Mode*'],
       Prefix:['Prefix*',Validators.required],
-      AppointmentDate:['',Validators.required]
+      AppointmentDate:['',null]
     
     });
 
@@ -465,7 +540,7 @@ k.setMinutes(k.getMinutes() + 15);
   }
 
   transformDate(date:any) {
-    return this.datePipe.transform(date, 'yyyy-MM-dd');
+    return this.datePipe.transform(date, 'dd-MM-yyyy');
   }
   
   public calculateGae(Data:any)
@@ -511,46 +586,7 @@ public getpatient(X:any)
       debugger;
       this.listOfDisplayData = data;
 
-      
-    this.fname=this.PatientData[0].firstName+" "+this.PatientData[0].lastName
-    var dateofbirth= this.PatientData[0].dob.split("T");
-    // var datestring = dateofbirth.Tostring();
-    // var datesplit = dateofbirth[0].split("-");
-this.dob = formatDate(this.PatientData[0].dob, 'yyyy-MM-dd', 'en-US'); // dateofbirth;
-// this.dob= datesplit[2]+'-'+datesplit[1]+'-'+datesplit[0];
-if(this.PatientData[0].relationtype!=null && this.PatientData[0].relationtype!="")
-{
- // this.relType=this.PatientData[0].relationtype
-}
-  
-    this.Sex=this.PatientData[0].sex
-    if(this.PatientData[0].prefix!=null && this.PatientData[0].prefix!="")
-    {
-      this.prefix=this.PatientData[0].prefix
-    }
-   
-   
-    this.Mobile=this.PatientData[0].mobileNumber
-    // if(this.PatientData[0].relationname!=null && this.PatientData[0].relationname!="")
-    // {
-    //  // this.relname=this.PatientData[0].relationname
-    // }
-
-    if(this.PatientData[0].religionid!=null && this.PatientData[0].religionid!="")
-    {
-      this.religion=this.PatientData[0].religionid
-    }
-    
-    if(this.PatientData[0].nationalityid!=null && this.PatientData[0].nationalityid!="")
-    {
-      this.nationality=this.PatientData[0].nationalityid
-    }
-    
-    if(this.PatientData[0].occupation!=null && this.PatientData[0].occupation!="")
-    {
-      this.oc=this.PatientData[0].occupation
-    }
-   
+     
     
    
     //this._address=this.PatientData[0].
@@ -650,7 +686,9 @@ this.dobModel=this.dateservice.LocalStringDateFormat(this._dob)
 this.myform.get('DateOfBirth').markAsDirty();
 this.myform.get('DateOfBirth').setErrors(null);
 this.myform.get('DateOfBirth').markAsTouched();
-
+// this.myform.get('AppDateform').markAsDirty();
+// this.myform.get('AppDateform').setErrors(null);
+// this.myform.get('AppDateform').markAsTouched();
 //this.myform.get('DateOfBirth').marksasValid();
 this.myform.get('FirstName').markAsDirty();
 this.myform.get('LastName').markAsDirty();
@@ -770,7 +808,6 @@ onKeyDown(event: KeyboardEvent) {
   ) {
     return;
   }
-  debugger
   let txt=(<HTMLInputElement>document.getElementById('Aadhaar')).value;
   if (event.key >= "0" && event.key <= "1") {
     if(txt.length==0)
@@ -786,7 +823,6 @@ onKeyDown(event: KeyboardEvent) {
   }}
 
   onKeyDownForMobile(event: KeyboardEvent) {
-    debugger
     // Allow numbers, backspace, and delete keys
     if (
       [46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
@@ -803,8 +839,6 @@ onKeyDown(event: KeyboardEvent) {
     ) {
       return;
     }
-    debugger
-    
     let txt=(<HTMLInputElement>document.getElementById('MobileNumber')).value;
     
       if (event.key >= "0" && event.key <= "5") {
@@ -827,7 +861,6 @@ onKeyDown(event: KeyboardEvent) {
 
     
   onKeyDownForMobile2(event: KeyboardEvent) {
-    debugger
     // Allow numbers, backspace, and delete keys
     if (
       [46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
@@ -844,8 +877,6 @@ onKeyDown(event: KeyboardEvent) {
     ) {
       return;
     }
-    debugger
-    
     let txt=(<HTMLInputElement>document.getElementById('Mobilenumsearch')).value;
     
       if (event.key >= "0" && event.key <= "5") {
@@ -867,7 +898,6 @@ onKeyDown(event: KeyboardEvent) {
   
     
   onKeyDownForPincode(event: KeyboardEvent) {
-    debugger
     // Allow numbers, backspace, and delete keys
     if (
       [46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
@@ -884,8 +914,6 @@ onKeyDown(event: KeyboardEvent) {
     ) {
       return;
     }
-    debugger
-    
     let txt=(<HTMLInputElement>document.getElementById('Pincode')).value;
     
       if (event.key == "0") {
@@ -908,7 +936,6 @@ onKeyDown(event: KeyboardEvent) {
   
   selectGender(event:any)
   {
-    debugger
     if(event.target.value=="Mr"||event.target.value=="Mrs")
     {
       this.myform.get('Gender').patchValue(1)
@@ -920,6 +947,7 @@ onKeyDown(event: KeyboardEvent) {
    
   }
   datePatternValidator(control:any) {
+    debugger;
     const datePattern = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD format
     if (!datePattern.test(control.value) || isNaN(Date.parse(control.value))) {
       if(control.value!="")
@@ -984,6 +1012,7 @@ AcceptHousenumberOnly(event: KeyboardEvent) {
 GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
 {
   debugger
+  date=this.dateservice.GlobalStringDateFormat(date);
   this.service.GetTimeSlotsForTimePicker(date,TimeInterval).subscribe((result)=>{
     this.timeintarval=result;
     debugger
@@ -995,15 +1024,61 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
     debugger
     let today=new Date();
     let _date=formatDate(today,'dd-MM-yyyy','en-Us');
-    this.AppdateModel=_date;
+    if(this.Data[3].split('=')[1] != null && this.Data[3].split('=')[0] == "Appointment Date"){
+      debugger;
+     
+        this.AppdateModel = this.Data[3].split('=')[1];
+      // (<HTMLInputElement>document.getElementById('Appdate')).value =this.Data[3].split('=')[1];
+    }
+    if(this.Data[5].split('=')[1]!= null && this.Data[5].split('=')[0] == "StartTime"){
+      this.starttime = this.Data[5].split('=')[1];
+      this.endtime = this.Data[6].split('=')[1];
+      
+    }
     this.GetTimeSlotsForTimePicker(_date,15);
-   // let t=this.timeintarval[0]
     localStorage.setItem('header','Create Appointment')
     this.service.getReligion().subscribe((result : Religion[])=>(this.Relig=result));
     this.service.getNationality().subscribe((result : Nationality[])=>(this.nat=result));
     this.service.GetStates().subscribe((result)=>(this.states=result));
-    this.service.GetSchedulartypes().subscribe((result)=>{this.stype=result})
-this.service.getSpeciality().subscribe((result)=>{this.speciality=result})
+    this.service.GetSchedulartypes().subscribe((result)=>{
+      debugger;
+      if(this.Data[0].split('=')[1] == "" || this.Data[0].split('=')[1]== null){
+        this.stype=result;
+      }
+      else{
+        this.stype=result;
+        this.scheduleid = this.Data[0].split('=')[1];
+        this.stype = this.stype.filter((item: { scheduleTypeId: number; }) => item.scheduleTypeId == this.scheduleid);
+        this.ScheduleTypeId = this.stype[0].scheduleTypeId;
+        this.myform.get('ScheduleTypeId').markAsDirty();
+        //AppointmentDate
+      
+        if(this.ScheduleTypeId != null){
+          this.isspecialityhide=true
+  this.isdoctorhide=true
+        }
+      }
+     
+     })
+    
+this.service.getSpeciality().subscribe((result)=>{
+  debugger;
+  if(this.Data[1].split('=')[1] == "" || this.Data[1].split('=')[1]== null){
+    this.speciality=result
+  }
+  else{
+    this.speciality=result;
+    this.Specialityid = this.Data[1].split('=')[1];
+    this.speciality = this.speciality.filter((item: { specialityID: number; }) => item.specialityID == this.Specialityid);
+        this.SpecialityID = this.speciality[0].specialityID;
+        this.myform.get('SpecialityID').markAsDirty();
+        this.getDoctors(this.SpecialityID);
+  }
+  
+
+
+
+})
 
 
 this.myform=this.formbulder.group({
@@ -1015,7 +1090,7 @@ this.myform=this.formbulder.group({
   MobileNumber:['',[Validators.required,Validators.minLength(10)]],
   RelegionId:['Religion*',Validators.required],
   NationalityId:['Nationality*',Validators.required],
-  HouseNo:['',Validators.required],
+  HouseNo:['',[Validators.required,Validators.pattern(/^[A-Za-z0-9/.:,\\-]*$/)]],
   StateId:[0,Validators.required],
   DistrictId:['District*',Validators.required],
   City:[''],
@@ -1031,7 +1106,7 @@ this.myform=this.formbulder.group({
   Age:[''],
   AgeModId:['Age Mode*'],
   Prefix:['Prefix*',Validators.required],
-  AppointmentDate:['',Validators.required]
+  AppointmentDate:[this.AppdateModel,Validators.required]
 
 })
 
@@ -1059,20 +1134,17 @@ this.myform.get('Gender')?.disable();
   
    }
 
-   
   onDateSelectAppdate(event:any) {
-    debugger
-    let year = event.year;
-    let month = event.month <= 9 ? '0' + event.month : event.month;;
-    let day = event.day <= 9 ? '0' + event.day : event.day;;
-     let actual = day + "-" + month + "-" + year;
-    (<HTMLInputElement>document.getElementById('AppointmentDate')).value=actual
-    this.AppdateModel=actual
-   // this.myform.get('AppointmentDate').patchValue(actual)
-  
-   
-   }
-  
+    debugger;
+       let year = event.year;
+       let month = event.month <= 9 ? '0' + event.month : event.month;;
+       let day = event.day <= 9 ? '0' + event.day : event.day;;
+        let actual = day + "-" + month + "-" + year;
+       (<HTMLInputElement>document.getElementById('AppDate')).value=actual
+       this.AppdateModel=actual;
+      
+      }
+ 
   @HostListener('document:click',['$event'])
   clickout(event: { target: any; }){
    this.istartdatetouched=false
@@ -1082,7 +1154,6 @@ this.myform.get('Gender')?.disable();
     else{
       this.showModal = false;
     }
-    debugger
 
     if(this.StartTime.nativeElement.contains(event.target)){
       let k=this.AppdateModel
@@ -1098,14 +1169,14 @@ this.myform.get('Gender')?.disable();
 
   }
   openDialog(): void {
-    this.dialogService.open(LoadingPopupComponent, {
+    this.dialogCommunicationService.open(LoadingPopupComponent, {
      // width: '250px', // Adjust the width as needed
      data:"Saving....."
     });
   }
 
   closeAllDialogs(): void {
-    this.dialogService.closeAll();
+    this.dialogCommunicationService.closeAll();
   }
 
 

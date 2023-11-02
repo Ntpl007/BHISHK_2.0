@@ -77,16 +77,18 @@ Login(user:any)
   this.validateallformfields(this.loginForm)
  // this.service.closeAllDialogs()
  }else{
-
+  $('#overlay').fadeIn();
   this.service.LoggedIn(user) .subscribe((result)=>{
     //debugger;
    
     if(result!=null)
     {
+     
     debugger
      this.userdata=result
    let data=result; 
-   localStorage.setItem('token',data.token)
+   localStorage.setItem('token',data.token)  
+   localStorage.setItem('userid',data.user_Id)
    localStorage.setItem('organizationId',data.organization_Id)
    localStorage.setItem('facility',data.facility_Name)
    localStorage.setItem('organization',data.organization_Name)
@@ -101,15 +103,24 @@ Login(user:any)
    //let a:any
    //var pathdata=this.service.GetPathList().subscribe((result : any)=>(a=result));;
    debugger
+   $('#overlay').fadeOut();
    if(this.decode.role=='Front Desk')
    {
-     this.router.navigateByUrl('/FrontDesk/OPD');
+    
+     this.router.navigateByUrl('/FrontDesk/DashBoard');
    }else
    if(this.decode.role=='Admin')
    {
      
-     //debugger
-     this.router.navigateByUrl('/Admin/Add-User');
+     this.router.navigateByUrl('/Admin');
+   } if(this.decode.role=='Super Admin')
+   {
+     
+     this.router.navigateByUrl('/SuperAdmin');
+   }if(this.decode.role=='Doctor')
+   {
+     
+     this.router.navigateByUrl('/Doctor/DashBoard');
    }
     }
    
@@ -122,6 +133,7 @@ Login(user:any)
        debugger
        if (error.status === 401) {
         this.router.navigate(['/login']);
+        $('#overlay').fadeOut();
         this._snackBar.open('Username or Password is invalid ','close', {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
@@ -134,6 +146,7 @@ Login(user:any)
       if (error.status === 0) {
         debugger
         this.router.navigate(['/login']);
+        $('#overlay').fadeOut();
         this._snackBar.open('Please check your Network Connection','close', {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,

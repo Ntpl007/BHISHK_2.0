@@ -18,6 +18,7 @@ import { AuthService } from './auth.service';
 import { TotalFacilities } from '../Model/TotalFacilities';
 import { formatDate } from '@angular/common';
 import { ScheduleTemplate } from '../Model/ScheduleTemplate';
+import { ListofDates } from '../Model/ListofDates';
 
 
 @Injectable({
@@ -48,9 +49,9 @@ readonly securityBaseUrl="http://10.10.20.25:84/";
 //------------------
   
 
-public GetDoctorbyspeciality(id:any) : Observable<any> {
-  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetDoctorsByspaciality?Id='+id);
-}
+// public GetDoctorbyspeciality(id:any) : Observable<any> {
+//   return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetDoctorsByspaciality?Id='+id);
+// }
 
 public GetSchedulartypes() : Observable<RefDoctor[]> {
   return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetScheduleTypes');
@@ -88,9 +89,9 @@ public GetRefDoctor() : Observable<RefDoctor[]> {
 }
 
 
-public GetRefDoctorbyspeciality(id:any) : Observable<RefDoctor[]> {
-  return this.http.get<RefDoctor[]>(this.Serverbaseurl+'FetchMasterData/GetRefDoctorsbySpeciality?Id='+id);
-}
+// public GetRefDoctorbyspeciality(id:any) : Observable<RefDoctor[]> {
+//   return this.http.get<RefDoctor[]>(this.Serverbaseurl+'FetchMasterData/GetRefDoctorsbySpeciality?Id='+id);
+// }
 
 public getCorporate(Id:any) : Observable<Corporate[]> {
   return this.http.get<Corporate[]>(this.Serverbaseurl+'FetchMasterData/GetCorporate?Id='+Id);
@@ -117,14 +118,16 @@ public GetRoles() : Observable<Roles[]> {
 
 public SearchPatients(Dates:any) : Observable<any> {
   debugger
-  
+  Dates.OrganizationId=localStorage.getItem('organizationId')
+  Dates.FacilityId=localStorage.getItem('facilityId')
   return this.http.post<any>(this.Serverbaseurl+'api/Home/SearchPatients',Dates);
 }
 
 public SearchPatientstbytoday() : Observable<any> {
   debugger
-  
-  return this.http.get<any>(this.Serverbaseurl+'api/Home/GetSearchPatientToday');
+  let OrgId=localStorage.getItem('organizationId')
+  let FId=localStorage.getItem('facilityId')
+  return this.http.get<any>(this.Serverbaseurl+'api/Home/GetSearchPatientToday?OrganizationId='+OrgId+'&FacilityId='+FId);
 }
 
 
@@ -133,8 +136,8 @@ public GetStates() : Observable<any> {
 }
 
 
-public GetUsers(organizationName:any) : Observable<any> {
-  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetUserList?organization='+organizationName);
+public GetUsers(Data:any) : Observable<any> {
+  return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/GetUserList',Data);
 }
 
 
@@ -236,7 +239,13 @@ public getAdminDashboard():Observable<any>
 
 
 public GetAppointments(Data:any):Observable<any>
-{ return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/GetAppointments',Data)
+{
+  let orgId=localStorage.getItem('organizationId');
+  let fid=localStorage.getItem('facilityId');
+  Data.OrganizationId=orgId;
+  Data.FacilityId=fid;
+  debugger
+   return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/GetAppointments',Data)
 
 }
 
@@ -374,7 +383,162 @@ public SavePatientVitalSigns(obj:any):Observable<any>
 {
   return this.http.post<any>(this.Serverbaseurl+'api/Home/SavePatientVitalSigns',obj)
 }
+public SaveOrganizationsbySuperAdmin(Data:any):Observable<any>
+{
+  
+ return this.http.post<any>(this.Serverbaseurl+'api/Account/AddOrganizations',Data)
+}
+
+public GetOrganizationAddress(Id:any):Observable<any>
+{
+  
+ return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetOrganizationAddress?Id='+Id)
+}
+public GetorganizationMappedData():Observable<any>
+{
+  
+ return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetorganizationMappedData')
+}
+
+public UpdateOrganization(Data:any):Observable<any>
+{
+  
+ return this.http.post<any>(this.Serverbaseurl+'api/Account/UpdateOrganization',Data)
+}
+
+public GetFacilitiesList(Id:number):Observable<any>
+{
+  
+ return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetFacilitiesList?Id='+Id)
+}
 
 
+public UpdateFacility(Data:any):Observable<any>
+{
+  
+ return this.http.post<any>(this.Serverbaseurl+'api/Account/UpdateFacility',Data)
+}
+
+
+public OpNurseStation(Dates:any) : Observable<any> {
+  debugger
+  
+  return this.http.post<any>(this.Serverbaseurl+'api/Home/OpNurseStation',Dates);
+}
+
+public GetUserById(Id:any) : Observable<any> {
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetUserListDetailsbyId?UserId='+Id);
+}
+public GetOrganizationDataById(Id:any): Observable<any>
+{
+ return this.http.get(this.Serverbaseurl+'FetchMasterData/GetOrganizationData?Id='+Id)
+}
+public UpdateUser(Data:any):Observable<any>
+{
+  
+ return this.http.post<any>(this.Serverbaseurl+'api/Account/UpdateUser',Data)
+}
+
+public GetDoctorbyspeciality(id:any) : Observable<any> {
+  let orgId=localStorage.getItem('organizationId');
+  let fid=localStorage.getItem('facilityId');
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetDoctorList?OrgnizationId='+orgId+'&FacilityId='+fid+'&SpecialityId='+id);
+}
+
+public GetSelectedAppointmentdetails(AppntDate:any, starttime: any,providerId: any, facilityId: any):Observable<any>
+{
+  debugger
+   return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetSelectedAppointmentdetails?AppointmentDate='+AppntDate+'&startTime='+starttime+'&providerId='+providerId+'&facilityId='+facilityId)
+
+}
+
+public GetScheduledTime(selectedDate: any,providerId: any, facilityId: any) : Observable<any> {
+
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetScheduledTime?selectedDate='+selectedDate+'&ProviderId='+providerId+'&FacilityId='+facilityId);
+}
+
+public GetBookedAppointments(selectedDate: any,providerId: any, facilityId: any) : Observable<any> {
+
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetBookedAppointments?selectedDate='+selectedDate+'&ProviderId='+providerId+'&FacilityId='+facilityId);
+}
+public GetPatientName(rescheduleappointmetid : any, providerId: any):Observable<any>
+{
+  let fid=localStorage.getItem('facilityId');
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetPatientName?Rescheduleappointmetid='+rescheduleappointmetid)
+}
+
+
+public GetDoctorDashboardData() : Observable<any> {
+let uid=localStorage.getItem('userid');
+let orgId=localStorage.getItem('organizationId');
+let fid=localStorage.getItem('facilityId');
+debugger
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetDoctorDashBoardData?OrgId='+orgId+'&FacId='+fid+'&DoctorId='+uid);
+}
+
+
+// public GetRefDoctorbyspeciality(id:any) : Observable<RefDoctor[]> {
+//   return this.http.get<RefDoctor[]>(this.Serverbaseurl+'FetchMasterData/GetRefDoctorsbySpeciality?Id='+id);
+// }
+public GetRefDoctorbyspeciality(Id:any) : Observable<any> {
+ // let uid=localStorage.getItem('userid');
+  let orgId=localStorage.getItem('organizationId');
+  let fid=localStorage.getItem('facilityId');
+  debugger
+    return this.http.get<RefDoctor[]>(this.Serverbaseurl+'FetchMasterData/GetRefDoctorsbyFacility?SpecialityId='+Id+'&OrganizationId='+orgId+'&FacilityId='+fid);
+  }
+
+public GetFrontdeskDashboardData() : Observable<any> {
+  let orgId=localStorage.getItem('organizationId');
+  let fid=localStorage.getItem('facilityId');
+  debugger
+    return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetFrontDeskDashBoardCount?OrganizationId='+orgId+'&FacilityId='+fid);
+  }
+
+ToCapital(text: string): string {
+  return text
+    .split(' ') // Split the text into words
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+    .join(' '); // Join the words back into a single string
+}
+
+public ValidationOfEffictiveandExpiryDate(providerId:any, effectiveDate:any, expirationDate:any) : Observable<any> {
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/ValidationOfEffictiveandExpiryDate?providerId='+providerId+'&effectiveDate='+effectiveDate+'&expirationDate='+expirationDate);
+  //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetUserList?providerId='+providerId);
+}
+public UpdateScheduleTemplate(ScheduleTemplateData:ScheduleTemplate[]):Observable<any>
+{ 
+  return  this.http.post<any>('https://localhost:44341/'+'api/Appointments/UpdateScheduleTemplate',ScheduleTemplateData);
+  //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
+  //return  this.http.post<any>(this.Serverbaseurl+'api/Appointments/SaveScheduleTemplate',ScheduleTemplateData);
+  //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
+}
+public GetProviderScheduleDates(scheduletemplateperiodid:any, fromdate:any, todate:any) : Observable<any> {
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/GetProviderScheduleDates?scheduletemplateperiodid='+scheduletemplateperiodid+'&fromdate='+fromdate+'&todate='+todate);
+  //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetUserList?providerId='+providerId);
+}
+public BlockScheduleTemplateDateWise(ListofDates:ListofDates[]):Observable<any>
+{ 
+  
+  return  this.http.post<any>(this.Serverbaseurl+'api/Appointments/BlockScheduleTemplateDateWise',ListofDates);
+  //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
+  //return  this.http.post<any>(this.Serverbaseurl+'api/Appointments/SaveScheduleTemplate',ScheduleTemplateData);
+  //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
+}
+public GetProviderBlockedScheduleDates(scheduletemplateperiodid:any, fromdate:any, todate:any) : Observable<any> {
+  return this.http.get<any>(this.Serverbaseurl+'api/Appointments/GetProviderBlockedScheduleDates?scheduletemplateperiodid='+scheduletemplateperiodid+'&fromdate='+fromdate+'&todate='+todate);
+  //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetUserList?providerId='+providerId);
+}
+public UnBlockScheduleTemplateDateWise(ListofDates:ListofDates[]):Observable<any>
+{ 
+ 
+  return  this.http.post<any>(this.Serverbaseurl+'api/Appointments/UnBlockScheduleTemplateDateWise',ListofDates);
+  //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
+  //return  this.http.post<any>(this.Serverbaseurl+'api/Appointments/SaveScheduleTemplate',ScheduleTemplateData);
+  //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
+}
+public GetResechduleslotsData(selectedDate: any,providerId: any, facilityId: any) : Observable<any> {
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetResechduleslotsData?selectedDate='+selectedDate+'&ProviderId='+providerId+'&FacilityId='+facilityId);
+}
 
 }

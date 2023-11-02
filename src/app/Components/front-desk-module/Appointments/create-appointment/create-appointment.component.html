@@ -1,452 +1,422 @@
 <div class="card-body">
-<div class="form-body">
-
-
-    <form [formGroup]="myform"  #reg="ngForm" (ngSubmit)="SaveAppointment(reg.value)" autocomplete="off">
-     <div class="form-row">
-        <div class="form-group mb-0 row">
-
-            <div class="form-check-inline my-0" >
-                <div class="custom-control ">
-                    <input style="size: 50px;" [value]="ischecktrue" (click)="existedCheck()" type="checkbox"  name="customRadio" 
-                    class="custom-control-input,col-md-1" id="chk">
-                    <label   class="custom-label" for="chk"> &nbsp;Existed Patient</label>
+    <div class="form-body">
+        <form [formGroup]="myform"  #reg="ngForm" (ngSubmit)="SaveAppointment(reg.value)" autocomplete="off">
+         <div class="form-row">
+            <div class="form-group mb-0 row">
+    
+                <div class="form-check-inline my-0" >
+                    <div class="custom-control ">
+                        <input style="size: 50px;" [value]="ischecktrue" (click)="existedCheck()" type="checkbox"  name="customRadio" 
+                        class="custom-control-input,col-md-1" id="chk">
+                        <label   class="custom-label" for="chk"> &nbsp;Existing Patient</label>
+                    </div>
                 </div>
+    
             </div>
-
-        </div>
-
-     </div>
-<div class="form-row"  [hidden]="isexistedpatientHide">
-
-
-    <div class="col-md-5 mb-3">
-
-        <div     #Mobilenumsearch>
-           <input type="text"   class="form-control"  [value]="mobilenumber" (keydown)="onKeyDownForMobile2($event)"  name="mobilenumber" id="Mobilenumsearch" placeholder="Enter Mobile Number*
-   " (keyup)="getpatient($event)">
-</div>
-
-
-                                              <!--table-->
-                                              <div *ngIf="showModal">
-                                               <div class="tableshow">
-                                                   <table  class="table table-hover"  id="patients" >
-                                                       <thead>
-                                             <tr>
-                                               <th style="font-size: 10px; padding-left: 9px;padding-top: 5px;">Name</th>
-                                               <th style="font-size:10px; "> Gender</th>
-                                               <th style="font-size: 10px; ">Patient Id</th>
-                                               <th style="font-size: 10px;">Mobile</th>
-                                               <th style="font-size: 10px;">Aadhar Number</th>
-                                             </tr>
-                                           </thead>
-                                           <tbody class="tablebody" >
-                                             <tr *ngFor="let item of listOfDisplayData;let k = index" (click)="getpatientdata(k, item)">
-
-                                               <td style="text-align: left;"><label style="font-size: 10px;">{{item.firstName}}</label></td>
-                                               <td ><label style="font-size: 10px;">{{item.gender}}</label></td>
-                                               <td ><label style="font-size: 10px;" >{{item.patienTMrn}}</label></td>
-                                               <td ><label style="font-size: 10px;">{{item.mobileNumber}}</label></td>
-                                               <td ><label style="font-size: 10px;">{{item.aadhaarNumber}}</label></td>
-                                             </tr>
-                                           </tbody>
-                                         </table>
+    
+         </div>
+    <div class="form-row"  [hidden]="isexistedpatientHide">
+        <div class="col-md-6 mb-3">
+    
+            <div     #Mobilenumsearch>
+               <input type="text"   class="form-control"  [value]="mobilenumber" (keydown)="onKeyDownForMobile2($event)"  name="mobilenumber" id="Mobilenumsearch" placeholder="Enter Mobile Number*
+       " (keyup)="getpatient($event)">
+    </div>
+    
+    
+                                                  <!--table-->
+                                                  <div *ngIf="showModal">
+                                                   <div class="tableshow">
+                                                       <table  class="table table-hover"  id="patients" >
+                                                           <thead>
+                                                 <tr>
+                                                   <th style="font-size: 10px; padding-left: 9px;padding-top: 5px;">Name</th>
+                                                   <th style="font-size:10px; "> Gender</th>
+                                                   <th style="font-size: 10px; ">Patient Id</th>
+                                                   <th style="font-size: 10px;">Mobile</th>
+                                                   <th style="font-size: 10px;">Aadhar Number</th>
+                                                 </tr>
+                                               </thead>
+                                               <tbody class="tablebody" >
+                                                 <tr *ngFor="let item of listOfDisplayData;let k = index" (click)="getpatientdata(k, item)">
+    
+                                                   <td style="text-align: left;"><label style="font-size: 10px;">{{item.firstName}}</label></td>
+                                                   <td ><label style="font-size: 10px;">{{item.gender}}</label></td>
+                                                   <td ><label style="font-size: 10px;" >{{item.patienTMrn}}</label></td>
+                                                   <td ><label style="font-size: 10px;">{{item.mobileNumber}}</label></td>
+                                                   <td ><label style="font-size: 10px;">{{item.aadhaarNumber}}</label></td>
+                                                 </tr>
+                                               </tbody>
+                                             </table>
+                                                   </div>
+    
+                                                 </div>
+    
                                                </div>
-
-                                             </div>
-
-                                           </div>
-</div>
-
-
-
-<div class="form-row">
-    <div class="col-md-2 mb-2">
-       <select class="form-control" isSearchable="true" id="exampleFormControlSelect1" (change)="selectGender($event)" formControlName="Prefix"   name="Prefix" id="ddlprefix">
-            <option [selected]="true" hidden  >Prefix*</option>
-            <option value="Mr" >Mr</option>
-            <option value="Miss">Miss</option>
-            <option value="Ms">Ms</option>
-            <option value="Mrs">Mrs</option>
-            </select>
-             <small *ngIf="myform.get('Prefix').pristine && myform.get('Prefix').touched" class="text-danger">
-                Prefix is required
-                             </small> 
+    </div>
+    
+    
+    
+    <div class="form-row">
+        <div class="col-md-2 mb-2">
+           <select class="form-control" isSearchable="true" id="exampleFormControlSelect1" (change)="selectGender($event)" formControlName="Prefix"   name="Prefix" id="ddlprefix">
+                <option [selected]="true" hidden  >Prefix*</option>
+                <option value="Mr" >Mr</option>
+                <option value="Miss">Miss</option>
+                <option value="Ms">Ms</option>
+                <option value="Mrs">Mrs</option>
+                </select>
+                 <small *ngIf="myform.get('Prefix').pristine && myform.get('Prefix').touched" class="text-danger">
+                    Prefix is required
+                                 </small> 
+            </div>
+    
+    <div class="col-md-3 mb-3">
+    
+        <input type="text" onpaste="return false" class="form-control text-capitalize" (keydown)="AcceptCharactersOnly($event)"  id="txtName" formControlName="FirstName"  placeholder="First Name*"  name="FirstName">
+         <small *ngIf="myform.get('FirstName').touched&&myform.get('FirstName').hasError('required')" class="text-danger">
+            First Name is required
+           </small> 
+    </div>
+    <div class="col-md-4 mb-4">
+    
+        <input type="text" class="form-control text-capitalize" onpaste="return false" (keydown)="AcceptCharactersOnly($event)"  formControlName="LastName" id="txtLName" placeholder="Last Name"  name="Last Name">
+    
+    </div>
+    
+    
+    <div  class="col-md-3 mb-3" >
+        <div class="input-group">
+         <input formControlName="DateOfBirth" class="form-control" 
+                class="form-control"
+                placeholder="Date Of Birth*"
+                ngbDatepicker
+                (keydown)="EndTimeKeyEvent($event)"
+                            #d="ngbDatepicker"
+                            (dateSelect)="onDateSelectDob($event)" 
+                              name="dob"
+                           [value]="dobModel"
+                           onpaste="return false"
+                              id="dob"
+                              [minDate]="minDatefordob"
+                              [maxDate]="maxDate"
+    
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"type="button"></button>
         </div>
-
-<div class="col-md-3 mb-3">
-
-    <input type="text" onpaste="return false" class="form-control text-capitalize" (keydown)="AcceptCharactersOnly($event)"  id="txtName" formControlName="FirstName" class="form-control"  placeholder="First Name*"  name="FirstName">
-     <small *ngIf="myform.get('FirstName').touched&&myform.get('FirstName').hasError('required')" class="text-danger">
-        First Name is required
-       </small> 
-</div>
-<div class="col-md-4 mb-4">
-
-    <input type="text" class="form-control text-capitalize" onpaste="return false" (keydown)="AcceptCharactersOnly($event)"  formControlName="LastName" id="txtName" placeholder="Last Name"  name="Last Name">
-
-</div>
-
-
-<div  class="col-md-3 mb-3" >
-    <div class="input-group">
-     <input formControlName="DateOfBirth" class="form-control" 
-            class="form-control"
-            placeholder="Date Of Birth*"
-            ngbDatepicker
-            (keydown)="EndTimeKeyEvent($event)"
-                        #d="ngbDatepicker"
-                        (dateSelect)="onDateSelectDob($event)" 
-                          name="dob"
-                       [value]="dobModel"
-                       onpaste="return false"
-                          id="dob"
-                          [minDate]="minDatefordob"
-                          [maxDate]="maxDate"
-
-        />
-        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"type="button"></button>
+        <small *ngIf="myform.get('DateOfBirth').pristine&& myform.get('DateOfBirth').touched" class="text-danger">
+            Date of birth is required
+           </small> 
+           <!-- <div *ngIf="myform.get('DateOfBirth').touched&&myform.get('DateOfBirth').hasError('invalidDate')" class="text-danger">
+            Invalid date format.
+          </div> -->
+    
+        </div>
+    
+        <div class="col-md-1 mb-1" >
+    
+            <input type="text"formControlName="Age" readonly="true"   class="form-control text-capitalize" id="txtAge" placeholder="Age*"  name="Age">
+            <!-- <small *ngIf="myform.get('Age').touched&&myform.get('Age').hasError('required')" class="text-danger">
+                Age is required
+               </small> -->
     </div>
-    <small *ngIf="myform.get('DateOfBirth').pristine&& myform.get('DateOfBirth').touched" class="text-danger">
-        Date of birth is required
-       </small> 
-       <!-- <div *ngIf="myform.get('DateOfBirth').touched&&myform.get('DateOfBirth').hasError('invalidDate')" class="text-danger">
-        Invalid date format.
-      </div> -->
-
-    </div>
-
-    <div class="col-md-1 mb-1" >
-
-        <input type="text"formControlName="Age" readonly="true"   class="form-control text-capitalize" id="txtAge" placeholder="Age*"  name="Age">
-        <!-- <small *ngIf="myform.get('Age').touched&&myform.get('Age').hasError('required')" class="text-danger">
-            Age is required
-           </small> -->
-</div>
-<div class="col-md-2 mb-2">
-    <select class="form-control" id="AgeModId" formControlName="AgeModId"   name="AgeModId" >
-        <option [selected]="true"  hidden  >Age Mode*</option>
-        <option value="1">Days</option>
-        <option value="2">Months</option>
-        <option value="3">Years</option>
-
-    </select>
-    <!-- <small *ngIf="myform.get('AgeModId').pristine&& myform.get('AgeModId').touched" class="text-danger">
-        Religion is required
-                     </small> -->
-</div>
-
-  <div class="col-md-3 mb-4">
-    <div>
-        <select class="form-control" id="ddlSex" name="Gender"  formControlName="Gender">
-            <option [selected]="true" hidden  >Gender*</option>
-            <option value="1">Male</option>
-            <option value="2">Female</option>
-            <option value="3">Other</option>
+    <div class="col-md-2 mb-2">
+        <select class="form-control" id="AgeModId" formControlName="AgeModId"   name="AgeModId" >
+            <option [selected]="true"  hidden  >Age Mode*</option>
+            <option value="1">Days</option>
+            <option value="2">Months</option>
+            <option value="3">Years</option>
+    
         </select>
-     <!-- <small *ngIf="myform.get('Gender').pristine&& myform.get('Gender').touched" class="text-danger">
-            Gender is required
+        <!-- <small *ngIf="myform.get('AgeModId').pristine&& myform.get('AgeModId').touched" class="text-danger">
+            Religion is required
                          </small> -->
     </div>
-    </div>
-<div class="col-md-3 mb-3">
-<input type="text"  class="form-control" maxlength="12" onpaste="return false" (keydown)="onKeyDown($event)"   formControlName="AadhaarNumber" id="Aadhaar" placeholder="Aadhaar*" name="Aadhaar">
- <!-- <span   class="fa fa-check errspan"></span>
-<span  class="fa fa-exclamation-circle errspan2"></span> -->
-
-<!-- <small style="color: red;" >Aadhaar is already Existed</small>   -->
-<small *ngIf="myform.get('AadhaarNumber').touched&&myform.get('AadhaarNumber').hasError('required')" class="text-danger">
-    Aadhaar is required
-   </small>
-   <small *ngIf="myform.get('AadhaarNumber').dirty&&myform.get('AadhaarNumber').hasError('minlength')" class="text-danger">
- Aadhaar No. must be 12 digits 
-                     </small>
-   <small *ngIf="aadhaar01accaptable" class="text-danger">
-    Starting with 0 or 1 not acceptable
-   </small>
-</div>
-
-<div class="col-md-3 mb-3">
-<input type="text" class="form-control" maxlength="10" onpaste="return false" id="MobileNumber" formControlName="MobileNumber" placeholder="Mobile*" (keydown)="onKeyDownForMobile($event)"  name="MobileNumber"/>
- <small *ngIf="myform.get('MobileNumber').touched&&myform.get('MobileNumber').hasError('required')" class="text-danger">
-    Mobile Number is required
-   </small>  
-   <small *ngIf="myform.get('MobileNumber').dirty&&myform.get('MobileNumber').hasError('minlength')" class="text-danger">
-    Mobile No. must be 10 digits  
-                     </small>
-   <small *ngIf="mobile05accaptable" class="text-danger">
-    characters , special characters and starting with 0 to 5 not acceptable
-   </small>
-</div>
-<div class="col-md-3 mb-3">
-    <select class="form-control" id="ddlReligion" formControlName="RelegionId"   name="ReligionId">
-        <option [selected]="true"  hidden  >Religion*</option>
-        <option  *ngFor="let d of Relig"  value={{d.religionID}}>{{d.religionName}}</option>
-
-    </select>
-     <small *ngIf="myform.get('RelegionId').pristine&& myform.get('RelegionId').touched" class="text-danger">
-        Religion is required
-                     </small>
-</div>
-
-
-<div class="col-md-3 mb-3">
-    <select class="form-control" id="ddlnationality" formControlName="NationalityId"  name="NationalityId" >
-        <option [selected]="true"  hidden  >Nationality*</option>
-    <option  *ngFor="let d of nat"  value={{d.nationalitY_ID}}>{{d.nationalitY_NAME}}</option>
-    </select>
-     <small *ngIf="myform.get('NationalityId').pristine&& myform.get('NationalityId').touched" class="text-danger">
-        Nationality is required
-                     </small>
-</div>
-
-
-
-
- <div class="col-md-3 mb-3">
-    <input type="text" class="form-control"  formControlName="HouseNo"  id="Hno" name="HouseNo" placeholder="House No.*">
-    <small *ngIf="myform.get('HouseNo').touched&&myform.get('HouseNo').hasError('required')" class="text-danger">
-        House No. is required
-       </small> 
-</div>
- <div class="col-md-3 mb-3">
-
-    <select class="form-control" id="State" formControlName="StateId"   #state name="State" (change)="GetDistricts(state.value)">
-         <option [selected]="true"  hidden  value="0">State*</option>
-     <option  *ngFor="let x of states" value={{x.id}}>{{x.name}}</option>
-
-
-    </select>
-     <small *ngIf="myform.get('StateId').pristine&& myform.get('StateId').touched" class="text-danger">
-        State is required
-                     </small>
-</div>
-
-
-<div class="col-md-3 mb-3">
-    <select class="form-control" formControlName="DistrictId"  id="District" name="District" >
-        <option  [selected]="true"  hidden  >District*</option>
-        <option  *ngFor="let x of districts" value={{x.id}} >{{x.name}}</option>
-
-    </select>
-     <small *ngIf="myform.get('DistrictId').pristine&& myform.get('DistrictId').touched" class="text-danger">
-        District is required
-                     </small>
-</div>
-<div class="col-md-3 mb-3">
-    <input type="text" class="form-control" onpaste="return false" formControlName="City" (keydown)="AcceptCharactersOnly($event)" name="City" placeholder="City">
-</div>
-<div class="col-md-3 mb-3">
-    <input type="text" class="form-control" onpaste="return false" formControlName="Village" name="Village" placeholder="Village" (keydown)="AcceptCharactersOnly($event)">
-</div>
-<div class="col-md-3 mb-3">
-    <input type="text" class="form-control" onpaste="return false" formControlName="PinCode" id="Pincode"  name="Pincode" placeholder="Pincode*" maxlength="6" (keydown)="onKeyDownForPincode($event)">
- <small *ngIf="myform.get('PinCode').touched&&myform.get('PinCode').hasError('required')" class="text-danger">
-       Pincode is required
-       </small> 
-       <small *ngIf="myform.get('PinCode').dirty&&myform.get('PinCode').hasError('minlength')" class="text-danger">
-        Pincode No. must be 6 digits 
-                            </small>
-</div>
-
-</div>
-<div class="form-row">
     
-    <div class="col-md-4 mb-4" >
-        <div class="input-group">
-            <input formControlName="AppointmentDate" class="form-control" readonly="true"
-                   class="form-control"
-                   placeholder="Appointment Date*"
-                   ngbDatepicker
-                 
-                               #p="ngbDatepicker"
-                               (dateSelect)="onDateSelectAppdate($event)" 
-                                 name="AppointmentDate"
-                                 onpaste="return false"
-                                [minDate]="minDate"
-                                 id="AppointmentDate"
-                                 [value]="AppdateModel"
-                                 [maxDate]="maxDateForAppointment"
-       
-               />
-               <button class="btn btn-outline-secondary bi bi-calendar3" (click)="p.toggle()"type="button"></button>
-           </div>
-           <small *ngIf="myform.get('AppointmentDate').touched&&myform.get('AppointmentDate').hasError('required')" class="text-danger">
-            Appointment Date is required
-           </small>
-    </div>
-    <!-- <div class="col-md-2 mb-2" >
-
-        <label>
-         Start Time
-        </label>
-       
-        
-      </div>
-      <div class="col-md-2 mb-2" >
-        <input type="time" class="form-control" formControlName="StartTime" id="stime" value="10:05 AM">
-        <small *ngIf="myform.get('StartTime').touched&&myform.get('StartTime').hasError('required')" class="text-danger">
-            Start Time is required
-           </small>
+      <div class="col-md-3 mb-4">
+        <div>
+            <select class="form-control" id="ddlSex" name="Gender"  formControlName="Gender">
+                <option [selected]="true" hidden  >Gender*</option>
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+                <option value="3">Other</option>
+            </select>
+         <!-- <small *ngIf="myform.get('Gender').pristine&& myform.get('Gender').touched" class="text-danger">
+                Gender is required
+                             </small> -->
         </div>
-     <div class="col-md-2 mb-2" >
-
-         <label>
-          End Time
-         </label>
+        </div>
+    <div class="col-md-3 mb-3">
+    <input type="text"  class="form-control" maxlength="12" onpaste="return false" (keydown)="onKeyDown($event)"   formControlName="AadhaarNumber" id="Aadhaar" placeholder="Aadhaar*" name="Aadhaar">
+     <!-- <span   class="fa fa-check errspan"></span>
+    <span  class="fa fa-exclamation-circle errspan2"></span> -->
+    
+    <!-- <small style="color: red;" >Aadhaar is already Existed</small>   -->
+    <small *ngIf="myform.get('AadhaarNumber').touched&&myform.get('AadhaarNumber').hasError('required')" class="text-danger">
+        Aadhaar is required
+       </small>
+       <small *ngIf="myform.get('AadhaarNumber').dirty&&myform.get('AadhaarNumber').hasError('minlength')" class="text-danger">
+     Aadhaar No. must be 12 digits 
+                         </small>
+       <small *ngIf="aadhaar01accaptable" class="text-danger">
+        Starting with 0 or 1 not acceptable
+       </small>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+    <input type="text" class="form-control" maxlength="10" onpaste="return false" id="MobileNumber" formControlName="MobileNumber" placeholder="Mobile*" (keydown)="onKeyDownForMobile($event)"  name="MobileNumber"/>
+     <small *ngIf="myform.get('MobileNumber').touched&&myform.get('MobileNumber').hasError('required')" class="text-danger">
+        Mobile Number is required
+       </small>  
+       <small *ngIf="myform.get('MobileNumber').dirty&&myform.get('MobileNumber').hasError('minlength')" class="text-danger">
+        Mobile No. must be 10 digits  
+                         </small>
+       <small *ngIf="mobile05accaptable" class="text-danger">
+        characters , special characters and starting with 0 to 5 not acceptable
+       </small>
+    </div>
+    <div class="col-md-3 mb-3">
+        <select class="form-control" id="ddlReligion" formControlName="RelegionId"   name="ReligionId">
+            <option [selected]="true"  hidden  >Religion*</option>
+            <option  *ngFor="let d of Relig"  value={{d.religionID}}>{{d.religionName}}</option>
+    
+        </select>
+         <small *ngIf="myform.get('RelegionId').pristine&& myform.get('RelegionId').touched" class="text-danger">
+            Religion is required
+                         </small>
+    </div>
+    
+    
+    <div class="col-md-3 mb-3">
+        <select class="form-control" id="ddlnationality" formControlName="NationalityId"  name="NationalityId" >
+            <option [selected]="true"  hidden  >Nationality*</option>
+        <option  *ngFor="let d of nat"  value={{d.nationalitY_ID}}>{{d.nationalitY_NAME}}</option>
+        </select>
+         <small *ngIf="myform.get('NationalityId').pristine&& myform.get('NationalityId').touched" class="text-danger">
+            Nationality is required
+                         </small>
+    </div>
+    
+    
+    
+    
+     <div class="col-md-3 mb-3">
+        <input type="text" class="form-control"  formControlName="HouseNo"  id="Hno" name="HouseNo" placeholder="House No.*">
+        <small *ngIf="myform.get('HouseNo').touched&&myform.get('HouseNo').hasError('required')" class="text-danger">
+            House No. is required
+           </small> 
+           <small *ngIf="myform.get('HouseNo').hasError('pattern')" class="text-danger">
+            Invalid Input Format
+             </small> 
+                
+    </div>
+     <div class="col-md-3 mb-3">
+    
+        <select class="form-control" id="State" formControlName="StateId"   #state name="State" (change)="GetDistricts(state.value)">
+             <option [selected]="true"  hidden  value="0">State*</option>
+         <option  *ngFor="let x of states" value={{x.id}}>{{x.name}}</option>
+    
+    
+        </select>
+         <small *ngIf="myform.get('StateId').pristine&& myform.get('StateId').touched" class="text-danger">
+            State is required
+                         </small>
+    </div>
+    
+    
+    <div class="col-md-3 mb-3">
+        <select class="form-control" formControlName="DistrictId"  id="District" name="District" >
+            <option  [selected]="true"  hidden  >District*</option>
+            <option  *ngFor="let x of districts" value={{x.id}} >{{x.name}}</option>
+    
+        </select>
+         <small *ngIf="myform.get('DistrictId').pristine&& myform.get('DistrictId').touched" class="text-danger">
+            District is required
+                         </small>
+    </div>
+    <div class="col-md-3 mb-3">
+        <input type="text" class="form-control" onpaste="return false" formControlName="City" (keydown)="AcceptCharactersOnly($event)" name="City" placeholder="City">
+    </div>
+    <div class="col-md-3 mb-3">
+        <input type="text" class="form-control" onpaste="return false" formControlName="Village" name="Village" placeholder="Village" (keydown)="AcceptCharactersOnly($event)">
+    </div>
+    <div class="col-md-3 mb-3">
+        <input type="text" class="form-control" onpaste="return false" formControlName="PinCode" id="Pincode"  name="Pincode" placeholder="Pincode*" maxlength="6" (keydown)="onKeyDownForPincode($event)">
+     <small *ngIf="myform.get('PinCode').touched&&myform.get('PinCode').hasError('required')" class="text-danger">
+           Pincode is required
+           </small> 
+           <small *ngIf="myform.get('PinCode').dirty&&myform.get('PinCode').hasError('minlength')" class="text-danger">
+            Pincode No. must be 6 digits 
+                                </small>
+    </div>
+    
+    </div>
+    <div class="form-row">
         
-        
-       </div>
-       
-       
-       <div class="col-md-2 mb-2" >
-        <input type="time" formControlName="EndTime" class="form-control"  id="etime" >
-        <small *ngIf="myform.get('EndTime').touched&&myform.get('EndTime').hasError('required')" class="text-danger">
-            End Time is required
-           </small>
-       </div> -->
-       
-       <div class="col-md-4 mb-4">
-  
-        <div    #StartTime> 
-         
+        <div class="col-md-4 mb-4" >
             <div class="input-group">
-            <input type="text"   class="form-control"  id="StartTime"    formControlName="StartTime"
-             name="mobilenumber" id="StartTime" [value]="starttime" (keydown)="EndTimeKeyEvent($event)"
-              placeholder="start time*"  onpaste="return false">
-              <button type="button" class="btn btn-outline-secondary" style="width: 30px;"></button>
-
-              <i class="fa fa-clock-o fa-lg TimeSpan " aria-hidden="false"></i>
+                <input formControlName="AppointmentDate" class="form-control" readonly="true"
+                       class="form-control"
+                       placeholder="Please Select date"
+                       ngbDatepicker
+       #p="ngbDatepicker"
+       (dateSelect)="onDateSelectAppdate($event)"
+       name="AppDate"
+       onpaste="return false"
+       [minDate]="minDate"
+       id="AppDate"
+       [maxDate]="maxDate"
+       [value]="AppdateModel"
+       [attr.disabled]="true"          />
+                   <button class="btn btn-outline-secondary bi bi-calendar3" (click)="p.toggle()"type="button" [attr.disabled]="true" ></button>
+               </div>
+               <!-- <small *ngIf="myform.get('AppDateform').pristine&& myform.get('AppDateform').touched" class="text-danger">
+              Appointment Date is required
+               </small>  -->
+        </div>
+         
+       
+           
+           <div class="col-md-4 mb-4">
+      
+            <div    #StartTime> 
+             
+                <div class="input-group">
+                <input type="text"   class="form-control non-selectable" id="StartTime" [attr.disabled]="true"   formControlName="StartTime"
+                 name="mobilenumber" id="StartTime" [(ngModel)]="starttime" (keydown)="EndTimeKeyEvent($event)" [disabled]="isStartTimeDisabled"
+                  placeholder="start time*"  onpaste="return false">
+                  <!-- <button type="button" class="btn btn-outline-secondary" style="width: 30px;" [ngClass]="{'disabled-icon': iconDisabled}" (click)="iconDisabled ? null : iconClick($event)"></button>
+                  <i class="fa fa-clock-o fa-lg TimeSpan" aria-hidden="false" ></i>
+      -->
+                </div>
+                <span *ngIf="istartdatetouched">
+                <small *ngIf="myform.get('StartTime').touched&&myform.get('StartTime').hasError('required')" class="text-danger">
+                    Start Time is required
+                   </small> 
+                </span>
+              
               
             
-            </div>
-            <span *ngIf="istartdatetouched">
-            <small *ngIf="myform.get('StartTime').touched&&myform.get('StartTime').hasError('required')" class="text-danger">
-                Start Time is required
-               </small> 
-            </span>
-          
-          
-        
-        
-                                             <!--table-->
-                                             <div *ngIf="showModal2">
-                                              <div class="tableshow2">
-                                                  <table  class="table table-hover"  id="patients2" >
-                                                      
-                                          <tbody class="tablebody2" >
-                                            <tr id="rd" *ngFor="let item of timeintarval;let k = index" (click)="ChangeTimeSlot(k, item)">
-        
-                                             
-                                              <td style="font-weight: bold" ><label style="font-size: 10px;">{{item}}</label></td>
-                                             
-                                            </tr>
-                                          </tbody>
-                                        </table>
+            
+                                                 <!--table-->
+                                                 <div *ngIf="showModal2">
+                                                  <div class="tableshow2">
+                                                      <table  class="table table-hover"  id="patients2" >
+                                                          
+                                              <tbody class="tablebody2" >
+                                                <tr id="rd" *ngFor="let item of timeintarval;let k = index" (click)="ChangeTimeSlot(k, item)">
+            
+                                                 
+                                                  <td style="font-weight: bold" ><label style="font-size: 10px;">{{item}}</label></td>
+                                                 
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                                  </div>
+            
+                                              
                                               </div>
-        
-                                          
-                                          </div>
-        
-                                         
-                                          
-                                          
-</div>
-</div>
-    <div class="col-md-4 mb-4" >
-      
-        <div class="input-group">
-    <input type="text" onpaste="return false" class="form-control non-selectable" id="EndTime"  ngbTooltip="End Time Can't be Editable" [value]="endtime" formControlName="EndTime"  placeholder="End time*"  (keydown)="EndTimeKeyEvent($event)">
-    <!-- <button class="btn btn-outline-secondary non-selectable" type="button" style="width: 30px;"></button>
-
-    <i class="fa fa-clock-o fa-lg TimeSpan " aria-hidden="false"></i>
-     -->
-  
-</div>
-    <small *ngIf="myform.get('EndTime').touched&&myform.get('EndTime').hasError('required')" class="text-danger">
-        End Time is required
-       </small>  
-</div>
+            
+                                             
+                                              
+                                              
+    </div>
+    </div>
+        <div class="col-md-4 mb-4" >
+          
+            <div class="input-group">
+        <input type="text" onpaste="return false" class="form-control non-selectable" id="EndTime"  [attr.disabled]="true" ngbTooltip="End Time Can't be Editable" [(ngModel)]="endtime" formControlName="EndTime"  placeholder="End time*"  (keydown)="EndTimeKeyEvent($event)">
+        <!-- <button class="btn btn-outline-secondary non-selectable" type="button" style="width: 30px;"></button>
     
-
-</div>
-
-
-<div class="form-row">
-
-<div class="col-md-4 mb-4">
-<select class="form-control" id="ddlScheduleType" formControlName="ScheduleTypeId" (change)="getId($event)"  name="ScheduleTypeId" >
-    <option [selected]="true"  hidden   >ScheduleType*</option>
-     <option  *ngFor="let d of stype"  value={{d.scheduleTypeId}}>{{d.scheduleType_Name}}</option>
-</select>
- <small *ngIf="myform.get('ScheduleTypeId').pristine&& myform.get('ScheduleTypeId').touched" class="text-danger">
-    Schedule Type is required
-                 </small>
-</div>
-
-<div class="col-md-4 mb-4" *ngIf="isspecialityhide" >
-
-    <select class="form-control" formControlName="SpecialityID"  id="ddlSpecialityId"    name="specialityID"  (change)="getDoctors($event)"  >
-        <option [selected]="true"  hidden   >Speciality*</option>
-      <option  *ngFor="let d of speciality"  value={{d.specialityID}}>{{d.speciality}}</option>
+        <i class="fa fa-clock-o fa-lg TimeSpan " aria-hidden="false"></i>
+         -->
+      
+    </div>
+        <small *ngIf="myform.get('EndTime').touched&&myform.get('EndTime').hasError('required')" class="text-danger">
+            End Time is required
+           </small>  
+    </div>
+        
+    
+    </div>
+    
+    
+    <div class="form-row">
+    
+    <div class="col-md-4 mb-4">
+    <select class="form-control" id="ddlScheduleType" formControlName="ScheduleTypeId" [attr.disabled]="true" (change)="getId($event)" >
+        <option [value]="0" >ScheduleType*</option>
+        <option *ngFor="let d of stype" [value]="d.scheduleTypeId" [selected]="d.scheduleTypeId == this.scheduleid">
+            {{d.scheduleType_Name}}
+          </option>
     </select>
- <small *ngIf="myform.get('SpecialityID').pristine&& myform.get('SpecialityID').touched" class="text-danger">
-        Speciality is required
+     <small *ngIf="myform.get('ScheduleTypeId').pristine&& myform.get('ScheduleTypeId').touched" class="text-danger">
+        Schedule Type is required
                      </small>
-</div>
-
-<div class="col-md-4 mb-4" *ngIf="isdoctorhide">
-
-    <select class="form-control" formControlName="DoctorId"   id="ddlDoctor"  name="DoctorId"  >
-        <option [selected]="true"  hidden  >Doctor*</option>
-     <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+    </div>
+    
+    <div class="col-md-4 mb-4" *ngIf="isspecialityhide" >
+    
+        <select class="form-control" formControlName="SpecialityID"  id="ddlSpecialityId" [attr.disabled]="true"  name="specialityID"  (change)="getDoctors($event)"  >
+            <option  hidden [value]="0"  >Speciality*</option>
+          <option  *ngFor="let d of speciality"  value={{d.specialityID}} [selected]="d.specialityID == this.Specialityid">{{d.speciality}}</option>
+        </select>
+     <small *ngIf="myform.get('SpecialityID').pristine&& myform.get('SpecialityID').touched" class="text-danger">
+            Speciality is required
+                         </small>
+    </div>
+    
+    <div class="col-md-4 mb-4" *ngIf="isdoctorhide">
+    
+        <select class="form-control" formControlName="DoctorId"   id="ddlDoctor"  name="DoctorId"  [attr.disabled]="true">
+            <option hidden [value]="0"  >Doctor*</option>
+         <option  *ngFor="let d of doctors"  value={{d.providerId}} [selected]="d.providerId == this.docId">{{d.firstName}}</option>
+        </select>
+         <small *ngIf="myform.get('DoctorId').pristine&& myform.get('DoctorId').touched" class="text-danger">
+            Doctor is required
+                         </small>
+    </div>
+    
+    <div class="col-md-4 mb-4" *ngIf="ischargegrouphide">
+    
+        <select class="form-control" formControlName="ChargegroupId"   id="ddlChargeGroup"  name="Chargegroup"(change)="GetChargeItems($event)"  >
+            <option [selected]="true"  hidden   >Charge Group*</option>
+        <option  *ngFor="let d of chargegroup"  value={{d.chargeGroupId}}>{{d.chargeGroup}}</option>
     </select>
-     <small *ngIf="myform.get('DoctorId').pristine&& myform.get('DoctorId').touched" class="text-danger">
-        Doctor is required
-                     </small>
-</div>
-
-<div class="col-md-4 mb-4" *ngIf="ischargegrouphide">
-
-    <select class="form-control" formControlName="ChargegroupId"   id="ddlChargeGroup"  name="Chargegroup"(change)="GetChargeItems($event)"  >
-        <option [selected]="true"  hidden   >Charge Group*</option>
-    <option  *ngFor="let d of chargegroup"  value={{d.chargeGroupId}}>{{d.chargeGroup}}</option>
-</select>
-<small *ngIf="myform.get('ChargegroupId').pristine&& myform.get('ChargegroupId').touched" class="text-danger">
-    Charge group is required
-                 </small> 
-</div>
-<div class="col-md-4 mb-4"  *ngIf="ischargegrouphide">
-
-    <select class="form-control" formControlName="ChargeItemId"    id="ddlChargeItem"  name="ChargeItem" >
-        <option [selected]="true"  hidden   >Charge Item*</option>
-      <option  *ngFor="let d of chargeitems"  value={{d.chargeItemId}}>{{d.chargeItem}}</option>
-    </select>
-     <small *ngIf="myform.get('ChargeItemId').pristine&& myform.get('ChargeItemId').touched" class="text-danger">
-        Charge item is required
+    <small *ngIf="myform.get('ChargegroupId').pristine&& myform.get('ChargegroupId').touched" class="text-danger">
+        Charge group is required
                      </small> 
-</div>
-</div>
-<div class="form-row">
-
-<div style="text-align: right;" class="col-md-12 mb-4">
-    <button type="submit"
-
-    class="btn btn-primary waves-effect waves-light" id="btnSave"  >
-        Save
-
-    </button>&nbsp;
-    <button type="button" (click)="clear()"  style=" background: #ef4d56; color:white;font-weight: bold;  width: 70px;" id="reset" class="btn btn-gradient-danger waves-effect m-l-5">
-        Clear
-    </button>
-   
-</div>
-
-</div>
-</form>
-
-
-
-</div>
-</div>
+    </div>
+    <div class="col-md-4 mb-4"  *ngIf="ischargegrouphide">
+    
+        <select class="form-control" formControlName="ChargeItemId"    id="ddlChargeItem"  name="ChargeItem" >
+            <option [selected]="true"  hidden   >Charge Item*</option>
+          <option  *ngFor="let d of chargeitems"  value={{d.chargeItemId}}>{{d.chargeItem}}</option>
+        </select>
+         <small *ngIf="myform.get('ChargeItemId').pristine&& myform.get('ChargeItemId').touched" class="text-danger">
+            Charge item is required
+                         </small> 
+    </div>
+    </div>
+    <div class="form-row">
+    
+    <div style="text-align: right;" class="col-md-12 mb-4">
+        <button type="submit"
+    
+        class="btn btn-primary waves-effect waves-light" id="btnSave"  >
+            Save
+    
+        </button>&nbsp;
+        <button [matDialogClose]="true" type="button"   style="width: 70px;"  class="btn btn-danger waves-effect waves-light">
+            Close
+        </button>
+       
+    </div>
+    
+    </div>
+    </form>
+    
+    
+    
+    </div>
+    </div>

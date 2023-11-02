@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class DialogcommunicationService {
+  private successSubject = new Subject<void>();
   private dialogClosedSource = new Subject<void>();
   dialogClosed$ = this.dialogClosedSource.asObservable();
   private openDialogs: MatDialogRef<any>[] = [];
@@ -21,10 +22,16 @@ export class DialogcommunicationService {
     return dialogRef;
   }
 
-  closeAll(): void {
+  closeAll(){
     this.openDialogs.forEach(dialogRef => {
       dialogRef.close();
     });
   }
+  sendSuccessSignal() {
+    this.successSubject.next();
+  }
 
+  getSuccessSignal() {
+    return this.successSubject.asObservable();
+  }
 }

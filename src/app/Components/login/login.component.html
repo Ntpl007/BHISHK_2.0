@@ -11,11 +11,17 @@
 </head>
 
 <body class="blue-background">
+    <div id="overlay" style="display:none;">
+        <div class="spinner"></div>
+        <br/>
+        Loading...
+      </div>
+    
     <section class="container-login" style="background-image: url('../../../../assets/img/login-bg.png');">
         <div class="container">
             <div class="login-box">
                 <div class="login-logo-parent text-center">
-                    <img src="../../../../assets/img/abc-logo.png" alt="logo" />
+                    <img src="../../../../assets/img/bhishak.png" alt="logo" />
                 </div>
                 <form [formGroup]="loginForm" #login="ngForm"  (ngSubmit)="Login(login.value)" autocomplete="off">
                 <h1 class="text-center">Login to your Account </h1>

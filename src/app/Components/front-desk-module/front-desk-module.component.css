@@ -12,3 +12,6 @@ dropdown-menu{
     text-decoration: none;
     background-color: transparent;
   }
+  .scroll-box{
+    overflow-y: auto;
+  }

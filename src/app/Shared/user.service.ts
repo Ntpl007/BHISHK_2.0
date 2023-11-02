@@ -44,7 +44,7 @@ export class UserService {
   }
 
   getOrganizationName(): any {
-    return this.OrganizationName;
+    return localStorage.getItem('organization');
   }
 
   
@@ -54,7 +54,7 @@ export class UserService {
 
   
   getOrganizationId(): any {
-    return this.OrganizationId;
+    return localStorage.getItem('organizationId');;
   }
 
   

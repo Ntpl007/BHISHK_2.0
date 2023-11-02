@@ -28,7 +28,7 @@
      <div class="general-label">
          <form  #reg="ngForm"  [formGroup]="opform" (ngSubmit)="SaveOp(reg.value)" autocomplete="off" >
             <div id="row1" style="display: none;">
-             <div class="form-row" id="row1" >
+             <div class="form-row" id="row3" >
                 <div class="col-md-3 mb-3" >
                     <input type="text" placeholder="Aadhaar No." name="Aadhaar" id="txtAadhaar" maxlength="12" class="form-control" >
                     </div>
@@ -111,6 +111,7 @@
                          <option value="Miss">Miss</option>
                          <option value="Ms">Ms</option>
                          <option value="Mrs">Mrs</option>
+                         <option value="Trans">Trans</option>
                      </select>
                      <small *ngIf="opform.get('Prefix').pristine&& opform.get('Prefix').touched" class="text-danger">
                         Prefix is  required
@@ -165,7 +166,7 @@
                          <option [selected]="true" hidden  value="0" >Gender*</option>
                          <option value="1">Male</option>
                          <option value="2">Female</option>
-                         <option value="3">Other</option>
+                         <option value="3">Trans Gender</option>
                      </select>
                      <!-- <small *ngIf="opform.get('Sex').pristine&& opform.get('Sex').touched" class="text-danger">
             Gender is  required
@@ -274,6 +275,8 @@
                     <small *ngIf="opform.get('HouseNo').touched&& opform.get('HouseNo').hasError('required')" class="text-danger">
                         HouseNo is required
                        </small> 
+                       <small class="text-danger" *ngIf="opform.get('HouseNo').hasError('pattern')"> House Number is Invalid</small>
+    
                 </div>
                  <div class="col-md-3 mb-3">
                     <select class="form-control"  id="State" #state name="State" formControlName="State"(change)="GetDistricts(state.value)" >
@@ -296,11 +299,13 @@
                                      </small>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <input type="text" class="form-control" onpaste="return false"  id="City" name="City" (keydown)="AcceptCharactersOnly($event)"formControlName="City" placeholder="City">
-                  
+                    <input type="text" class="form-control text-capitalize" onpaste="return false"  id="City" name="City" (keydown)="AcceptCharactersOnly($event)"formControlName="City" placeholder="City">
+                    <!-- <small *ngIf="opform.get('City').touched&& opform.get('City').hasError('required')" class="text-danger">
+                        City is required
+                       </small> -->
                 </div>
                 <div class="col-md-3 mb-3">
-                    <input type="text" class="form-control"onpaste="return false"  id="Village"  formControlName="Village"name="Village" (keydown)="AcceptCharactersOnly($event)"placeholder="Village">
+                    <input type="text" class="form-control text-capitalize"onpaste="return false"  id="Village"  formControlName="Village"name="Village" (keydown)="AcceptCharactersOnly($event)"placeholder="Village">
                    
                 </div>
                 <div class="col-md-3 mb-3">
@@ -352,7 +357,7 @@
                                      </small>
                 </div>
                 <div class="col-md-3 mb-3" *ngIf="iscorporateenable">
-                    <select class="form-control"  id="Corporate"  formControlName="CorporateId" name="CorporateId">
+                    <select class="form-control"  id="Corporate"  formControlName="CorporateId" name="CorporateId" (change)="clearField()">
                         <option [selected]="true"  hidden value="0" >Corporate*</option>                                                
                         <option *ngFor="let list of corporateList" value="{{list.corporatE_ID}}">{{list.corporatE_NAME}}</option>
                     
@@ -362,10 +367,12 @@
                                      </small>
                 </div>
                 <div class="col-md-3 mb-3" *ngIf="iscorporateenable">
-                   <input type="text" class="form-control" name="BenificiaryId"  formControlName="BenificiaryId" id="BenificiaryId"  placeholder="Beneficiary Id*">
-                   <small *ngIf="opform.get('BenificiaryId').touched&& opform.get('BenificiaryId').hasError('required')" class="text-danger">
+                   <input type="text"  class="form-control" name="BenificiaryId"  formControlName="BenificiaryId" id="BenificiaryId"  placeholder="Beneficiary Id*">
+                   <small *ngIf="opform.get('BenificiaryId').touched&& opform.get('BenificiaryId').invalid" class="text-danger">
                     Beneficiary is required
                    </small>
+                   <small class="text-danger" *ngIf="opform.get('BenificiaryId').hasError('pattern')"> Benificiary Id is Invalid</small>
+    
                 </div>
             </div>
             <hr>
@@ -488,9 +495,9 @@
              <div class="form-inline">
                 <div>
                 <div class="form-group">
-                    <label class="" for="exampleInputEmail2">Con.Amnt:</label>
-                    <input type="text" id="txtconamount" formControlName="conamount" class="form-control"  [value]="_conamount" name="conamount" 
-                        placeholder="Enter Amount*" onpaste="return false" onkeyup="setPaymentamnt()"  [disabled]="iscontxtdisable">
+                    <label class="" for="txtconamount">Con.Amnt:</label>
+                    <input type="text"  (keyup)="UpdateConAmount($event)" [readonly]="conAmountisReadobly" id="txtconamount" formControlName="conamount" class="form-control" maxlength="8"  [value]="_conamount" name="conamount" 
+                        placeholder="Enter Amount*" onpaste="return false" onkeyup="setPaymentamnt()" >
                         
                     </div>
                     <small  *ngIf="opform.get('conamount').touched&& opform.get('conamount').hasError('required')" class="text-danger">
@@ -527,8 +534,8 @@
              <br>
              <div class="form-row">
                 <div class="col-md-3 mb-3">
-                <input type="text" class="form-control ml-2" (keydown)="onKeyDownForPayment($event)" onpaste="return false" id="txtPaymentAmount" [disabled]="isrestart"
-                placeholder="Payment Amount*" maxlength="8"  name="PaymentAmount" onkeyup="pamount()" formControlName="PaymentAmount">
+                <input type="text" class="form-control ml-2" (keydown)="onKeyDownForPayment($event)" onpaste="return false" id="txtPaymentAmount" [readonly]="isrestart"
+                placeholder="Payment Amount*" maxlength="8"  name="PaymentAmount" onkeyup="pamount()" formControlName="PaymentAmount" readonly="true">
                
        
        <small *ngIf="opform.get('PaymentAmount').touched&& opform.get('PaymentAmount').hasError('required')" class="text-danger">

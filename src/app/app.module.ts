@@ -35,6 +35,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
 import { CustomNgbDateAdapter } from './CustomClass/CustomNgbDateParserFormatter';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SpecialityVitalsignComponent } from './Components/PopUps/Admin/speciality-vitalsign/speciality-vitalsign.component';
+import { AddUserComponent } from './Components/admin-module/add-user/add-user.component';
+import { AddFacilitiesComponent } from './Components/admin-module/Manage-Facilities/add-facilities/add-facilities.component';
+import { VitaldetailsPopupComponent } from './Components/PopUps/vitaldetails-popup/vitaldetails-popup.component';
+import { DoctorDashboardComponent } from './Components/DashBoards/doctor-dashboard/doctor-dashboard.component';
+import { FrontdeskDashboardComponent } from './Components/DashBoards/frontdesk-dashboard/frontdesk-dashboard.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,11 +49,12 @@ import { SpecialityVitalsignComponent } from './Components/PopUps/Admin/speciali
     TransferAppointmentComponent,
     LoadingPopupComponent,
     SpecialityVitalsignComponent,
-    
-    
-    
-     
-  ],
+    AddUserComponent,
+    AddFacilitiesComponent,
+    VitaldetailsPopupComponent,
+    DoctorDashboardComponent,
+    FrontdeskDashboardComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -70,23 +77,20 @@ import { SpecialityVitalsignComponent } from './Components/PopUps/Admin/speciali
      MatTableModule,
      MatDatepickerModule,
      MatDialogModule,
-     MatSnackBarModule
-    
-     
-     
+     MatSnackBarModule,
+        
   ],
  
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},DatePipe,
     { provide: NgbDateAdapter, useClass: CustomNgbDateAdapter },
-   
-  {
-   provide: HTTP_INTERCEPTORS,
-   useClass: GlobalInterceptor,
-   multi: true
-  },
-  { provide: LOCALE_ID, useValue: 'en-US' },
-  ],
-  bootstrap: [AppComponent]
-})
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: GlobalInterceptor,
+        multi: true
+    },
+    { provide: LOCALE_ID, useValue: 'en-US' },
+    ],
+      bootstrap: [AppComponent]
+    })
 export class AppModule { }
 

@@ -1,0 +1,63 @@
+
+<div mat-dialog-content class="custom-dialog">
+ 
+  <div class="title-bar" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+    <h4>Add Facilities</h4>
+    <button class="btnclass" mat-icon-button [mat-dialog-close]="true">
+      <!-- <mat-icon>close</mat-icon> --><i class="fa fa-close"></i>
+    </button>
+  </div>
+  <div style="width: 100%;background-color: azure;"><label style="font-weight: bold;">Organization Name:&nbsp; </label><label>{{_organization}}</label></div>
+
+  
+  <br>
+  <div style="display: flex;justify-content: left;margin-bottom: 10px;">
+    <a  (click)="add()"><i style="color: rgb(26, 190, 26);" class="fa fa-plus"></i>Add More</a>
+  </div>
+  <div   class="row d-flex justify-content-center " >
+    
+    <table id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+        <thead style=" position: sticky;">
+            <tr>
+                <th style="width: 50px;padding-left: 10px;" >S.No</th>
+                <th hidden style="width: 200px;" > Organization</th>
+                <th style="width: 200px;" > Facility</th>
+                <th class="dt">Address</th>
+                <th class="action">Action</th>
+              
+                </tr>
+        </thead>
+       <tbody > 
+       
+        <tr  *ngFor="let item of rowlist,let i=index" id="{{i}}">
+          
+            <td  style="width: 50px;padding-left: 10px;">{{i+1}}</td>
+            <td hidden style="width: 200px;"><label >{{_organization}}</label></td>
+            <td style="width: 200px;"><input  type="text" list="list" placeholder="Facility*" [value]="searchText2" (keyup)="fetchFacility(i,$event)" (keydown)="AcceptCharactersOnly($event)" id="facility_{{i}}" class="form-control text-capitalize">
+            </td>
+            <td class="dt" ><input (keyup)="fetchFAddress(i,$event)" (keydown)="AcceptCharactersOnly($event)" type="text" placeholder="Address" class="form-control text-capitalize" id="Faddress_{{i}}"></td>
+            <td class="action"><a (click)="remove(i,item)"><i class="fa fa-trash-o" ></i></a></td>
+           
+        </tr>
+        <tr hidden>
+            <td>No Records Found</td>
+
+        </tr>
+       </tbody>
+      
+    </table>
+    <div>
+
+    </div>
+    </div>
+    <div class="form-row">
+      <div  class="col-md-12 buttons-right-row">
+               <button type="submit" (click)="Save()" 
+               class="btn btn-primary waves-effect waves-light btn-space" id="btnSave" >
+                 Save
+               </button>
+         
+      </div>
+  
+  
+      </div>

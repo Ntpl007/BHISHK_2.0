@@ -12,14 +12,19 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { GlobalInterceptor } from 'src/app/global.interceptor';
 import { AppComponent } from 'src/app/app.component';
 import { SpecialityVitalsignSetupComponent } from './speciality-vitalsign-setup/speciality-vitalsign-setup.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
     AdminModuleComponent,
-    AddUserComponent,
+    
     UserListComponent,
     
-    SpecialityVitalsignSetupComponent
+    SpecialityVitalsignSetupComponent,
+         EditUserComponent,
+       
+       
+         
   ],
   imports: [
     CommonModule,
@@ -27,7 +32,7 @@ import { SpecialityVitalsignSetupComponent } from './speciality-vitalsign-setup/
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    NgxPaginationModule
+    NgxPaginationModule,
     
     
     

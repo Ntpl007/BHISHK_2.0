@@ -1,19 +1,33 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 import { NursingstationRoutingModule } from './nursingstation-routing.module';
-import { OPNursingComponent } from './op-nursing/op-nursing.component';
 import { NursingstationComponent } from './nursingstation/nursingstation.component';
+import { OPNursingStationComponent } from './opnursing-station/opnursing-station.component';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgbDatepickerModule, NgbModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
   declarations: [
-    OPNursingComponent,
+    OPNursingStationComponent,
     NursingstationComponent
   ],
   imports: [
     CommonModule,
-    NursingstationRoutingModule
+    NursingstationRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    NgxPaginationModule,
+    NgbModule,
+    MatIconModule,
+    NgbTimepickerModule,
+     JsonPipe,
+     NgbDatepickerModule
   ]
 })
 export class NursingstationModule { }

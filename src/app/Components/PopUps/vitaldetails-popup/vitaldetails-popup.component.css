@@ -1,0 +1,86 @@
+.table-container {
+    border: 1px solid #8af0ec;
+   border-collapse: collapse;
+   width: 400px;
+   margin-top: 30px;
+   background-color: rgb(211, 250, 250);
+   
+    
+  }
+  .content-center{
+    text-align: left;
+  padding-left: 10px;
+  }
+  .content-left{
+    text-align: left;
+    margin-left: 3px;
+  }
+  .table-container tr td{
+
+   
+    border: 1px solid #8af0ec;
+
+  }
+
+  .title-bar {
+    display:flex;
+    justify-content: space-between;
+   
+    align-items: center;
+    padding: 2px;
+ 
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+ 
+    
+  }
+  
+  .title-bar h2 {
+    margin: 1;
+
+  }
+  
+  .mat-icon-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .mattable th{
+  padding: 1px;
+  
+  }
+  .popup {
+    width: 50%;
+    height: 50%;
+  }
+  
+  .showModal
+ {
+    justify-content: center;
+    display: flex;
+    
+ } 
+  /* Style for the time picker arrow */
+
+  
+  
+  
+  /* popuptimer stles */
+
+    
+  btnright{
+    justify-content: right;
+    width: 100%;
+  }
+    
+   
+    
+ 
+     
+
+    
+   
+    
+
+    

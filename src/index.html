@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Hims</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
      
 
@@ -32,11 +32,9 @@
     
  <script>
   
- 
   function isrefdoctor()
   {
 
-    debugger;
     
    var chkk=  $('#customCheck02')[0].checked
    if(chkk==true)
@@ -84,7 +82,7 @@ $(document).ready(function () {
 });
 function Addfacility()
 {
-  debugger
+  
   var row="<tbody><tr class='tbtr'><td></td><td>hh</td><td></td><td></td><td></td></tr></tbody>"
   $("#tblfacility").append(row);
 }
@@ -381,13 +379,15 @@ function cl()
      {
        
          $('#txtfinalamount').val(parseFloat(conamount) + parseFloat(regamount));
+         $('#txtPaymentAmount').val(parseFloat(conamount) + parseFloat(regamount));
  
       
      
-     }else   $('#txtfinalamount').val(regamount)
+     }else   {
+      $('#txtfinalamount').val(regamount)
+     $('#txtPaymentAmount').val(regamount);
+     }
  }
- 
- 
      
      </script>
  
@@ -397,6 +397,11 @@ function cl()
   
   
   <app-root></app-root>
+  <style>
+    .mat-dialog-container {
+      padding: 10px;
+    }
+  </style>
  <!--<style>
   
 .sidebar-navigation {
@@ -1250,7 +1255,7 @@ body.enlarge-menu .page-wrapper {
 
   <script type="text/javascript">
     $(function () {
-      debugger
+      
       $('isAdhaar').hide()
       
       $('isMobile').hide();

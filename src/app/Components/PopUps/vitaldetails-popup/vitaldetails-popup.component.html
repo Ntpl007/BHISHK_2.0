@@ -1,0 +1,39 @@
+<form >
+   
+    <div class="title-bar" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+        <h3>Vital Details</h3>
+        <button mat-icon-button [mat-dialog-close]="true">
+          <mat-icon>close</mat-icon>
+        </button>
+        </div>
+        <div class="showModal">
+            <table class="table-container">
+               
+                  <tr *ngFor="let i=index let d of VitalList">
+                    <td class="content-center">{{d.vitalSign}}</td>
+                    <td  style="width: 60px;"><input type="text" id="order{{i}}" style="width: 60px;height: 30px;" class="form-control" (keyup)="Entry(i,d)"></td>
+                    <td class="content-left">{{d.unitOfMeasure}}</td>
+                   
+                    <!-- Add more properties as needed -->
+                  </tr>
+               
+              </table>
+             
+    </div>
+<br>
+    <table style="width: 100%;">
+               
+      <tr>
+        <td ></td>
+        <td  style="width: 79%;"></td>
+        <td > <button type="submit" style="text-align: right;" (click)="saveVitalsignsforpatient()" class="btn btn-primary">Save</button></td>
+       
+        <!-- Add more properties as needed -->
+      </tr>
+   
+  </table>
+    <div  class="btnright">
+
+     
+    </div>
+     

@@ -2,9 +2,15 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild, HostBinding } f
 import { HimsServiceService } from 'src/app/Shared/hims-service.service';
 import{FormArray, FormGroup, FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { NgbAlert, NgbDateStruct, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlert, NgbDateStruct, NgbTimepickerModule, NgbDatepickerConfig, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe, formatDate } from '@angular/common';
 import { ScheduleTemplate } from 'src/app/Model/ScheduleTemplate';
+
+import { ListofDates } from 'src/app/Model/ListofDates';
+import { CustomAdapter } from 'src/app/Shared/Dates/CustomAdapter ';
+import { CustomDateParserFormatter } from 'src/app/Shared/Dates/CustomDateParserFormatter ';
+import { DateService } from 'src/app/Shared/date.service';
+
 
 
 
@@ -14,7 +20,12 @@ import { ScheduleTemplate } from 'src/app/Model/ScheduleTemplate';
   templateUrl:'./schedule-type.component.html',
   styleUrls: ['./schedule-type.component.css', "../../../../css/dataTables.bootstrap4.min.css","../../../../css/style.css","../../../../css/bootstrap.min.css"
   ,"../../../../css/responsive.bootstrap4.min.css","../../../../css/buttons.bootstrap4.min.css" ,
-  "../../../../css/dataTables.bootstrap4.min.css","../../../../css/metisMenu.min.css"]
+  "../../../../css/dataTables.bootstrap4.min.css","../../../../css/metisMenu.min.css"],
+  
+ providers: [
+  { provide: NgbDateAdapter, useClass: CustomAdapter },
+  { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+],
 })
 export class ScheduleTypeComponent implements OnInit {
   @ViewChild('StartTime')
@@ -23,7 +34,8 @@ export class ScheduleTypeComponent implements OnInit {
   showModal2: boolean = false;
   @ViewChild('EndTime')
   EndTime!: ElementRef;
-
+  selectedFromDate: NgbDateStruct | null = null; 
+  selectedToDate: NgbDateStruct | null = null; 
 showModal3: boolean = false;
 ScheduleForm : FormGroup;
 stype:any
@@ -40,8 +52,14 @@ facilityname:any;
 providerName:any;
 model?: NgbDateStruct;
 model2?: NgbDateStruct;
+blockmodel?:NgbDateStruct;
+blockmodel2?:NgbDateStruct;
 _fromdate:any;
 _todate:any;
+_blockedfromdate:any;
+_blockedtodate:any;
+_unblockedfromdate:any;
+_unblockedtodate:any;
 isvi:boolean=false;
 today=formatDate(new Date(), 'yyyy-MM-dd', 'en-US'); 
 scheduleArray: Array<ScheduleTemplate> = [];
@@ -64,13 +82,26 @@ editStatus:any = true;
 scheduleTemplatePeriodList:any = [];
 schedulestarttime : any;
 scheduleslotname:any = "New";
+tempScheduleTemplateId:any;
+blockedDatesList:any = [];
+unblockedDatesList:any = [];
+//tempblockedDatesList:any = [];
+tempScheduleTemplatePeriodId:any;
+tempblockedDatesList: Array<ListofDates> = [];
+tempunblockedDatesList: Array<ListofDates> = [];
 // public time = '10:00:00';
 // public min = '08:15:30';
 // public max = '18:15:30';
 
 
 
-  constructor(private service:HimsServiceService, public datepipe: DatePipe) { 
+
+  constructor(private service:HimsServiceService, public datepipe: DatePipe, private config: NgbDatepickerConfig,private dateservice:DateService) {
+    const current = new Date();
+  config.minDate = { year: current.getFullYear(), month: 
+  current.getMonth() + 1, day: current.getDate() };
+    //config.maxDate = { year: 2099, month: 12, day: 31 };
+  config.outsideDays = 'hidden'; 
     this.ScheduleForm = new FormGroup({
       ScheduleType : new FormControl(),
       Speciality : new FormControl()
@@ -144,7 +175,9 @@ public getChargeGroups(Id:any)
   public getDoctors(Id:any)
   {
     
-    this.service.GetDoctorbyspeciality(Id.target.value).subscribe((result)=>{this.doctors=result})
+    this.service.GetDoctorbyspeciality(Id.target.value).subscribe((result)=>{this.doctors=result
+    this.filteredItems=this.doctors
+    })
   }
 
 
@@ -212,6 +245,111 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
       chkid.checked = status;
     }
   }
+  public blockselecteddates()
+  {
+    debugger;
+    this.tempblockedDatesList = [];
+    var blocktablecount = this.blockedDatesList.length;
+    for(var i = 0; i < blocktablecount; i++)
+    {
+      let chkid = <HTMLInputElement>document.getElementById("chkblockdate_" + i);
+      if(chkid.checked)
+      {
+          //this.blockedDatesList[i].ScheduleTemplatePeriodId = this.tempScheduleTemplatePeriodId;
+          this.tempblockedDatesList.push(this.blockedDatesList[i]);
+      }
+    }
+    if(this.tempblockedDatesList.length > 0)
+    {
+      this.service.BlockScheduleTemplateDateWise(this.tempblockedDatesList).subscribe((result)=>{
+        if(result!=null)
+        {
+          Swal.fire('','selected dates are blocked!');
+          // var backOfferButton =  (<HTMLSelectElement>document.getElementById('btnblock'));
+          // backOfferButton.setAttribute('data-dismiss', 'modal');
+        }
+      })
+      console.log(this.tempblockedDatesList);
+    }
+
+  }
+
+  public unblockselecteddates()
+  {
+    debugger;
+    this.tempunblockedDatesList = [];
+    var unblocktablecount = this.unblockedDatesList.length;
+    for(var i = 0; i < unblocktablecount; i++)
+    {
+      let chkid = <HTMLInputElement>document.getElementById("chkunblockdate_" + i);
+      if(chkid.checked)
+      {
+          //this.blockedDatesList[i].ScheduleTemplatePeriodId = this.tempScheduleTemplatePeriodId;
+          this.tempunblockedDatesList.push(this.unblockedDatesList[i]);
+      }
+    }
+    if(this.tempunblockedDatesList.length > 0)
+    {
+      this.service.UnBlockScheduleTemplateDateWise(this.tempunblockedDatesList).subscribe((result)=>{
+        if(result!=null)
+        {
+          Swal.fire('','selected dates are un blocked!');
+          // var backOfferButton =  (<HTMLSelectElement>document.getElementById('btnblock'));
+          // backOfferButton.setAttribute('data-dismiss', 'modal');
+        }
+      })
+      console.log(this.tempblockedDatesList);
+    }
+
+  }
+
+  blockchkAll()
+  {
+    debugger;
+    var blocktablecount = this.blockedDatesList.length;
+    var blockchkallchkid = <HTMLInputElement>document.getElementById("chkblockdateAll");
+    if(blockchkallchkid.checked)
+    {
+      for(var i = 0; i < blocktablecount; i++)
+      {
+        let chkid = <HTMLInputElement>document.getElementById("chkblockdate_" + i);
+        chkid.checked = true;
+      }
+    }
+    else
+    {
+      for(var i = 0; i < blocktablecount; i++)
+      {
+        let chkid = <HTMLInputElement>document.getElementById("chkblockdate_" + i);
+        chkid.checked = false;
+      }
+    }
+    
+  }
+  unblockchkAll()
+  {
+    debugger;
+    var unblocktablecount = this.unblockedDatesList.length;
+    var unblockchkallchkid = <HTMLInputElement>document.getElementById("chkunblockdateAll");
+    if(unblockchkallchkid.checked)
+    {
+      for(var i = 0; i < unblocktablecount; i++)
+      {
+        let chkid = <HTMLInputElement>document.getElementById("chkunblockdate_" + i);
+        chkid.checked = true;
+      }
+    }
+    else
+    {
+      for(var i = 0; i < unblocktablecount; i++)
+      {
+        let chkid = <HTMLInputElement>document.getElementById("chkunblockdate_" + i);
+        chkid.checked = false;
+      }
+    }
+    
+  }
+
   checkUncheckAll(items :any, index : any) {
     ;
     var gtid = items + "_" + index;
@@ -477,7 +615,7 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
     this.scheduleArray =[];
     this.service.GetScheduleTemplatePeriodData(scheduleTemplateId).subscribe((result)=>{
       this.scheduleTemplatePeriodList=result;
-      console.log(this.scheduleTemplatePeriodList);
+      //console.log(this.scheduleTemplatePeriodList);
       if(this.scheduleTemplatePeriodList != null && this.scheduleTemplatePeriodList.length > 0)
       {
         
@@ -505,7 +643,7 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
      this.service.RemoveScheduleTemplatePeriodDataByUsingScheduleTemplatePeriodId(scheduleTemplatePeriodId).subscribe((result)=>{
      
       let a=result;
-      console.log("resultt" + a);
+      //console.log("resultt" + a);
       if(a!=0)
       {
         this.getScheduleTemplatePerioddataset(scheduleTemplateId);
@@ -517,65 +655,112 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
 
   blockrow(row: any)
   {
-    if(this.scheduleTemplatePeriodList.length > 0){
-      var scheduleTemplatePeriodId = this.scheduleTemplatePeriodList[row].scheduleTemplatePeriodId;
-      var scheduleTemplateId = this.scheduleTemplatePeriodList[row].scheduleTemplateId;
-      this.service.BlockScheduleTemplatePeriod(scheduleTemplatePeriodId).subscribe((result)=>{
-     
-        let a=result;
-        console.log("resultt" + a);
-        if(a!=0)
-        {
-          this.getScheduleTemplatePerioddataset(scheduleTemplateId);
-        }
-       })
+    var openBlockScheduleButton =  <HTMLInputElement>document.getElementById( "iBlock_" + row);
+    openBlockScheduleButton.setAttribute('data-dismiss', 'modal');
+    openBlockScheduleButton.setAttribute('data-toggle', 'modal');
+    openBlockScheduleButton.setAttribute('data-target', '#blockModal');
+    let today=new Date();
+    let _date=formatDate(today,'yyyy-MM-dd','en-Us');
+    this._blockedfromdate = _date;
+    this._blockedtodate = _date;
+    (<HTMLInputElement>document.getElementById('fromdate')).value = "";
+    (<HTMLInputElement>document.getElementById('todate')).value = "";
 
-    }
+    this.tempScheduleTemplatePeriodId = this.scheduleTemplatePeriodList[row].scheduleTemplatePeriodId;
+    //this.scheduleTemplatePeriodList[row].scheduleTemplatePeriodId
+    this.service.GetProviderScheduleDates(this.tempScheduleTemplatePeriodId, this._blockedfromdate, this._blockedtodate).subscribe((result)=>{ 
+      this.blockedDatesList=result;
+      
+    })
+    // if(this.scheduleTemplatePeriodList.length > 0){
+    //   var scheduleTemplatePeriodId = this.scheduleTemplatePeriodList[row].scheduleTemplatePeriodId;
+    //   var scheduleTemplateId = this.scheduleTemplatePeriodList[row].scheduleTemplateId;
+    //   this.service.BlockScheduleTemplatePeriod(scheduleTemplatePeriodId).subscribe((result)=>{
+     
+    //     let a=result;
+    //     console.log("resultt" + a);
+    //     if(a!=0)
+    //     {
+    //       this.getScheduleTemplatePerioddataset(scheduleTemplateId);
+    //     }
+    //    })
+
+    // }
 
   }
 
   Unblockrow(row: any)
   {
-    if(this.scheduleTemplatePeriodList.length > 0){
-      var scheduleTemplatePeriodId = this.scheduleTemplatePeriodList[row].scheduleTemplatePeriodId;
-      var scheduleTemplateId = this.scheduleTemplatePeriodList[row].scheduleTemplateId;
-      this.service.UnBlockScheduleTemplatePeriod(scheduleTemplatePeriodId).subscribe((result)=>{
-     
-        let a=result;
-        console.log("resultt" + a);
-        if(a!=0)
-        {
-          this.getScheduleTemplatePerioddataset(scheduleTemplateId);
-        }
-       })
+    var openBlockScheduleButton =  <HTMLInputElement>document.getElementById( "iUnBlock_" + row);
+    openBlockScheduleButton.setAttribute('data-dismiss', 'modal');
+    openBlockScheduleButton.setAttribute('data-toggle', 'modal');
+    openBlockScheduleButton.setAttribute('data-target', '#unblockModal');
+    let today=new Date();
+    let _date=formatDate(today,'yyyy-MM-dd','en-Us');
+    this._unblockedfromdate = "";
+    this._unblockedtodate = "";
+    (<HTMLInputElement>document.getElementById('unblockfromdate')).value = "";
+    (<HTMLInputElement>document.getElementById('unblocktodate')).value = "";
 
-    }
+    this.tempScheduleTemplatePeriodId = this.scheduleTemplatePeriodList[row].scheduleTemplatePeriodId;
+    //this.scheduleTemplatePeriodList[row].scheduleTemplatePeriodId
+    this.service.GetProviderBlockedScheduleDates(this.tempScheduleTemplatePeriodId, this._unblockedfromdate, this._unblockedtodate).subscribe((result)=>{ 
+      this.unblockedDatesList=result;
+      
+    })
+    // if(this.scheduleTemplatePeriodList.length > 0){
+    //   var scheduleTemplatePeriodId = this.scheduleTemplatePeriodList[row].scheduleTemplatePeriodId;
+    //   var scheduleTemplateId = this.scheduleTemplatePeriodList[row].scheduleTemplateId;
+    //   this.service.UnBlockScheduleTemplatePeriod(scheduleTemplatePeriodId).subscribe((result)=>{
+     
+    //     let a=result;
+    //     //console.log("resultt" + a);
+    //     if(a!=0)
+    //     {
+    //       this.getScheduleTemplatePerioddataset(scheduleTemplateId);
+    //     }
+    //    })
+
+    // }
 
   }
   EditTemplate(ScheduleTemplateId: any, row: any)
   {
+    debugger;
     this.scheduleArray = [];
     this.editStatus = false;
+    this.tempScheduleTemplateId = ScheduleTemplateId;
     var backOfferButton =  (<HTMLSelectElement>document.getElementById('btnEditTemplate_'+ row));
+    
    
     this.service.GetScheduleTemplatePeriodData(ScheduleTemplateId).subscribe((result)=>{
+     debugger
       this.scheduleTemplatePeriodList=result;
-      console.log(this.scheduleTemplatePeriodList);
+      //console.log(this.scheduleTemplatePeriodList);
       //this.scheduleArray = result;
-    })
-    if(this.scheduleTemplatePeriodList != null && this.scheduleTemplatePeriodList.length > 0)
+      //this.scheduleArray = []
+       //this.scheduleTemplatePeriodList != null && 
+    if(this.scheduleTemplatePeriodList.length > 0)
     {
       backOfferButton.setAttribute('data-toggle', 'modal');
       backOfferButton.setAttribute('data-target', '#exampleModalLong');
+      this.scheduleArray=[]
       for(var l = 0; l < this.scheduleTemplatePeriodList.length; l++)
       {
         
         this.newAttribute = {schedulestarttime: "", ScheduleEndTime: ""}; 
         this.scheduleArray.push(this.newAttribute);
+        this.scheduleArray[l].scheduleTemplatePeriodId = this.scheduleTemplatePeriodList[l].scheduleTemplatePeriodId.toString();
+        this.scheduleArray[l].schedulestarttime = this.scheduleTemplatePeriodList[l].periodStart.split("T", 2)[1].split(":",3)[0]
+       +":" + this.scheduleTemplatePeriodList[l].periodStart.split("T", 2)[1].split(":",3)[1];
+        this.scheduleArray[l].scheduleendtime = this.scheduleTemplatePeriodList[l].periodEnd.split("T", 2)[1].split(":",3)[0]
+        +":" + this.scheduleTemplatePeriodList[l].periodEnd.split("T", 2)[1].split(":",3)[1];
       }
       //this.adddata();
       this.GettingData();
     }
+    })
+   
     
   }
 
@@ -596,10 +781,16 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
         scheduleInterval.value =  this.scheduleTemplatePeriodList[k].scheduleIntravel;
         let templateName = (<HTMLInputElement>document.getElementById('txtTemplateName'));
         templateName.value = this.scheduleTemplatePeriodList[k].sceheduleTemplateName;
-        let effctivedatedate = (<HTMLInputElement>document.getElementById('fdate')); 
-        effctivedatedate.value = this.scheduleTemplatePeriodList[k].scheduleTemplateEffectiveDate.split("T",2)[0];
+        let effctivedatedate = (<HTMLInputElement>document.getElementById('fdate'));
+        let effctivedatedatepicker = (<HTMLInputElement>document.getElementById('fdatepicker')); 
+        let validuptodatedatepicker = (<HTMLInputElement>document.getElementById('toDatepicker')); 
+        effctivedatedate.setAttribute('disabled', 'true');
+        effctivedatedatepicker.setAttribute('disabled', 'true');
+        effctivedatedate.value =this.dateservice.LocalStringDateFormat(this.scheduleTemplatePeriodList[k].scheduleTemplateEffectiveDate.split("T",2)[0]) ;
         let  schedulevalidupto = (<HTMLInputElement>document.getElementById('toDate')); 
-        schedulevalidupto.value = this.scheduleTemplatePeriodList[k].scheduleTemplateExpirationDate.split("T",2)[0];
+        schedulevalidupto.value = this.dateservice.LocalStringDateFormat(this.scheduleTemplatePeriodList[k].scheduleTemplateExpirationDate.split("T",2)[0]);
+        schedulevalidupto.setAttribute('disabled', 'true');
+        validuptodatedatepicker.setAttribute('disabled', 'true');
         for (var j = 0; j < this.days.length; j++) {
           //v ar gtid = items + "_" + i;
           let chkid = <HTMLInputElement>document.getElementById(this.days[j] + "_" + k);
@@ -657,6 +848,7 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
          let removelink = <HTMLInputElement>document.getElementById( "iRemove_" + k);
          let blocklink = <HTMLInputElement>document.getElementById( "iBlock_" + k);
          let unblocklink = <HTMLInputElement>document.getElementById( "iUnBlock_" + k);
+         var scheduleslotnamett =  <HTMLInputElement>document.getElementById("txtslotName_"+ k);
          //let slotschedulestatus = <HTMLInputElement>document.getElementById( "lblslotschedulestatus_" + k);
          if(this.scheduleTemplatePeriodList[k].scheduleslotstatusid == 1)
          {
@@ -664,6 +856,8 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
             blocklink.style.display = "";
             unblocklink.style.display = "none";
             this.scheduleslotname = "Running";
+            
+            scheduleslotnamett.value = "Running";
             //slotschedulestatus.value = "Running";
          }
          else if(this.scheduleTemplatePeriodList[k].scheduleslotstatusid == 3)
@@ -672,6 +866,13 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
             blocklink.style.display = "none";
             unblocklink.style.display = "";
             this.scheduleslotname = "Blocked";
+            scheduleslotnamett.value = "Blocked";
+            selectedstarttime.setAttribute('disabled', 'true');
+            selectedendtime.setAttribute('disabled', 'true');
+            for (var j = 0; j < this.days.length; j++) {
+              let chkid = <HTMLInputElement>document.getElementById(this.days[j] + "_" + k);
+              chkid.setAttribute('disabled', 'true');
+            }
             //slotschedulestatus.value = "Blocked";
 
          }
@@ -727,11 +928,111 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
       }      
   }
 
+  public searchScheduleDates()
+  {
+    this.service.GetProviderScheduleDates(this.tempScheduleTemplatePeriodId, this._blockedfromdate, this._blockedtodate).subscribe((result)=>{ 
+      this.blockedDatesList=result;
+      
+    })
+  }
+
+  public searchBlockedScheduleDates()
+  {
+    this.service.GetProviderBlockedScheduleDates(this.tempScheduleTemplatePeriodId, this._unblockedfromdate, this._unblockedtodate).subscribe((result)=>{ 
+      this.unblockedDatesList=result;
+      console.log(this.unblockedDatesList);
+    })
+  }
+
   public addTableCell() {
-    
-    this.newAttribute = {ScheduleStartTime: "", ScheduleEndTime: ""}; 
-    this.scheduleArray.push(this.newAttribute);
-  
+   
+    var i:number = 0;
+    var j:number = 0;
+    var rowscount:number = 0;
+    rowscount = this.scheduleArray.length;
+    let chkcount = 0;
+    var errormsg ="";
+    for(i ; i < rowscount; i++)
+    {
+      let starttime_data = (<HTMLInputElement>document.getElementById('txtStartTime_'+i));
+         let endtime_data = (<HTMLInputElement>document.getElementById('txtEndTime_'+i));
+         let chkall = (<HTMLInputElement>document.getElementById('All_'+i));
+         let chksun = (<HTMLInputElement>document.getElementById('Sun_'+i));
+         let chkmon = (<HTMLInputElement>document.getElementById('Mon_'+i));
+         let chktue = (<HTMLInputElement>document.getElementById('Tue_'+i));
+         let chkwed = (<HTMLInputElement>document.getElementById('Wed_'+i));
+         let chkthu = (<HTMLInputElement>document.getElementById('Thu_'+i));
+         let chkfri = (<HTMLInputElement>document.getElementById('Fri_'+i));
+         let chksat = (<HTMLInputElement>document.getElementById('Sat_'+i));
+         chkcount = 0;
+         
+        
+         if(starttime_data.value == "")
+         {
+          errormsg ="please select starttime \n";
+          //chkcount = 'please select starttime';
+           //Swal.fire('','please select starttime');
+         }
+         else if(endtime_data.value == "")
+         {
+          errormsg +="please select endtime \n";
+           //Swal.fire('','please select endtime');
+         }
+         else
+         {
+          if(chkall.checked)
+          {
+            chkcount = 1;
+            
+          }
+          else if(chksun.checked)
+          {
+            chkcount =1;
+            
+          }
+          else if(chkmon.checked)
+          {
+            chkcount =1;
+            
+          }
+          else if(chktue.checked)
+          {
+            chkcount=1;
+            
+          }
+          else if(chkwed.checked)
+          {
+            chkcount=1;
+            
+          }
+          else if(chkthu.checked)
+          {
+            chkcount=1;
+            
+          }
+          else if(chkfri.checked)
+          {
+            chkcount=1;
+            
+          }
+          else if(chksat.checked)
+          {
+            chkcount=1;
+          }
+         
+         }
+    }
+    if(chkcount == 0 || errormsg != "")
+    {
+      errormsg += "please check atleast one check box";
+      Swal.fire('',errormsg);
+    }
+    else
+    { 
+      this.newAttribute = {ScheduleStartTime: "", ScheduleEndTime: ""}; 
+      this.scheduleArray.push(this.newAttribute);
+    }
+
     this.addDayids();
     // console.log(this.scheduleArray);
     
@@ -793,32 +1094,157 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
 
   }
 
+  public onblockDateSelecttodate(event:any) {
+    let year = event.year;
+    let month = event.month <= 9 ? '0' + event.month : event.month;;
+    let day = event.day <= 9 ? '0' + event.day : event.day;;
+    this._blockedtodate = year + "-" + month + "-" + day;
+    this._blockedfromdate=(<HTMLInputElement>document.getElementById('fdate')).value;
+
+    if( this._blockedtodate<this._blockedfromdate)
+    {
+      this.isvi=true;
+      Swal.fire('','effictive date sholud be less than validuptodate!'); 
+      (<HTMLInputElement>document.getElementById('fromdate')).value = "";
+      (<HTMLInputElement>document.getElementById('todate')).value ="";
+      this.selectedFromDate = null;
+      this.selectedToDate=null;
+      this._blockedfromdate = "";
+      this._blockedtodate = "";
+    }
+  }
+
+  public onunblockDateSelecttodate(event:any) {
+    let year = event.year;
+    let month = event.month <= 9 ? '0' + event.month : event.month;;
+    let day = event.day <= 9 ? '0' + event.day : event.day;;
+    this._unblockedtodate = year + "-" + month + "-" + day;
+    this._unblockedfromdate=(<HTMLInputElement>document.getElementById('unblockfromdate')).value;
+
+    if( this._unblockedtodate<this._unblockedfromdate)
+    {
+      this.isvi=true;
+      Swal.fire('','effictive date sholud be less than validuptodate!'); 
+    //  (<HTMLInputElement>document.getElementById('unblockfromdate')).value = "";
+    //  (<HTMLInputElement>document.getElementById('unblocktodate')).value ="";
+      this._unblockedtodate = "";
+      this._unblockedfromdate = "";
+    }
+  }
+
+
 public onDateSelecttodate(event:any) {
+  debugger
     let year = event.year;
     let month = event.month <= 9 ? '0' + event.month : event.month;;
     let day = event.day <= 9 ? '0' + event.day : event.day;;
     this._todate = year + "-" + month + "-" + day;
-    this._fromdate=(<HTMLInputElement>document.getElementById('fdate')).value;
+    this._fromdate=this.dateservice.GlobalStringDateFormat((<HTMLInputElement>document.getElementById('fdate')).value) ;
+this.today=day+"-"+month+"-"+year;
     if(this._todate<this._fromdate)
     {
-      this.isvi=true
+      this.isvi=true;
+      Swal.fire('','effictive date sholud be less than validuptodate!'); 
+     (<HTMLInputElement>document.getElementById('fdate')).value = '';//this.initialDate;
+      (<HTMLInputElement>document.getElementById('toDate')).value ='';//this.initialDate;
+      this.selectedFromDate = null;
+      this.selectedToDate=null;
+      this._todate = "";
+      this._fromdate = "";
     }
+    else{
+     // var splitdd = (<HTMLSelectElement>document.getElementById('ddlDoctor')).value.split("+",2);
+      this.service.ValidationOfEffictiveandExpiryDate(this.selectedDoctorID, this._fromdate, this._todate).subscribe((result)=>{ 
+        this.providerScheduleList=result;
+        if(this.providerScheduleList.length != 0)
+        {
+          Swal.fire('','already slot is there!'); 
+          this.providerScheduleList = [];
+          (<HTMLInputElement>document.getElementById('toDate')).value = '';
+          (<HTMLInputElement>document.getElementById('fdate')).value= '';
+          this.selectedFromDate = null;
+          this.selectedToDate=null;
+         // this.model
+        }
+      })
+    }
+    
+   
    }
 
-public onDateSelectfromdate(event:any) {    
+public onDateSelectfromdate(event:any) {  
+  debugger  
     let year = event.year;
     let month = event.month <= 9 ? '0' + event.month : event.month;;
     let day = event.day <= 9 ? '0' + event.day : event.day;;
     this._fromdate = year + "-" + month + "-" + day;
-    this._todate= (<HTMLInputElement>document.getElementById('toDate')).value;
+    this._todate=this.dateservice.GlobalStringDateFormat((<HTMLInputElement>document.getElementById('toDate')).value) ;
+    
+    if(this._todate !="" && this._todate<this._fromdate)
+    {
+      this.isvi=true;
+      Swal.fire('','effictive date sholud be less than validuptodate!'); 
+      (<HTMLInputElement>document.getElementById('fdate')).value = this.initialDate;
+      (<HTMLInputElement>document.getElementById('toDate')).value =this.initialDate;
+      this._todate = "";
+      this._fromdate = "";
+    }
     //this.model=this.maxDate;
    }
 
+   public onblockDateSelectfromdate(event:any) {    
+    let year = event.year;
+    let month = event.month <= 9 ? '0' + event.month : event.month;;
+    let day = event.day <= 9 ? '0' + event.day : event.day;;
+    this._blockedfromdate = year + "-" + month + "-" + day;
+    this._blockedtodate= (<HTMLInputElement>document.getElementById('todate')).value;
+    if(this._blockedtodate !="" && this._blockedtodate<this._blockedfromdate)
+    {
+      this.isvi=true;
+      Swal.fire('','effictive date sholud be less than validuptodate!'); 
+      (<HTMLInputElement>document.getElementById('fromdate')).value = "";
+      (<HTMLInputElement>document.getElementById('todate')).value ="";
+      this.today="";
+      this._blockedfromdate = "";
+      this._blockedtodate = "";
+    }
+    //this.model=this.maxDate;
+   }
+
+   public onunblockDateSelectfromdate(event:any) {    
+    let year = event.year;
+    let month = event.month <= 9 ? '0' + event.month : event.month;;
+    let day = event.day <= 9 ? '0' + event.day : event.day;;
+    this._unblockedfromdate = year + "-" + month + "-" + day;
+    this._unblockedtodate= (<HTMLInputElement>document.getElementById('unblocktodate')).value;
+    if(this._unblockedtodate !="" && this._unblockedtodate<this._unblockedfromdate)
+    {
+      this.isvi=true;
+      Swal.fire('','effictive date sholud be less than validuptodate!'); 
+      (<HTMLInputElement>document.getElementById('unblockfromdate')).value = "";
+      (<HTMLInputElement>document.getElementById('unblocktodate')).value ="";
+      this._unblockedfromdate = "";
+      this._unblockedtodate = "";
+    }
+    //this.model=this.maxDate;
+   }
+
+   
+
   OpenSchedulePopup()
   {
+    debugger
+    let effctivedatedatepicker = (<HTMLInputElement>document.getElementById('fdatepicker')); 
+    let effctivedatedate = (<HTMLInputElement>document.getElementById('fdate'));
+    effctivedatedate.removeAttribute("disabled");
+    effctivedatedatepicker.removeAttribute("disabled");
+    let validuptodatedatepicker = (<HTMLInputElement>document.getElementById('toDatepicker')); 
+    let validuptodatedate = (<HTMLInputElement>document.getElementById('toDate'));
+    validuptodatedate.removeAttribute("disabled");
+    validuptodatedatepicker.removeAttribute("disabled");
     this.scheduleslotname = "New";
      var exampleModalLong = (<HTMLSelectElement>document.getElementById('exampleModalLong'));
-        console.log(exampleModalLong);    
+        //console.log(exampleModalLong);    
     this.editStatus = true;
     // this.newAttribute = {ScheduleStartTime: "", ScheduleEndTime: ""};  
     // this.scheduleArray.push(this.newAttribute);  
@@ -830,7 +1256,11 @@ public onDateSelectfromdate(event:any) {
     {
       Swal.fire('','please select Speciality');
     }
-    else if((<HTMLSelectElement>document.getElementById('ddlDoctor')).value == "0")
+    // else if((<HTMLSelectElement>document.getElementById('ddlDoctor')).value == "0")
+    // {
+    //   Swal.fire('','please select Doctor');
+    // }
+    else if(this.selectedDoctorID==0)
     {
       Swal.fire('','please select Doctor');
     }
@@ -840,11 +1270,11 @@ public onDateSelectfromdate(event:any) {
 
       backOfferButton.setAttribute('data-toggle', 'modal');
       backOfferButton.setAttribute('data-target', '#exampleModalLong');
-      if((<HTMLSelectElement>document.getElementById('ddlDoctor')) != null)
+      if(this.selectedDoctorID!= 0)
       {
-        var splitdd = (<HTMLSelectElement>document.getElementById('ddlDoctor')).value.split("+",2);
-        this.providerName = splitdd[1];
-        this.providerId = splitdd[0];
+      //  var splitdd = (<HTMLSelectElement>document.getElementById('ddlDoctor')).value.split("+",2);
+        this.providerName =this.selectedItem; //splitdd[1];
+        this.providerId =this.selectedDoctorID// splitdd[0];
         this.facilityId =localStorage.getItem('facilityId');
       }
       this.facilityname=localStorage.getItem('facility');
@@ -853,7 +1283,7 @@ public onDateSelectfromdate(event:any) {
 
   SaveScheduleTemplate()
   {
-    
+    debugger
     var effctivedatedata = (<HTMLInputElement>document.getElementById('fdate'));
     var schedulevaliduptodata = (<HTMLInputElement>document.getElementById('toDate'));
     var templateName = (<HTMLInputElement>document.getElementById('txtTemplateName'));
@@ -959,10 +1389,10 @@ public onDateSelectfromdate(event:any) {
           else
           {
               this.createdby = localStorage.getItem('name');
-              this.scheduleArray[i].effictivedate = effctivedatedata.value;
-              this.scheduleArray[i].schedulevaliduptodate = schedulevaliduptodata.value;
+              this.scheduleArray[i].effictivedate =this.dateservice.GlobalStringDateFormat(effctivedatedata.value) ;
+              this.scheduleArray[i].schedulevaliduptodate =this.dateservice.GlobalStringDateFormat(schedulevaliduptodata.value);
               this.scheduleArray[i].facilityId = this.facilityId;
-              this.scheduleArray[i].providerId = this.providerId;
+              this.scheduleArray[i].providerId = this.selectedDoctorID.toString();//this.providerId;
               this.scheduleArray[i].interval = scheduleInterval.value;
               this.scheduleArray[i].templateName = templateName.value;
               this.scheduleArray[i].createdby = this.createdby ;
@@ -984,9 +1414,12 @@ public onDateSelectfromdate(event:any) {
           }
           if(chkarry != 1)
           {   
+            debugger
             this.addDayids();
-          
+            $('#overlay').fadeIn();
             this.service.SaveAppointmentSchedule(this.scheduleArray).subscribe((result)=>{
+             
+             
               if(result!=null)
               {
                 Swal.fire('','schedule created !');
@@ -995,6 +1428,7 @@ public onDateSelectfromdate(event:any) {
                 // localStorage.setItem('txnIdForcheckmobile',this.response.txnId)
                 // this.router.navigateByUrl('/FrontDesk/ABDM/Check-And-Generate-Mobile-otp')
               }
+              $('#overlay').fadeOut();
             })
           }
         
@@ -1006,6 +1440,173 @@ public onDateSelectfromdate(event:any) {
 
   UpdateScheduleTemplate()
   {
+    debugger;
+   // console.log(this.scheduleTemplatePeriodList);
+    //console.log(this.scheduleArray.length); 
+    // var splitdd = (<HTMLSelectElement>document.getElementById('ddlDoctor')).value.split("+",2);
+    // this.providerName = splitdd[1];
+    // this.providerId = splitdd[0];
+    
+    var effctivedatedata = (<HTMLInputElement>document.getElementById('fdate'));
+    var schedulevaliduptodata = (<HTMLInputElement>document.getElementById('toDate'));
+    var templateName = (<HTMLInputElement>document.getElementById('txtTemplateName'));
+    var scheduleInterval = (<HTMLInputElement>document.getElementById('ddlScheduleInterval'));
+    // var providernamevalue = (<HTMLInputElement>document.getElementById('lblProviderName'));
+    // var facilitynamevalue = (<HTMLInputElement>document.getElementById('lblFacilityName'));
+
+    
+    if(templateName.value == "")
+    {
+      Swal.fire('','please select Template');
+    }
+    else if(scheduleInterval.value == "0")
+    {
+      Swal.fire('','please select Interval');
+    }
+    else if(effctivedatedata.value == "")
+    {
+     Swal.fire('','please select effictivedate');
+    }
+    else if(schedulevaliduptodata.value == "")
+    {
+     Swal.fire('','please select validupto');
+    }
+    else
+    {
+       var scheduleTemplateTable = (<HTMLInputElement>document.getElementById('tablerow'));
+       var i:number = 0;
+       var j:number = 0;
+       var rowscount:number = 0;
+       rowscount = this.scheduleArray.length;
+       for(i ; i < rowscount; i++)
+       {
+        //this.days = ["All","Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+         let starttime_data = (<HTMLInputElement>document.getElementById('txtStartTime_'+i));
+         let endtime_data = (<HTMLInputElement>document.getElementById('txtEndTime_'+i));
+         let chkall = (<HTMLInputElement>document.getElementById('All_'+i));
+         let chksun = (<HTMLInputElement>document.getElementById('Sun_'+i));
+         let chkmon = (<HTMLInputElement>document.getElementById('Mon_'+i));
+         let chktue = (<HTMLInputElement>document.getElementById('Tue_'+i));
+         let chkwed = (<HTMLInputElement>document.getElementById('Wed_'+i));
+         let chkthu = (<HTMLInputElement>document.getElementById('Thu_'+i));
+         let chkfri = (<HTMLInputElement>document.getElementById('Fri_'+i));
+         let chksat = (<HTMLInputElement>document.getElementById('Sat_'+i));
+         let chkcount = 0;
+         this.scheduleArray[i].schedulestarttime = starttime_data.value;
+         this.scheduleArray[i].scheduleendtime = endtime_data.value;
+        
+         if(starttime_data.value == "")
+         {
+           Swal.fire('','please select starttime');
+         }
+         else if(endtime_data.value == "")
+         {
+           Swal.fire('','please select endtime');
+         }
+         else
+         {
+          if(chkall.checked)
+          {
+            chkcount = 1;
+            this.scheduleArray[i].dayid = 7;
+          }
+          else if(chksun.checked)
+          {
+            chkcount =1;
+            this.scheduleArray[i].dayid = 0;
+          }
+          else if(chkmon.checked)
+          {
+            chkcount =1;
+            this.scheduleArray[i].dayid = 1;
+          }
+          else if(chktue.checked)
+          {
+            chkcount=1;
+            this.scheduleArray[i].dayid = 2;
+          }
+          else if(chkwed.checked)
+          {
+            chkcount=1;
+            this.scheduleArray[i].dayid = 3;
+          }
+          else if(chkthu.checked)
+          {
+            chkcount=1;
+            this.scheduleArray[i].dayid = 4;
+          }
+          else if(chkfri.checked)
+          {
+            chkcount=1;
+            this.scheduleArray[i].dayid = 5;
+          }
+          else if(chksat.checked)
+          {
+            chkcount=1;
+            this.scheduleArray[i].dayid = 6;
+          }
+        
+          if(chkcount == 0)
+          {
+            Swal.fire('','please check atleast one check box');
+          }
+          else
+          {
+          //  var splitdd = (<HTMLSelectElement>document.getElementById('ddlDoctor')).value.split("+",2);
+            this.providerName = this.selectedItem;
+            this.providerId = this.selectedDoctorID;
+            this.facilityId =localStorage.getItem('facilityId');
+              this.createdby = localStorage.getItem('name');
+              this.scheduleArray[i].effictivedate =this.dateservice.GlobalStringDateFormat(effctivedatedata.value) ;
+              this.scheduleArray[i].schedulevaliduptodate = this.dateservice.GlobalStringDateFormat(schedulevaliduptodata.value);
+              this.scheduleArray[i].facilityId = this.facilityId;
+              this.scheduleArray[i].providerId =this.selectedDoctorID.toString();// this.providerId;
+              this.scheduleArray[i].interval = scheduleInterval.value;
+              this.scheduleArray[i].templateName = templateName.value;
+              this.scheduleArray[i].createdby = this.createdby ;
+              this.scheduleArray[i].scheduleTemplateId = this.tempScheduleTemplateId;             
+          }
+        
+         }
+       }
+       if(this.scheduleArray.length != 0)
+       {
+          let chkarry = 0;
+          var i:number = 0;
+
+          for(i ; i < this.scheduleArray.length; i++)
+          {
+            if(this.scheduleArray[i].facilityId == null)
+            {
+              chkarry = 1 ;
+            }
+          }
+          if(chkarry != 1)
+          {   
+            this.addDayids();
+          
+            this.service.UpdateScheduleTemplate(this.scheduleArray).subscribe((result)=>{
+              if(result!=null)
+              {
+                debugger
+                Swal.fire('','schedule updated !');
+                this.ResetModel();
+                var backOfferButton =  (<HTMLSelectElement>document.getElementById('btnupdateSchedule'));
+
+                backOfferButton.setAttribute('data-dismiss', 'modal');
+                this.getproviderScheduleTemplateData();
+                //backOfferButton.setAttribute('data-target', '#exampleModalLong');
+                //="modal"
+                // this.response=result
+                // localStorage.setItem('txnIdForcheckmobile',this.response.txnId)
+                // this.router.navigateByUrl('/FrontDesk/ABDM/Check-And-Generate-Mobile-otp')
+              }
+            })
+          }
+        
+       }
+       
+    }
 
   }
 
@@ -1016,8 +1617,8 @@ public onDateSelectfromdate(event:any) {
 
   public getproviderScheduleTemplateData()
   {
-    var splitdd = (<HTMLSelectElement>document.getElementById('ddlDoctor')).value.split("+",2);
-    this.service.GetProviderScheduleTeamplateData(splitdd[0]).subscribe((result)=>{
+    //var splitdd = (<HTMLSelectElement>document.getElementById('ddlDoctor')).value.split("+",2);
+    this.service.GetProviderScheduleTeamplateData(this.selectedDoctorID).subscribe((result)=>{
       
       this.providerScheduleList=result;
     })
@@ -1025,13 +1626,16 @@ public onDateSelectfromdate(event:any) {
 
   public ResetModel()
   {
+    this.scheduleArray=[];
     var effctivedatedata = (<HTMLInputElement>document.getElementById('fdate'));
     var schedulevaliduptodata = (<HTMLInputElement>document.getElementById('toDate'));
     var templateName = (<HTMLInputElement>document.getElementById('txtTemplateName'));
     var scheduleInterval = (<HTMLInputElement>document.getElementById('ddlScheduleInterval'));
 
-    effctivedatedata.value = "";
-    schedulevaliduptodata.value = "";
+    //effctivedatedata.value = this.initialDate;
+    //schedulevaliduptodata.value = this.initialDate;
+    this.selectedFromDate=null;
+    this.selectedToDate=null;
     templateName.value = "";
     scheduleInterval.value = "0";
     for(var i = 0; i < this.scheduleArray.length; i++)
@@ -1073,22 +1677,57 @@ public onDateSelectfromdate(event:any) {
     //console.log(this.limittimeslist);
   }
 
-
+initialDate:any
 ngOnInit(): void {
-
+  localStorage.setItem('header','Scheduling')
+this.selectedToDate=null;
+this.selectedFromDate=null
   this.newAttribute = {ScheduleStartTime: "", ScheduleEndTime: ""};  
   this.scheduleArray.push(this.newAttribute);  
   this.days = ["All","Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   //this.limittimeslist = ["00:15", "00:30", "00:45","00:15", "00:30", "00:45","00:15", "00:30", "00:45","00:15", "00:30", "00:45"];
   this.service.GetSchedulartypes().subscribe((result)=>{this.stype=result})
   this.service.getSpeciality().subscribe((result)=>{this.speciality=result})
-  let today=new Date();
+  let today= new Date();
+  //this.initialDate=formatDate(today,'dd-MM-yyyy','en-Us');
   let _date=formatDate(today,'dd-MM-yyyy','en-Us');
+  
   //this.AppdateModel=_date;
   //this.GetTimeSlotsForTimePicker(_date,15);
   this.FillTimes();
   }
   
-  
+  public items: string[] = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
+  public filteredItems: any[] = [];
+  public selectedItem: string = '';
+  selectedDoctorID:Number=0;
+  public filterItems(event: any): void {
+    debugger
+    const query = event.target.value.toLowerCase();
+    this.filteredItems = this.doctors.filter(
+      (item:any) => item.firstName.toLowerCase().includes(query)
+    );
+  }
 
+  public selectItem(item: any): void {
+    debugger
+    this.selectedItem = item.firstName;
+    (<HTMLInputElement>document.getElementById('Doctor')).value=item.firstName;
+    const myInput = document.getElementById("btnSearch") as HTMLInputElement;
+    myInput.focus();
+
+    this.selectedDoctorID=item.providerId
+    this.filteredItems = [];
+  }
+  unhideDoctorlist=false;
+  @ViewChild('Doctor')
+  Doctor!: ElementRef;
+  @HostListener('document:click',['$event'])
+  clickout(event: { target: any; }){
+    
+    if(this.Doctor.nativeElement.contains(event.target)){
+this.unhideDoctorlist=true
+  } else this.unhideDoctorlist=false;
 }
+}
+

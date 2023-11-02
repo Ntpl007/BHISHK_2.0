@@ -1,0 +1,177 @@
+
+<div *ngIf="islload">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status" >
+          <span class="sr-only" id="loading"></span>
+         </div>
+    </div>
+</div>
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" /> -->
+<div class="card-body">
+       
+    <form [formGroup]="OPNursingForm" #search="ngForm" (ngSubmit)="SearchPatients(search.value)"  autocomplete="off">
+    <div class="form-row">
+        <div class="col-md-3 mb-4">
+            <div class="input-group">
+                    <input
+                         formControlName="FromDate"
+                         maxlength="10"
+                         class="form-control"
+                         placeholder="From Date"
+                         onpaste="return false"
+                         name="dp"
+                         [value]="fromdatemodel"
+                         [maxDate]="maxDate"
+                         ngbTooltip="From Date (dd/MM/yyyy)"
+                         ngbDatepicker
+                         #d="ngbDatepicker"
+                          id="fdate"     name="FromDate"   (dateSelect)="onDateSelectfromdate($event)" 
+                    />
+              
+                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+            </div>
+                    <small *ngIf="OPNursingForm.get('FromDate').touched&&OPNursingForm.get('FromDate').hasError('required')" class="text-danger">
+                      From Date is required
+                     </small> 
+                     <small class="text-danger" *ngIf="OPNursingForm.get('FromDate').errors?.pattern">Invalid Date format</small>
+                     <small *ngIf="isvi" class="text-danger">Please select valid date ranges</small> 
+       
+        </div>
+            
+        <div  class="col-md-3 mb-4" >
+            <div class="input-group" >
+                <input
+                    
+                     onpaste="return false"
+                     class="form-control"
+                     placeholder="To Date"
+                     ngbTooltip="To Date"
+                     name="dp"
+                     ngbDatepicker
+                     #d2="ngbDatepicker"
+                     id="toDate" 
+                       [maxDate]="maxDate"
+                     [value]="todatemodel"  name="ToDate"  (dateSelect)="onDateSelecttodate($event)"   formControlName="ToDate"
+                />
+                   
+                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button> 
+            </div>
+                 <small *ngIf="OPNursingForm.get('ToDate').touched&&OPNursingForm.get('ToDate').hasError('required')" class="text-danger">
+                To Date is required
+                </small> 
+                <small class="text-danger" *ngIf="OPNursingForm.get('ToDate').errors?.pattern">Invalid Date format</small>
+                <small *ngIf="isvi" class="text-danger">Please select valid date ranges</small>
+       
+         </div>
+        <div class="col-md-3 mb-4">
+             <input type="text" class="form-control"  name ="FirstName"(keydown)="AcceptCharactersOnly($event)"   formControlName="FirstName"
+             placeholder="Name"  onpaste="return false">
+             <small *ngIf="AcceptCharsOnly" class="text-danger">
+              Accepts only Characters
+             </small>
+        </div>
+            
+        <div class="col-md-3 mb-4">
+            <input type="text" class="form-control" onpaste="return false" maxlength="10" (keydown)="onKeyDownForMobile($event)"name="MobileNumber" id="MobileNumber"   formControlName="MobileNumber"
+                placeholder="Mobile Number">
+              
+           
+            <small *ngIf="mobile05accaptable" class="text-danger">
+             Accepts only numbers and  starting with 0 to 5 digits not acceptable 
+            </small>
+        </div>
+        <div class="col-md-3 mb-3"  >
+
+            <select class="form-control" formControlName="SpecialityID"  id="ddlSpecialityId"    name="specialityID"  (change)="getDoctors($event)"  >
+                <option [selected]="true"  hidden  value="0" >Speciality*</option>
+              <option  *ngFor="let d of speciality"  value={{d.specialityID}}>{{d.speciality}}</option>
+            </select>
+         <small *ngIf="OPNursingForm.get('SpecialityID').pristine&& OPNursingForm.get('SpecialityID').touched" class="text-danger">
+                Speciality is required
+                             </small>
+                             </div>
+                             <div class="col-md-3 mb-3" >
+
+                                <select class="form-control" formControlName="DoctorId"   id="ddlDoctor"  name="DoctorId"  >
+                                    <option [selected]="true"  hidden  value="0" >Doctor*</option>
+                                 <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+                                </select>
+                                 <small *ngIf="OPNursingForm.get('DoctorId').pristine&& OPNursingForm.get('DoctorId').touched" class="text-danger">
+                                    Doctor is required
+                                                 </small>
+                            
+        </div>
+        <div  class="col-md-12 buttons-right-row">
+            <button type="submit"  
+                 class="btn btn-primary waves-effect waves-light btn-space" id="btnSave" >
+                    Search
+                 </button>&nbsp;
+            <button type="button" (click)="resetdates()"  id="reset" class="btn btn-danger waves-effect waves-light btn-space">
+                    Clear
+            </button>
+        </div>
+            
+    </div>
+        
+     <div>
+        Total Patients : {{rowscount}}
+    </div> 
+
+            <!-- <div   class="row d-flex justify-content-center" >
+     -->
+     <div   class="row d-flex justify-content-center " >
+    
+        <table id="tblfacility"  class="styled-table"  style="margin-top: 0px;" >
+            <thead >
+                <tr>
+                <th class="custum-col-sno" >S.No</th>
+                <th hidden >Patient ID</th>
+                <th class="custum-col">Patient MRN</th>
+                <th class="custum-col">Name</th>
+                <th class="custum-col">Age/Gender</th>
+                <th class="custum-col">OP ID</th>
+                <th class="custum-col">Mobile Number</th>
+                <th class="custum-col-" >Speciality</th>
+                <th class="custum-col" >Dactor Name</th>
+                <th class="custum-col">Date Of Visit</th>
+                <th class="custum-col-" >Action</th>
+                   
+                    <!-- <th>Appointment Type</th> -->
+                    
+                    </tr>
+            </thead>
+           <tbody > 
+           
+            <tr *ngFor="let i=index  let rowlist of patientList | paginate: { itemsPerPage: 50, currentPage: p }">
+                <td class="custum-col-sno" >{{i+1}}</td>
+                <td hidden>{{rowlist.patientId}}</td>
+                <td class="custum-col">{{rowlist.patientMrn}}</td>
+                <td class="custum-col">{{rowlist.name}}</td>
+                <td class="custum-col">{{rowlist.age}} {{rowlist.ageModeId}} / {{rowlist.gender}}</td> 
+                <td class="custum-col">{{rowlist.opId}}</td>
+                <td class="custum-col">{{rowlist.mobileNumber}}</td> 
+                <td class="custum-col">{{rowlist.speciality}}</td>
+                <td class="custum-col">{{rowlist.doctor}}</td>
+                <td class="custum-col">{{rowlist.dateOfVisit}}</td>
+                <td class="custum-col" > <a (click)="vitaldeatils(i,rowlist)" >Vitals</a></td>
+        
+               
+            </tr>
+            <tr >
+                <tr *ngIf=norecords>
+                    <td>No Records Found</td>
+
+            </tr>
+           </tbody>
+           <tfoot>
+            <tr><td> <pagination-controls  (pageChange)="p = $event"></pagination-controls></td></tr>
+           </tfoot>
+        </table>
+        </div>
+                <!-- </div> -->
+    
+             
+    
+        </form>
+    </div>
+   

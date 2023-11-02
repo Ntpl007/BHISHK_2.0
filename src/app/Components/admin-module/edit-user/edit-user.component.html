@@ -1,0 +1,130 @@
+
+<div class="card-body">
+    <form [formGroup]="myform"   #reg="ngForm" (ngSubmit)="SaveUser(reg.value)" autocomplete="off">
+        <div class="form-row">
+           
+        <div class="col-md-4">
+          <!-- <label for="txtfname" class="form-label">First Name</label> -->
+          <input id="txtfname" formControlName="FirstName" onpaste="return false" (keydown)="onKeyPress($event)" type="text" class="form-control text-capitalize" name="First_Name" placeholder="First Name*" >
+         <!-- <small *ngIf="myform.get('FirstName').touched&&myform.get('FirstName').hasError('required')" class="text-danger">
+          First Name is required
+         </small> -->
+        </div>
+        <div class="col-md-4">
+          <!-- <label for="txtlname" class="form-label">Last Name</label> -->
+          <input id="txtlname"  formControlName="LastName" onpaste="return false" type="text" (keydown)="onKeyPress($event)" class="form-control text-capitalize"  name="Last_Name" placeholder="Last Name*" >
+          <!-- <small *ngIf="myform.get('LastName').touched&&myform.get('LastName').hasError('required')" class="text-danger">
+            Last Name is required
+                         </small> -->
+        </div>
+        <div class="col-md-4">
+            <!-- <label for="Mobile" class="form-label">Mobile Number</label> -->
+            <input (keypress)="AcceptMobilenumberOnly($event)" type="text" maxlength="10"  formControlName="MobileNumber" class="form-control" onpaste="return false" name="Mobile_Number" placeholder="Mobile Number*" id="Mobile"  >
+          
+         <!-- <small *ngIf="myform.get('MobileNumber').touched&&myform.get('MobileNumber').hasError('required')" class="text-danger">
+            <li>   Mobile Number is required   </li>
+                             </small> -->
+                          
+                          <!-- <small *ngIf="myform.get('MobileNumber').dirty&&myform.get('MobileNumber').hasError('minlength')" class="text-danger">
+                            <li>Mobile Number must be 10 digits  </li> 
+                                             </small> -->
+                                            
+                                         <!-- <small *ngIf="myform.get('Mobile_Number').touched&&myform.get('Mobile_Number').hasError('pattern')" class="text-danger">
+                                         <li> Invalid  Mobile Number</li>
+                                             </small>   -->
+                                          
+                                            </div>
+        <div class="col-md-4">
+           
+            <!-- <label for="cmbRole"  class="form-label">Role</label> -->
+            <select  formControlName="RoleId" #role class="form-control" id="cmbRole"  name="UserRole" (change)="checkIsDoctorRole(role.value)" >
+                <option  [selected]="true" hidden  >Role*</option>
+               
+                <option   *ngFor="let d of docs"  [value]="d.roleId">{{d.role}}</option>
+               
+               </select>
+               <!-- <small *ngIf="myform.get('RoleId').pristine&& myform.get('RoleId').touched" class="text-danger">
+                Role Name is required 
+                             </small> -->
+        </div>
+        
+        <div [hidden]=isspecialityhidden class="col-md-4">
+            <!-- <label for="cmbOrganization"  class="form-label">Organization</label> -->
+          <select  formControlName="SpecialityId" class="form-control"  id="cmbsepciality"  name="Speciality" >
+         <option   hidden value="0"  >Speciality*</option>
+             
+              <option   *ngFor="let item of speciality"   [value]="item.specialityID" >{{item.speciality}}</option>
+             
+             </select>
+             
+
+      </div>
+      <div class="col-md-4 mb-3" [hidden]=isspecialityhidden>
+        <div class="custom-control custom-checkbox" style="align-content: center;margin-top: 16px;" >
+            <input  type="checkbox" class="custom-control-input"  formControlName="isProvider" (click)="ischecked()"
+                id="customCheck02" data-parsley-multiple="groups"
+                data-parsley-mincheck="2" >
+            <label class="custom-control-label" for="customCheck02">is Refer Doctor</label>
+        </div>
+    </div>
+        <div class="col-md-4">
+              <!-- <label for="cmbOrganization"  class="form-label">Organization</label> -->
+            <select  formControlName="OrganizationId" #facility class="form-control" (change)="GetFecility(facility.value)" id="cmbOrganization"  name="Organization_id" >
+               <option  hidden [selected]="true" >Organization*</option>
+               
+                <option   *ngFor="let item of organization"   [value]="item.organizationId" >{{item.organization_Name}}</option>
+               
+               </select>
+               <!-- <small *ngIf="myform.get('Organization_id').pristine&& myform.get('Organization_id').touched" class="text-danger">
+                Organization is requied 
+                             </small> -->
+
+        </div>
+        <div class="col-md-4">
+            <!-- <label for="cmbFecility" class="form-label">Facility</label> -->
+            <select   class="form-control" formControlName="FacilityId" id="cmbFecility"  name="facility_id" >
+                <option  [selected]="true"  hidden  >Facility*</option>
+               
+                <option   *ngFor="let d of fecility"  [value]="d.fecilityId">{{d.fecility_Name}}</option>
+               
+               </select>
+               <!-- <small *ngIf="myform.get('FacilityId').pristine&& myform.get('FacilityId').touched" class="text-danger">
+                Facility is required 
+                             </small> -->
+        </div>
+        <!-- <div class="col-md-4"  [hidden]=isrefdoctor>
+            <input maxlength="15" type="text" onpaste="return false"   formControlName="User_Name" (keyup)="CheckUsernameisExisted($event)" [disabled]="d" class="form-control"name="User_Name" id="txtusername"  placeholder="User Name*">
+            <span  *ngIf="isusernamevalid" class="fa fa-check errspan"></span>
+            <span  *ngIf="isusernameinvalid"  class="fa fa-exclamation-circle errspan2"></span>
+            <span class="text-danger" *ngIf="isusernameinvalid"  >User Name is already existed</span>
+            <small *ngIf="myform.get('User_Name').touched&&myform.get('User_Name').hasError('required')" class="text-danger">
+              User Name is required
+             </small>
+          
+          </div> -->
+          <!-- <div class="col-md-4" [hidden]=isrefdoctor>
+            <input maxlength="10"  type="password" onpaste="return false"  formControlName="Password" class="form-control" id="txtpassword" name="Password" placeholder="Password*" >
+            <small *ngIf="myform.get('Password').touched&&myform.get('Password').hasError('required')" class="text-danger">
+              Password is required
+             </small>
+          </div> -->
+         
+        </div>
+          <div style="margin-top: 5px;text-align: right;">
+            <div   >
+                <button class="btn btn-primary" type="submit"  >Update User</button>
+                &nbsp;
+                <button type="reset"  (click)="reset()"    id="reset" class="btn btn-danger waves-effect m-l-5">
+                    Clear
+                </button>
+              </div>
+            
+          </div>
+
+         
+
+          
+      </form>
+    </div>
+
+    

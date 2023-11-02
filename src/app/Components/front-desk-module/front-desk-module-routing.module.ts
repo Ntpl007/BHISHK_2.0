@@ -20,16 +20,20 @@ import { AbhastatusComponent } from './ABDM/Level1/abhastatus/abhastatus.compone
 import { FindABHANoComponent } from './ABDM/Level1/find-abha-no/find-abha-no.component';
 import { FindAbhaComponent } from './ABDM/Level1/Forgot-Abha/find-abha/find-abha.component';
 import { ForgotAbhaVerifyAadhaarOtpComponent } from './ABDM/Level1/Forgot-Abha/forgot-abha-verify-aadhaar-otp/forgot-abha-verify-aadhaar-otp.component';
+import { OPNursingStationComponent } from '../nursingstation/opnursing-station/opnursing-station.component';
+import { DoctorDashboardComponent } from '../DashBoards/doctor-dashboard/doctor-dashboard.component';
+import { CalendarscheduleComponent } from './calendar-schedule/calendar-schedule.component';
+import { FrontdeskDashboardComponent } from '../DashBoards/frontdesk-dashboard/frontdesk-dashboard.component';
 
 const routes: Routes = [{ path: '', component: FrontDeskModuleComponent },
 {
   path: '', component: FrontDeskModuleComponent,canActivate:[AuthguardGuard],
   children:[
-    { path: 'OPD', component: OpdComponent,canActivate:[AuthguardGuard], },
-    { path: 'OPD-Search', component: OpdSearchComponent ,canActivate:[AuthguardGuard],},
-    { path: 'ABDM', component: AbdmHomeComponent ,canActivate:[AuthguardGuard],},
-    { path: 'ABDM/ABHA-Status', component: AbhastatusComponent ,canActivate:[AuthguardGuard],},
-    { path: 'ABDM/ABDM-Profile', component: ABHAProfileComponent ,canActivate:[AuthguardGuard],},
+    { path:'OPD', component: OpdComponent,canActivate:[AuthguardGuard], },
+    { path:'OPD-Search', component: OpdSearchComponent ,canActivate:[AuthguardGuard],},
+    { path:'ABDM', component: AbdmHomeComponent ,canActivate:[AuthguardGuard],},
+    { path:'ABDM/ABHA-Status', component: AbhastatusComponent ,canActivate:[AuthguardGuard],},
+    { path:'ABDM/ABDM-Profile', component: ABHAProfileComponent ,canActivate:[AuthguardGuard],},
     {path:'ABDM/Create-ABHA',component:CreateABHAComponent ,canActivate:[AuthguardGuard],},
     {path:'ABDM/Verify-Aadhaar',component:VerifyAadhaarComponent ,canActivate:[AuthguardGuard],},
     {path:'ABDM/Check-And-Generate-Mobile-otp',component:CheckAndGenerateMotpComponent ,canActivate:[AuthguardGuard],},
@@ -44,7 +48,10 @@ const routes: Routes = [{ path: '', component: FrontDeskModuleComponent },
     {path:'Edit-Appointments',component:EditAppointmentsComponent ,  canActivate:[AuthguardGuard],},
     {path:'create-Appointments',component:CreateAppointmentComponent ,  canActivate:[AuthguardGuard],},
    // {path:'transfer',component:TransferAppointmentComponent ,  canActivate:[AuthguardGuard],},
-    
+   {path:'Op-Nursing',component:OPNursingStationComponent ,  canActivate:[AuthguardGuard],},
+   {path:'DashBoard',component:FrontdeskDashboardComponent ,  canActivate:[AuthguardGuard],},
+   { path: 'CalendarSchedule', component: CalendarscheduleComponent,canActivate:[AuthguardGuard], },
+   
     
       ]
   

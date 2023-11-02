@@ -1,7 +1,7 @@
 
 .styled-table {
     border-collapse: collapse;
-    margin: 25px 0;
+    margin: 25px 0 0 0;
     font-size: 0.9em;
     font-family: sans-serif;
   
@@ -247,4 +247,13 @@ button{cursor: pointer;}
   
   .custum-col-facility{
     width: 200px;
+  }
+  
+  .fa-edit{
+    font-size: 22px;
+  }
+  .styled-table thead tr th:first-child,
+  .styled-table tbody tr td:first-child
+  {
+    text-align: center;
   }

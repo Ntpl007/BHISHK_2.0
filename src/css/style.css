@@ -245,7 +245,7 @@ hr {
 }
 
 .sidebar-navigation > ul > li > a {
-  padding: 10px 15px;
+  padding: 10px 10px;
   display: flex;
   align-items: center;
   white-space: nowrap;
@@ -266,7 +266,7 @@ hr {
 .sidebar-navigation ul li a em {
   font-size: 16px;
   position: absolute;
-  right: 5px;
+  right: -6px;
   top: 47%;
   transform: translateY(-50%);
   padding: 5px;
@@ -289,7 +289,7 @@ hr {
 
 .sidebar-navigation ul li ul li a {
   color: #fff;
-  padding-left: 50px !important;
+   padding-left: 35px !important; /*50 */
 }
 
 .sidebar-navigation ul li ul li a:hover {
@@ -351,7 +351,7 @@ hr {
 
 .sidebar-navigation > ul > li > a .menu-icon {
   fill: #fff;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .sidebar-navigation > ul > li > a:hover .menu-icon {
@@ -622,7 +622,7 @@ hr {
 .scroll-box {
   width: 100%;
   height: calc(100vh - 68px) !important;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .scroll-box::-webkit-scrollbar {
@@ -1092,6 +1092,22 @@ body.enlarge-menu .page-wrapper {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-radius: 5px 5px 0 0;
+  scroll-behavior: smooth;
+
+  display: block;
+  
+
+}
+
 .footer {
   border-top: 1px solid #e8ebf3;
   bottom: 0;
@@ -3294,6 +3310,26 @@ p {
 
 .btn-secondary:hover {
   box-shadow: none;
+}
+.btn-custom-disabled {
+ background-color: #757579;
+}
+
+.btn-custom-disabled:hover {
+  box-shadow: none;
+}
+
+.btn-custom-Primary {
+  box-shadow: 0 7px 14px 0 rgba(1, 8, 8, 0.5);
+  border-color: #007bff;
+  color: #007bff ;
+}
+
+.btn-custom-Primary:hover {
+ 
+  background-color: #007bff;
+  color: white;
+
 }
 
 .btn-success {
@@ -10947,7 +10983,7 @@ input:-webkit-autofill:focus {
 
 .sidebar {
   height: 100%;
-  width: 220px;
+  width: 230px;
   box-sizing: border-box;
   box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.05);
   overflow: hidden;
@@ -10987,6 +11023,30 @@ input:-webkit-autofill:focus {
   }
   .buttons-right-row {
     justify-content: center;
+}
+/* 
+.tableshow{
+  position: absolute;
+   z-index: 999;
+    background:#f1f5fa;
+    border: 1px solid #0075a9;
+    text-align: center;
+    width:40%;
+} */
+
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-radius: 5px 5px 0 0;
+  scroll-behavior: smooth;
+
+  display: block;
+  overflow-y: auto;
+
 }
 }/*# sourceMappingURL=style.css.map */
 

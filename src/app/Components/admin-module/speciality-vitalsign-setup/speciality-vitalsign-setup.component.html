@@ -1,5 +1,11 @@
 <div class="card-body">
-   <form [formGroup]="myform" #event="ngForm" (ngSubmit)="openPopup(event.value)">
+    
+<div id="overlay" style="display:none;">
+    <div class="spinner"></div>
+    <br/>
+    Loading...
+  </div>
+   <form [formGroup]="myform" #event="ngForm" (ngSubmit)="openPopup(event.value)" autocomplete="off">
     <div class="form-row">
         <div class="col-md-4">
             <select #id (change)="LoadVitalSignsData(id.value)" class="form-control" formControlName="SpecialityId" name="SpecialityId" >
@@ -16,7 +22,7 @@
        
        
     </div><br>
-    <div class="form-row" style="margin-left: 50px;margin-right: 70px;">
+    <div class="form-row" style="margin-left: 50px;">
         <div class="col" hidden>
             Total Count: &nbsp;<a>0</a>
         </div>
@@ -38,32 +44,32 @@
          
         <thead >
             <tr>
-              <th class="sno" >S.No</th>
-              <th class="vitalsigns">Vital Sign</th>
-              <th class="value">Min Value</th>
-              <th class="value">Max Value</th>
-              <th class="unitmeasure">Unit Of Measure</th>
-              <th class="order">Order No.</th>
-              <th class="action">Action</th>
+              <th  >S.No</th>
+              <th >Vital Sign</th>
+              <th >Min Value</th>
+              <th>Max Value</th>
+              <th >Unit Of Measure</th>
+              <th>Order No.</th>
+              <th style="text-align: center;" >Action</th>
               <th hidden>Vital Sign Id</th>
               <th hidden>Vital Sign</th>
             </tr>
           </thead>
          <tbody > 
             <tr *ngFor="let i=index let  list of BindTabledata"  [hidden]="isfootertrue" >
-            <td class="sno">{{i+1}}</td>
-            <td class="vitalsigns">{{list.vitalSign}}</td>
-            <td class="value">{{list.minValue}}</td>
-            <td class="value">{{list.maxValue}}</td>
-            <td class="unitmeasure">{{list.unitOfMeasure}}</td>
-            <td class="order"><input  [value]="list.orderNumber"  type="text" (keyup)="updateModel(i,$event)"  maxlength="2" id="txt_{{i}}"  class="form-control"></td>
-            <td class="action"><button type="button" (click)="Remove(i,list)" class="button-37 btn-sm" role="button">Remove</button>
+            <td >{{i+1}}</td>
+            <td >{{list.vitalSign}}</td>
+            <td >{{list.minValue}}</td>
+            <td >{{list.maxValue}}</td>
+            <td >{{list.unitOfMeasure}}</td>
+            <td ><input  [value]="list.orderNumber"  type="text" (keyup)="updateModel(i,$event)"  maxlength="2" id="txt_{{i}}"  class="form-control"></td>
+            <td style="text-align: center;" ><button type="button" (click)="Remove(i,list)" class="button-37 btn-sm" role="button">Remove</button>
             </td>
-            <td hidden class="value">{{list.vitalSignId}}</td>
+            <td hidden >{{list.vitalSignId}}</td>
             <td hidden >{{list.vitalSfacilityVitalSignIdignId}}</td>
         </tr>
           <tr *ngIf="isfootertrue">
-              <td>No Records Found</td>
+              <td style="text-align: left;">No Records Found</td>
 
           </tr>
          </tbody>
@@ -80,7 +86,9 @@
                
       </div>
      
-  
+  <div>
+    <video></video>
+  </div>
    </form>
 </div>
 

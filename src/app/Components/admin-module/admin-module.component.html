@@ -19,7 +19,7 @@
             <div class="topbar-left">
                 <a  class="logo">
                     <span>
-                        <img src="../../../assets/img/abc-logo.png" alt="logo-large" class="logo-lg logo-dark">
+                        <img src="../../../assets/img/bhishak.png" alt="logo-large" class="logo-lg logo-dark">
                     </span>
                 </a>
             </div>
@@ -28,7 +28,7 @@
         <nav class="navbar-custom">
             <ul class="list-unstyled topbar-nav float-right mb-0">
                 <li class="top-brand-relate">
-                    <span><strong>Welcome:</strong> {{organization}} Hospital</span>
+                    <span><strong>Welcome:</strong> {{organization}} </span>
                     <span><strong>Branch:</strong> {{facility}}</span>
                    
                     <span><strong> Date:</strong> {{datenow}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -61,7 +61,7 @@
                 <li>
                     <a >
                         <span class="responsive-logo">
-                            <img src="../../../assets/img/logo.png" alt="logo-small" class="logo-sm align-self-center" height="34">
+                            <img src="../../../assets/img/favicon1.png" alt="logo-small" class="logo-sm align-self-center" height="34">
                         </span>
                     </a>
                 </li>
@@ -146,7 +146,7 @@
                                             Add User</a>
 
                                     </li>
-                                    <li>
+                                    <li hidden>
                                         <a routerLink="/Admin/AddRole" class="">
                                            
                                             Add Role</a>
@@ -164,6 +164,43 @@
                                             Vital Signs</a>
 
                                     </li>
+                                    
+                                    <!-- <li>
+                                        <a routerLink="/Admin/Add-facility" class="">
+                                           
+                                            Add Facility</a>
+
+                                    </li> -->
+                                    
+                                    
+                                </ul>
+                            </li>
+
+                            <li hidden>
+                                <a [ngClass]="['bntStyle']" (click)="style()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="25" height="25" viewBox="0 0 25 25" class="menu-icon">
+                                    <defs>
+                                        <clipPath id="clip-Reporting_Module">
+                                            <rect width="25" height="25" />
+                                        </clipPath>
+                                    </defs>
+                                    <g id="Reporting_Module" data-name="Reporting Module"
+                                        clip-path="url(#clip-Reporting_Module)">
+                                        <path id="Icon_awesome-folder-open" data-name="Icon awesome-folder-open"
+                                            d="M19.015,9.7l-2.4,4.122a2.125,2.125,0,0,1-1.836,1.054H1.495a.8.8,0,0,1-.688-1.2l2.4-4.122A2.125,2.125,0,0,1,5.047,8.5h13.28a.8.8,0,0,1,.688,1.2ZM5.047,7.438H15.938V5.844A1.594,1.594,0,0,0,14.344,4.25H9.031L6.906,2.125H1.594A1.594,1.594,0,0,0,0,3.719v9.232L2.294,9.019A3.2,3.2,0,0,1,5.047,7.438Z"
+                                            transform="translate(3 3.875)" fill="" />
+                                    </g>
+                                </svg>
+                                    Manage Facilities <em class="mdi mdi-chevron-down"></em></a>
+                                <ul>
+                                    <li>
+                                        <a routerLink="/Admin/Add-Facilities" class="">
+
+                                            Add/Remove Facilities</a>
+
+                                    </li>
+                                   
                                     
                                     <!-- <li>
                                         <a routerLink="/Admin/Add-facility" class="">

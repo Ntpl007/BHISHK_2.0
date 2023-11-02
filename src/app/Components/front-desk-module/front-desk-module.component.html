@@ -22,7 +22,7 @@
             <div class="topbar-left">
                 <a  class="logo">
                     <span>
-                        <img src="../../../assets/img/abc-logo.png" alt="logo-large" class="logo-lg logo-dark">
+                        <img src="../../../assets/img/bhishak.png" alt="logo-large" class="logo-lg logo-dark">
                     </span>
                 </a>
             </div>
@@ -31,7 +31,7 @@
         <nav class="navbar-custom">
             <ul class="list-unstyled topbar-nav float-right mb-0">
                 <li class="top-brand-relate">
-                    <span><strong>Welcome:</strong> {{organization}} Hospital</span>
+                    <span><strong>Welcome:</strong> {{organization}} </span>
                     <span><strong>Branch:</strong> {{facility}}</span>
                     <span><strong>Date : </strong>{{datenow}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 </li>
@@ -63,7 +63,7 @@
                 <li>
                     <a >
                         <span class="responsive-logo">
-                            <img src="../../../assets/img/logo.png" alt="logo-small" class="logo-sm align-self-center" height="34">
+                            <img src="../../../assets/img/favicon1.png" alt="logo-small" class="logo-sm align-self-center" height="34">
                         </span>
                     </a>
                 </li>
@@ -195,6 +195,9 @@
                                     <li><a href="#">Assign Assessor</a></li>
                                 </ul>
                             </li> -->
+                            <li ><a style="text-align: center;" routerLink="/FrontDesk/DashBoard">
+                                Dashboard</a>
+                               </li>
                             <li>
                                 <a>
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -219,6 +222,7 @@
                                     <!-- <li><a routerLink="/front-desk/IP">IP Registration</a></li> -->
                                     <li><a routerLink="/FrontDesk/OPD-Search">OPD Search</a></li>
                                     <!-- <li><a routerLink="/front-desk/op">Registration old</a></li> -->
+                                    <li hidden><a routerLink="/FrontDesk/Op-Nursing">Op Nursing</a></li>
                                    
                                     
                                 </ul>
@@ -247,6 +251,7 @@
                                     <li><a routerLink="/FrontDesk/Scheduling" >Scheduling</a></li>
                                     
                                 </ul>
+                               
 
                                 <li>
                                     <a>
@@ -267,9 +272,13 @@
                                         Appointments<em class="mdi mdi-chevron-down"></em></a>
                                     <ul>
                                      
-                                       <li><a routerLink="/FrontDesk/create-Appointments">Create Appointment</a></li>
+                                       <li hidden><a routerLink="/FrontDesk/create-Appointments">Create Appointment</a></li>
                                         <li><a routerLink="/FrontDesk/Search-Appointments" >Search</a></li>
                                         <li hidden><a routerLink="/FrontDesk/Edit-Appointments" >Edit</a></li>
+                                        
+                                            <li><a routerLink="/FrontDesk/CalendarSchedule" >Calendar Schedule</a></li>
+                                            
+                                    
                                         <!-- <li ><a routerLink="/FrontDesk/transfer" >transfer</a></li> -->
 
                                         

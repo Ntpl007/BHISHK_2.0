@@ -11,6 +11,7 @@ import { UserService } from 'src/app/Shared/user.service';
 import Swal from 'sweetalert2';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import * as $ from 'jquery';
 @Component({
   selector: 'app-speciality-vitalsign-setup',
   templateUrl: './speciality-vitalsign-setup.component.html',
@@ -228,14 +229,14 @@ this.AlertBox('Please make sure order no. should not be repeated')
    // console.log(`${valueToCheck} is repeated in the array.`);
 } else {
   debugger
-  
+  $('#overlay').fadeIn();
   this.service.UpdateVitalsignsOrder(this.BindTabledata).subscribe((result)=>
   {
     debugger
     if(result>0)
     {
       debugger
-     
+      $('#overlay').fadeOut();
         this.LoadVitalSignsData(this.selectedItem)
         this.AlertBox('Success');
      

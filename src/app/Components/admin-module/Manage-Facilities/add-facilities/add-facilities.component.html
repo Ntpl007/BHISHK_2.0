@@ -1,0 +1,74 @@
+<div class="card-body">
+    <form [formGroup]="fControl" autocomplete="off">
+
+    
+    <div class="form-row">
+        <div class="col-md-4" [hidden]="!isSuperAdmin">
+            <!-- <label for="cmbOrganization"  class="form-label">Organization</label> -->
+          <select  formControlName="OrganizationId" #facility class="form-control"  id="cmbOrganization"  name="Organization_id" >
+              <option [selected]="true" hidden value="0" >Organization*</option>
+             
+              <option   *ngFor="let item of OrganizationsList"   [value]="item.organizationId" >{{item.organization_Name}}</option>
+             
+             </select>
+              <small  *ngIf="fControl.get('OrganizationId').pristine&& fControl.get('OrganizationId').touched" class="text-danger">
+              Organization is requied 
+                           </small>
+
+      </div>
+      <div class="col-md-4">
+      
+            <input type="text"(keyup)="filteredItems($event)" [value]="searchText"    class="form-control"  id="Facility"    formControlName="FacilityId"
+             name="mobilenumber" 
+              placeholder="Facility*"  onpaste="return false">
+             
+              <div class="tableshow" *ngIf="list">
+                <table  class="table table-hover"  id="patients" >
+                    
+        <tbody class="tablebody" >
+          <tr id="rd" *ngFor="let item of list;let k = index" (click)="SelectedFacility(k,item)" >
+
+           
+            <td  ><label >{{item.facilityName}}</label></td>
+           
+          </tr>
+        </tbody>
+        </table>
+             </div>
+            <span >
+             <small *ngIf="fControl.get('FacilityId').touched&&fControl.get('FacilityId').hasError('required')" class="text-danger">
+                Facility is required
+               </small>  
+            </span>
+          
+      </div>
+      <div class="col-md-4 buttons-right-row">
+        <button class="btn btn-primary">Add</button>
+      </div>
+    </div>
+    
+    
+</form>
+</div>
+<button type="button" (click)="openModal()">Openpopup</button>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Modal content goes here -->
+          <p>Modal content goes here.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

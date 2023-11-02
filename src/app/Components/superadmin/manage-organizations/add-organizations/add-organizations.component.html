@@ -1,0 +1,140 @@
+<div class="card-body">
+    <form [formGroup]="fcontrol" #data="ngForm" (ngSubmit)="openModal(data.value)"  autocomplete="off">
+        <!-- <div class="form-row">
+            <div class="form-group mb-0 row">
+    
+                <div class="form-check-inline my-0" >
+                    <div class="custom-control ">
+                        <input style="size: 50px;" (click)="CheckexistedOrg()" type="checkbox"  name="customRadio" 
+                        class="custom-control-input,col-md-1" id="chk">
+                        <label   class="custom-label" for="chk"> &nbsp;Existed Organization</label>
+                    </div>
+                </div>
+    
+            </div>
+    
+         </div> -->
+    <div class="form-row">
+        <div class="col-md-6 mb-2">
+            <input #mytable maxlength="30" (keydown)="AcceptCharactersOnly($event)"  (keyup)="filteredItems($event)" [value]="Organization" formControlName="Organization" type="text" id="Organization"  class="form-control" placeholder="Organization Name*">
+            <small *ngIf="fcontrol.get('Organization').touched&&fcontrol.get('Organization').hasError('required')" class="text-danger">
+                Organization is required
+               </small> 
+               <small *ngIf="fcontrol.get('Organization').hasError('pattern')" class="text-danger">
+              Invalid Input Format
+               </small> 
+               <!-- <small class="text-danger" *ngIf="fcontrol.get('Organization').hasError('pattern')">Email address is invalid</small>
+      -->
+              <div class="tableshow" #mytable  *ngIf="list && isVisible">
+                <table  class="table table-hover"  id="patients" >
+                    
+        <tbody class="tablebody" >
+          <tr id="rd" *ngFor="let item of list;let k = index" (click)="SelectedOrganization(k,item)" >
+ 
+           
+            <td  ><label >{{item.organization_Name}}</label></td>
+           
+          </tr>
+        </tbody>
+        </table>
+             </div>
+        </div>
+       
+    </div>
+    
+    <div class="form-row" >
+        <div class="col-md-6 mb-2">
+           <textarea (keyup)="AddressKeyup($event)"  maxlength="50"  style="height: 60px;"  formControlName="Address" name="Address" id="Address" placeholder="Address*" cols="3" rows="3" class="form-control"></textarea>
+           <small *ngIf="fcontrol.get('Address').touched&&fcontrol.get('Address').hasError('required')" class="text-danger">
+            Address is required
+           </small> 
+           <small *ngIf="fcontrol.get('Address').hasError('pattern')" class="text-danger">
+            Invalid Input Format
+             </small> 
+        </div>
+       
+    </div>
+   
+      
+   
+    <div class="form-row">
+    <div  class="col-md-12 buttons-right-row">
+    
+        <button *ngIf="issuperadmin && isSelected" type="button" (click)="openEditOrganizationPopup()" 
+        class="btn btn-primary waves-effect waves-light btn-space" id="btnSave" >
+           Update Organization
+        </button>
+    
+    
+      
+             <button type="submit" 
+             class="btn btn-primary waves-effect waves-light btn-space" id="btnSave" >
+                Add
+             </button>
+           
+           
+        <button type="button" (click)="Reset()" id="reset" class="btn btn-danger waves-effect waves-light btn-space">
+                Clear
+        </button>
+       
+    </div>
+
+
+    </div>
+    
+
+        <div   class="row d-flex justify-content-center " >
+    
+            <table id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+                <thead style=" position: sticky;">
+                    <tr>
+                        <th style="width: 50px;padding-left: 10px;" >S.No</th>
+                        <th hidden > Facility Mapping Id</th>
+                        <th style="width: 150px;" > Facility</th>
+                        <th class="dt">Created By</th>
+                        <th class="dt">Created Date</th>
+                        <th class="dt">Address</th>
+                        <th class="action">Action</th>
+                      
+                        </tr>
+                </thead>
+               <tbody > 
+                <!-- *ngFor="let item of rowlist,let i=index" id="{{i}}" -->
+                <tr *ngFor="let i=index let item of FacilityList | paginate: { itemsPerPage: 10, currentPage: p }">
+                  
+                    <td  style="width: 50px;padding-left: 10px;">{{i+1}}</td>
+                    <td hidden ><label>{{item.facilityMappingId}}</label>
+                    </td>
+                    <td style="width: 150px;"><label>{{item.facility}}</label>
+                    </td>
+                    <td class="dt" ><label>{{item.createdBy}}</label></td>
+                    <td class="dt" ><label>{{item.createdDate}}</label></td>
+                    <td class="dt" ><label>{{item.address}}</label></td>
+                   
+                    <td class="action">
+                        <!-- <a (click)="openEditFOrganizationPopup(i,item)" ngbTooltip="View Facilities">
+                        <i class="fa fa-eye"></i></a> -->
+                        <a (click)="openEditFacilityPopup(i,item)" ngbTooltip="Edit"><i class="fa fa-edit" ></i></a>
+                        <!-- <a  ngbTooltip="Delete"><i class="fa fa-trash-o" ></i></a> -->
+                    </td>
+                   
+                </tr>
+                <tr *ngIf="!isRecordsHave">
+                    <td>No Records Found</td>
+        
+                </tr>
+               </tbody>
+               <tfoot>
+                <tr *ngIf="FacilityList?.length>10"><td > <pagination-controls (pageChange)="p = $event"></pagination-controls></td></tr>
+               </tfoot>
+              
+            </table>
+            <div>
+        
+            </div>
+            </div>
+
+</form>
+
+    
+</div>

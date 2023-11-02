@@ -1,16 +1,21 @@
 <div class="card-body">
+    <div id="overlay" style="display:none;">
+        <div class="spinner"></div>
+        <br/>
+        Loading...
+      </div>
 <div class="form-body">
-<form >
+<form autocomplete="off">
     <div class="form-row">
 
-    <div class="col-md-3 mb-3">
+    <div class="col-md-4 mb-4">
     <select class="form-control" id="ddlScheduleType" (change)="getId($event)"  name="ScheduleTypeId" >
         <option [selected]="true"  hidden [value]="0" >ScheduleType</option>
          <option  *ngFor="let d of stype"  value={{d.scheduleTypeId}}>{{d.scheduleType_Name}}</option> 
     </select>
 </div> 
 
-<div class="col-md-3 mb-3" *ngIf="isspecialityhide" >
+<div class="col-md-4 mb-4" *ngIf="isspecialityhide" >
     
     <select class="form-control"  id="ddlSpecialityId"  name="specialityID"  (change)="getDoctors($event)"   >
         <option [selected]="true"  hidden [value]="0" >Speciality*</option>
@@ -18,13 +23,32 @@
     </select>
 </div>
 
-<div class="col-md-3 mb-3" *ngIf="isdoctorhide">
+<div hidden class="col-md-4 mb-4" *ngIf="isdoctorhide">
     
     <select class="form-control "  id="ddlDoctor"  name="Doctor"  >
         <option [selected]="true"  hidden [value]="0" >Doctor*</option>
        <option  *ngFor="let d of doctors"  value={{d.providerId}}+{{d.firstName}}>{{d.firstName}}</option>
     </select>
 </div>
+
+<div *ngIf="isdoctorhide" class="col-md-4 mb-4" >
+   
+<input
+  type="text"
+  [value]="selectedItem"
+  (input)="filterItems($event)"
+  id="Doctor"
+  class="form-control"
+  #Doctor
+  placeholder="Doctor*"
+/>
+<ul class="autocomplete-list" *ngIf="unhideDoctorlist" >
+    <li *ngFor="let d of filteredItems" (click)="selectItem(d)">
+        {{d.firstName}}
+    </li>
+  </ul>
+</div>
+
 
 <div class="col-md-3 mb-3" *ngIf="ischargegrouphide" >
     
@@ -63,31 +87,31 @@
             <thead>
                 <tr>
                     <th style="text-align: center;width: 5%;">S.No</th>
-                    <th style="text-align: center;width: 15%;">Template</th>
-                    <th style="text-align: center;width: 15%;">Facility</th>
+                    <th style="text-align: center;width: 20%;">Template</th>
+                    <th style="text-align: center;width: 20%;">Facility</th>
                     <th style="text-align: center;width: 10%;">Effective Date</th>
-                    <th style="text-align: center;width: 10%;">Start Time</th>
-                    <th style="text-align: center;width: 10%;">End Time</th>
+                    <!-- <th style="text-align: center;width: 10%;">Start Time</th>
+                    <th style="text-align: center;width: 10%;">End Time</th> -->
                     <th style="text-align: center;width: 10%;">Expiration Date</th>
                     <th style="text-align: center;width: 5%;">Interval[Min.]</th>
-                    <th style="text-align: center;width: 10%;">Appointments [Per Slot]</th>
-                    <th style="text-align: center;width: 5%;">Status</th>
-                    <th style="text-align: center;width: 5%">Edit</th>
+                    <th style="text-align: center;width: 10%;">No of Slots</th>
+                    <th style="text-align: center;width: 10%;">Status</th>
+                    <th style="text-align: center;width: 10%">Edit</th>
                 </tr>
             </thead>
            <tbody class="as"> 
             <tr *ngFor="let i=index  let rowlist of providerScheduleList | paginate: { itemsPerPage: 50, currentPage: p }">
                 <td style="text-align: center;width: 5%;">{{i+1}}</td>
-                <td style="text-align: center;width: 15%;">{{rowlist.sceheduleTemplateName}}</td>
-                <td style="text-align: center;width: 15%;">{{rowlist.facilityName}}</td>
+                <td style="text-align: center;width: 20%;">{{rowlist.sceheduleTemplateName}}</td>
+                <td style="text-align: center;width: 20%;">{{rowlist.facilityName}}</td>
                 <td style="text-align: center;width: 10%;">{{rowlist.scheduleTemplateEffectiveDate | date: "mediumDate"}}</td>
-                <td style="text-align: center;width: 10%;">{{rowlist.startTime}}</td>
-                <td style="text-align: center;width: 10%;">{{rowlist.endTime}}</td>
+                <!-- <td style="text-align: center;width: 10%;">{{rowlist.startTime}}</td>
+                <td style="text-align: center;width: 10%;">{{rowlist.endTime}}</td> -->
                 <td style="text-align: center;width: 10%;">{{rowlist.scheduleTemplateExpirationDate | date: "mediumDate"}}</td>
                 <td style="text-align: center;width: 10%;">{{rowlist.scheduleIntravel}}</td>
                 <td style="text-align: center;width: 10%;">{{rowlist.appointmentsPerSlots}}</td>
-                <td style="text-align: center;width: 5%;">Active</td>  
-                <td style="text-align: center;width: 5%;" >
+                <td style="text-align: center;width: 10%;">Active</td>  
+                <td style="text-align: center;width: 10%;" >
                     <i class="fa fa-edit" id="btnEditTemplate_{{i}}" (click)="EditTemplate(rowlist.scheduleTemplateId, i)"  aria-hidden="true" style="font-size:20px" ngbTooltip="Edit">&nbsp;</i>
                     
                 </td>  
@@ -100,24 +124,34 @@
     </div>
     <div class="modal fade" id="exampleModalLong"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document" >
-          <div class="modal-content">
+          <div class="modal-content" style="max-height: 600px;overflow: auto;font-size: 13px;">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Schedule Template</h5>
               <button type="button" (click)="closeModel()"  class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
+            <div style="background-color: #f3f4f6;"> 
+                <div  style="margin-left: 15px;"> 
+                    <b>Name:</b>&nbsp;
+                    <label id="lblProviderName"   >{{providerName}}</label>
+                    &nbsp; <b> Facility:</b> &nbsp;
+                    <label id="lblFacilityName" >{{facilityname}}</label>
+               
+                </div>
+               
+            </div>
+            <div class="modal-body" style="padding-left: 18px;padding-right: 18px;">
+                <div class="card" style="margin-bottom: 10px;">
+                   
+                        <div class="row" hidden>
                             <div class="col-md-6">
                                 Name:
-                                <label id="lblProviderName"   class="form-control">{{providerName}}</label>
+                                <label id="lblProviderName"   >{{providerName}}</label>
                             </div>
                             <div class="col-md-6">
                                 Facility:
-                                <label id="lblFacilityName" class="form-control">{{facilityname}}</label>
+                                <label id="lblFacilityName" >{{facilityname}}</label>
                             </div>
                         </div>
                         <div class="row">
@@ -144,12 +178,12 @@
                                     class="form-control"
                                     placeholder="From Date"
                                     name="dp"
-                                    [(ngModel)]="model"
+                                    [(ngModel)]="selectedFromDate"
                                     ngbDatepicker
                                     #d="ngbDatepicker"
                                      id="fdate"  (dateSelect)="onDateSelectfromdate($event)" name="FromDate"  
                                     />
-                                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                                    <button id="fdatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -159,25 +193,25 @@
                                     class="form-control"
                                     placeholder="To Date"
                                     name="dp"
-                                    [(ngModel)]="model2"
+                                    [(ngModel)]="selectedToDate"
                                     ngbDatepicker
                                     #d2="ngbDatepicker"
     
-                                    value="{{today}}" id="toDate" (dateSelect)="onDateSelecttodate($event)"   name="ToDate"   
+                                    id="toDate" (dateSelect)="onDateSelecttodate($event)"   name="ToDate"   
                                     />     
-                                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button> 
+                                    <button id="toDatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button> 
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    
                   </div>
-                  <div class="card">
-                      <div class="card-body">
-                        <div clas="row">
-                            <div class="col-md-12">
-                                <a  (click)="addTableCell()" style="color: skyblue;margin-left: 0%;">Add</a>
-                                <div class="table-responsive " >
-                                    <table class="styled-table" id="tableschedule">
+                 
+                      
+                       
+                            
+                                
+                                <div ><a  (click)="addTableCell()" style="color: skyblue;margin-left: 0%;margin-top: 0px;margin-bottom: 0px;">Add</a>
+                                    <table class="styled-table" id="tableschedule" style="margin-top: 1px;margin-bottom: 1px;">
                                         <thead class="table-header-bg">
                                             <tr>
                                               <th style="text-align: center;width: 5%;">S No.</th>
@@ -262,8 +296,9 @@
                                                       &nbsp;
                                                     
                                                 </td>
-                                                <td style="text-align: center; width: 6%;">
-                                                    <label>{{scheduleslotname}}</label>  
+                                                <td style="text-align: center; width: 10%;">
+                                                    <input type="text" value="New" disabled="true" class="form-control" id="txtslotName_{{i}}" />
+                                             
                                                 </td>
                                                 <td style="text-align: center; width: 15%;">
                                                     <!-- <i class="fa fa-edit"  aria-hidden="true" style="font-size:20px" ngbTooltip="Edit">&nbsp;</i> -->
@@ -282,24 +317,202 @@
                                           </tbody>
                                     </table>
                                 </div>
-                            </div>
-                        </div>
-                      </div>
-                  </div>
+                            
+                    
+                     
+                
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="padding: 1px;">
               <button type="button" (click)="closeModel()" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <div *ngIf="editStatus">
                 <button type="button"  (click)="SaveScheduleTemplate()"  class="btn btn-primary">Save</button>
               </div>
               <div *ngIf="!editStatus">
-                <button type="button" [attr.disabled]="!editStatus" (click)="UpdateScheduleTemplate()"  class="btn btn-primary">Update</button>
+                <button type="button"  (click)="UpdateScheduleTemplate()"  id="btnupdateSchedule"  class="btn btn-primary">Update</button>
               </div> 
             </div>
           </div>
         </div>
       </div>
+    <div class="modal fade" id="blockModal"  tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document" >
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 8px;">
+                    <h5 class="modal-title" id="blockModalLabel">Block Schedule Template</h5>
+                    <button type="button" (click)="closeModel()"  class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card" style="margin-bottom: 6px;margin-right: 6px;">
+                        <div class="card-body" style="margin-bottom: 6px;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    From Date
+                                <div class="input-group">
+                                    <input
+                                    class="form-control"
+                                    placeholder="From Date"
+                                    name="dp"
+                                    [(ngModel)]="blockmodel"
+                                    ngbDatepicker
+                                    #e="ngbDatepicker"
+                                     id="fromdate"  (dateSelect)="onblockDateSelectfromdate($event)" name="FromDate"  
+                                    />
+                                    <button id="fromdatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="e.toggle()" type="button"></button>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                    To Date
+                                    <div class="input-group">
+                                        <input
+                                        class="form-control"
+                                        placeholder="to Date"
+                                        name="dp"
+                                        [(ngModel)]="blockmodel2"
+                                        ngbDatepicker
+                                        #e2="ngbDatepicker"
+                                         id="todate"  (dateSelect)="onblockDateSelecttodate($event)" name="ToDate"  
+                                        />
+                                        <button id="todatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="e2.toggle()" type="button"></button>
+                                    </div>
+                                </div>
 
+                            </div>
+                        </div>
+                    </div>
+                    <div clas="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a  (click)="searchScheduleDates()" style="color: skyblue;margin-left: 0%;">Search</a>                               
+                                    <div class="table-responsive " >
+                                        <table class="styled-table" id="tableblockschedule">
+                                            <thead class="table-header-bg">
+                                                <tr>
+                                                  <th style="text-align: center;width: 40%;">S No.</th>
+                                                  <th style="text-align: center;width: 40%;">Date</th>
+                                                  <th style="text-align: center;width: 20%;">
+                                                    <input type="checkbox"   (click)="blockchkAll()" id="chkblockdateAll">
+                                                </th>                  
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr *ngFor="let i=index  let rowlist of blockedDatesList">
+                                                    <td style="text-align: center;width: 40%;">{{i+1}}</td>
+                                                    <td style="text-align: center;width: 40%;">{{rowlist.blockdate | date: "mediumDate"}}
+                                                    </td>
+                                                    <td style="text-align: center;width: 20%;">
+                                                        <input type="checkbox"  id="chkblockdate_{{i}}">
+                                                    </td>
+                                                </tr>
+                                              </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="closeModel()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnblock" (click)="blockselecteddates()" data-dismiss="modal"  class="btn btn-primary">Block</button>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <!-- ---unblockmodel-- -->
+    <div class="modal fade" id="unblockModal"  tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unblockModalLabel">UnBlock Schedule Template</h5>
+                    <button type="button" (click)="closeModel()"  class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    From Date
+                                <div class="input-group">
+                                    <input
+                                    class="form-control"
+                                    placeholder="From Date"
+                                    name="dp"
+                                    [(ngModel)]="blockmodel"
+                                    ngbDatepicker
+                                    #f="ngbDatepicker"
+                                     id="unblockfromdate"  (dateSelect)="onunblockDateSelectfromdate($event)" name="FromDate"  
+                                    />
+                                    <button id="unblockfromdatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="f.toggle()" type="button"></button>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                    To Date
+                                    <div class="input-group">
+                                        <input
+                                        class="form-control"
+                                        placeholder="to Date"
+                                        name="dp"
+                                        [(ngModel)]="blockmodel2"
+                                        ngbDatepicker
+                                        #f2="ngbDatepicker"
+                                         id="unblocktodate"  (dateSelect)="onunblockDateSelecttodate($event)" name="ToDate"  
+                                        />
+                                        <button id="todatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="f2.toggle()" type="button"></button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div clas="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a  (click)="searchBlockedScheduleDates()" style="color: skyblue;margin-left: 0%;">Search</a>                               
+                                    <div class="table-responsive " >
+                                        <table class="styled-table" id="tableunblockschedule">
+                                            <thead class="table-header-bg">
+                                                <tr>
+                                                  <th style="text-align: center;width: 40%;">S No.</th>
+                                                  <th style="text-align: center;width: 40%;">Date</th>
+                                                  <th style="text-align: center;width: 20%;">
+                                                    <input type="checkbox"   (click)="unblockchkAll()" id="chkunblockdateAll">
+                                                </th>                  
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr *ngFor="let i=index  let unrowlist of unblockedDatesList">
+                                                    <td style="text-align: center;width: 40%;">{{i+1}}</td>
+                                                    <td style="text-align: center;width: 40%;">{{unrowlist.blockdate | date: "mediumDate"}}
+                                                    </td>
+                                                    <td style="text-align: center;width: 20%;">
+                                                        <input type="checkbox"  id="chkunblockdate_{{i}}">
+                                                    </td>
+                                                </tr>
+                                              </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="closeModel()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnunblock" (click)="unblockselecteddates()" data-dismiss="modal"  class="btn btn-primary">UnBlock</button>
+                </div>
+            </div>
+        </div>
+    
+    </div>
 </div>
 
 </form>

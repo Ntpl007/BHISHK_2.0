@@ -139,14 +139,14 @@ export class AdminModuleComponent implements OnInit {
     this.open=""
   }
     ngOnInit(): void {
-      debugger
+      
       this.name=localStorage.getItem('name')
       this.facility=localStorage.getItem('facility')
       this.organization=localStorage.getItem('organization')
     
       this.displaydate();
 
-
+localStorage.setItem('header','Home')
    
   
     }

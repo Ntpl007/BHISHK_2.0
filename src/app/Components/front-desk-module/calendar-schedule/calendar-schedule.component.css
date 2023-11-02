@@ -1,0 +1,57 @@
+.date-header {
+  height: 10px !important;
+  text-align: center;
+  background-color: lightgray;
+}
+th .date-header{
+  font-size: medium;
+  border-bottom: none;
+}
+
+/* table .date-header{
+  border-color: #5A5A5A;
+} */
+
+tr .no-border-bottom td{
+  border: 0;
+  height: 2px;
+  padding: 4px;
+  color: #5A5A5A;
+  font-size: 15px;
+  border-color: black;
+}/* Remove the bottom border */
+
+.highlighted-row {
+  background-color: cadetblue;
+  color: black; /* You can adjust the text color as needed for readability */
+}
+
+
+.Mouse-Over {
+  background-color: rgba(202, 200, 205, 0.774);
+  color: black; /* You can adjust the text color as needed for readability */
+}
+.cursor {
+  
+  background-color: rgb(190, 162, 216);
+ 
+}
+
+.availability-indicator {
+  font-weight: bold;
+}
+
+.available {
+  color: green;
+}
+
+.booked {
+  color: red;
+}
+.modal-popup {
+  position: fixed;
+  z-index: 1000;
+}
+.mat-dialog-container{
+  padding: 0px;
+}

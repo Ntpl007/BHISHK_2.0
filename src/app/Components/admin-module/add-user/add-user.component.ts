@@ -8,16 +8,17 @@ import{HostListener} from '@angular/core'
 import Swal from 'sweetalert2';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { UserService } from 'src/app/Shared/user.service';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.css',"../../../../css/style.css","../../../../css/bootstrap.min.css"
   ,"../../../../css/responsive.bootstrap4.min.css","../../../../css/buttons.bootstrap4.min.css" ,
-  "../../../../css/dataTables.bootstrap4.min.css","../../../../css/metisMenu.min.css"]
+  "../../../../css/dataTables.bootstrap4.min.css","../../../../css/metisMenu.min.css"],
+  
 })
 export class AddUserComponent implements OnInit {
-
+   isSuperAdmin=false;
   _role:number=0
   _gender:number=0
   _organization:number=0
@@ -79,7 +80,11 @@ d=true
                 data.Speciality="0"
       
               }
-      data.Organization_id=this.userservice.getOrganizationId();
+              if(localStorage.getItem('role')=='Admin')
+              {
+                data.Organization_id=this.userservice.getOrganizationId();
+              }
+           
             debugger
           
               this.service.SaveUser(data).subscribe((result:any)=>{
@@ -156,11 +161,21 @@ console.log(this.fecility);
 
 
   }
-
+checkUserRole()
+{
+  if(localStorage.getItem('role')=='Super Admin')
+  {
+    this.isSuperAdmin=true;
+  }else 
+  if(localStorage.getItem('role')=='Admin')
+  {
+    this.isSuperAdmin=false;
+  }
+}
 public reset()
 {
   debugger
-  
+ 
   //this.myform.reset();
   this.myform=this.formbulder.group({
     First_Name:['',Validators.required],
@@ -285,20 +300,68 @@ if(role=="14")
       this.isrefdoctor=true
     }else this.isrefdoctor=false
   }
+  removestartSpace(event:any)
+  {
+    let text= (<HTMLInputElement>document.getElementById('txtfname')).value 
+    if(text.trim()=="")
+    {
+      (<HTMLInputElement>document.getElementById('txtfname')).value =""
+    }
+    const pattern = / {2,}/;
 
+    if (pattern.test(text)) {
+      debugger
+      const modifiedText =  text.trim().replace(/ +/g, ' ');
+     let  modifiedText2 = modifiedText.replace(/ +$/, '');
+    //  const modifiedText = this.searchText.replace(/ +/, ' ');
+      (<HTMLInputElement>document.getElementById('txtfname')).value=modifiedText;
+    }
+  }
+
+  
+  removestartSpace2(event:any)
+  {
+    let text= (<HTMLInputElement>document.getElementById('txtlname')).value 
+    if(text.trim()=="")
+    {
+      (<HTMLInputElement>document.getElementById('txtlname')).value =""
+    }
+    const pattern = / {2,}/;
+
+    if (pattern.test(text)) {
+      debugger
+      const modifiedText =  text.trim().replace(/ +/g, ' ');
+     let  modifiedText2 = modifiedText.replace(/ +$/, '');
+    //  const modifiedText = this.searchText.replace(/ +/, ' ');
+      (<HTMLInputElement>document.getElementById('txtlname')).value=modifiedText;
+    }
+  }
 
   onKeyPress(event: KeyboardEvent) {
     // Check if the pressed key is a number
-    if (!isNaN(Number(event.key)) || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(event.key)) {
-      event.preventDefault(); // Prevent input of numeric characters
+    // if (!isNaN(Number(event.key)) || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(event.key)) {
+    //   event.preventDefault(); // Prevent input of numeric characters
+    // }
+   
+    if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+      event.preventDefault(); // Prevent input of non-letter and non-space characters
     }
+  
+
+   
   }
 
 CheckUsernameisExisted(user:any)
 {
 debugger
-
+  
   let text=(<HTMLInputElement>document.getElementById('txtusername')).value;
+(<HTMLInputElement>document.getElementById('txtusername')).value=text.trim();
+  if(text.trim()=="")
+  {
+    this.isusernamevalid=false
+    text=(<HTMLInputElement>document.getElementById('txtusername')).value=""
+  }else this.isusernamevalid=true
  let OrganizationId=this.userservice.getOrganizationId();
  let Uname=user.target.value
 
@@ -337,29 +400,47 @@ if(text!="")
 
   ngOnInit(): void {
     debugger
-    this.GetFecility(this.userservice.getOrganizationId())
-   let OrgId=Number(this.userservice.getOrganizationId())
-    
+    let role=localStorage.getItem('role')
+    this.service.GetOrganization().subscribe((result : Organization[])=>(this.organization=result));
+    let OrgId=Number(this.userservice.getOrganizationId())
+    if(localStorage.getItem('role')!='Super Admin')
+    {
+      this.GetFecility(OrgId)
+    }
+   
+   //this.service.GetRoles().subscribe((result : Roles[])=>(this.docs=result));
    this.service.getSpeciality().subscribe((result)=>this.speciality=result)
 this.myform=this.formbulder.group({
   First_Name:['',Validators.required],
   Last_Name:['',Validators.required],
   Mobile_Number:['',[Validators.required,Validators.minLength(10),Validators.maxLength(10),Validators.pattern(/^[6-9]\d*$/)]],
   userrole:['Role*',Validators.required],
-  Organization_id:[OrgId],
+  Organization_id:['Organization*'],
   facility_id:['Facility*',Validators.required],
   Speciality:['Speciality*'],
   isReferDoctor:[false],
 
-  User_Name:['',Validators.required],
-  Password:['',Validators.required],
+  User_Name:['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9]*$/)]],
+  Password:['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9 @$#*]*$/)]],
   
 })
-this.myform.get('Organization_id').disable();
+
     localStorage.setItem('header','User Registration')
-    this.service.GetRoles().subscribe((result : Roles[])=>(this.docs=result));
+    this.service.GetRoles().subscribe((result : Roles[])=>(
+      
+     // this.docs= role=="Admin"? this.docs=this.docs.filter(x=>x.role!='Super Admin'):this.docs
+     this.docs=result.filter(x=>x.role!='Super Admin')
+      ));
+
+      if(role=='Admin')
+      {
+        debugger
+        this.myform.get('Organization_id').disable();
+        this.myform.get('Organization_id').patchValue(OrgId);
+       
+      } 
    // this.service.GetFecility().subscribe((result : Fecility[])=>(this.fecility=result));
-    this.service.GetOrganization().subscribe((result : Organization[])=>(this.organization=result));
+   
     debugger
     
    

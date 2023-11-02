@@ -1,0 +1,281 @@
+
+<div class="form-body" style="margin: 5px">
+
+  <form >
+      <div class="form-row">
+  
+      <div class="col-md-3 mb-3">
+      <select class="form-control" id="ddlScheduleType"  name="ScheduleTypeId" disabled>
+          <!-- <option [selected]="true"  hidden [value]="0" >ScheduleType</option> -->
+           <option  *ngFor="let d of stype"  value={{d.scheduleTypeId}} >{{d.scheduleType_Name}}</option> 
+      </select>
+     
+  </div> 
+  
+  <div class="col-md-3 mb-3" *ngIf="isspecialityhide" >
+   
+      <select class="form-control"  id="ddlSpecialityId"  name="specialityID"  (change)="getDoctors($event)"  >
+          <option [selected]="true"  hidden [value]="0" >Speciality*</option>
+          <option  *ngFor="let d of speciality"  value={{d.specialityID}}>{{d.speciality}}</option>
+      </select>
+  </div>
+  
+  <div class="col-md-3 mb-3" *ngIf="isdoctorhide">
+      <select class="form-control "  id="ddlDoctor"  name="providerId" (change)="getdate($event)">
+        <option [selected]="true"  hidden [value]="0" >Doctor*</option>
+         <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+      </select>
+    
+  </div>
+      <div class="col-md-3 mb-3" *ngIf="isdatehide">
+          <div class="input-group">
+              <input formControlName="ScheduledDate" class="form-control" readonly="true"
+                     class="form-control"
+                     placeholder="Please Select date"
+                     ngbDatepicker
+     #p="ngbDatepicker"
+     (dateSelect)="onDateSelectAppdate($event)"
+     name="AppointmentDate"
+     onpaste="return false"
+    
+     id="AppointmentDate"
+     
+     [(ngModel)]="this.AppdateModel"
+                 />
+                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="p.toggle()"type="button"></button>
+             </div>
+             <small *ngIf="myform.get('AppointmentDate').touched&&myform.get('AppointmentDate').hasError('required')" class="text-danger">
+              Appointment Date is required
+             </small>
+      </div>
+       
+
+  </div>
+  <div *ngIf="isDateSelected">
+      <!-- <label>Please Select a time</label> -->
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th colspan="4" class="date-header">{{ this.AppdateModel }}</th>
+                </tr>
+                <tr>
+                  <th>Morning</th>
+                  <th>Afternoon</th>
+                  <th>Evening</th>
+                  <th>Night</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <tr *ngFor="let item of morningSlots"  class="no-border-bottom" >
+                      <td id="{{item}}"  (contextmenu)="showContextMenu(item, $event)" (click)="!isSlotPast(item) && goToDetails(item)"  (mouseover)="lgg(item)" (mouseout)="lggout(item)"  [ngStyle]="{'text-decoration': isSlotPast(item) ? 'line-through' : 'none'}"    [ngClass]="{'highlighted-row': slotExistsInAppointments(item)}">{{ item }}</td>
+                    </tr>
+                  </td>
+                  <td>
+                    <tr *ngFor="let item of afternoonSlots" class="no-border-bottom" >
+                      <td id="{{item}}" (contextmenu)="showContextMenu(item, $event)"  (click)="!isSlotPast(item) && goToDetails(item)" (mouseover)="lgg(item)" (mouseout)="lggout(item)"  [ngStyle]="{'text-decoration': isSlotPast(item) ? 'line-through' : 'none'}" [ngClass]="{'highlighted-row': slotExistsInAppointments(item)}">{{ item }}</td>
+                    </tr>
+                  </td>
+                  <td>
+                    <tr *ngFor="let item of eveningSlots" class="no-border-bottom">
+                      <td id="{{item}}"  (contextmenu)="showContextMenu(item, $event)" (mouseover)="lgg(item)" (mouseout)="lggout(item)" (click)="!isSlotPast(item) && goToDetails(item)"   [ngStyle]="{'text-decoration': isSlotPast(item) ? 'line-through' : 'none'}" [ngClass]="{'highlighted-row': slotExistsInAppointments(item)}"> {{ item }} </td>
+                    </tr>
+                  </td>
+                  <td>
+                    <tr *ngFor="let item of nightSlots" class="no-border-bottom">
+                      <td id="{{item}}" (contextmenu)="showContextMenu(item, $event)" (mouseover)="lgg(item)" (mouseout)="lggout(item)" (click)="!isSlotPast(item) && goToDetails(item)"  [ngStyle]="{'text-decoration': isSlotPast(item) ? 'line-through' : 'none'}" [ngClass]="{'highlighted-row': slotExistsInAppointments(item)}">{{ item }}
+                      </td>
+                    </tr>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div  class="modal-popup"    id="modalPopup" [ngStyle]="contextMenuPosition" *ngIf="showCntxtMenu" style="background-color:hsla(160, 23%, 95%, 0.856)" >
+      <!-- <ul>
+          <li><button (click)="editSlot()">Edit</button></li>
+                                      <li><button (click)="rescheduleSlot()">Reschedule</button></li>
+                                      <li><button (click)="transferSlot()">Transfer</button></li>
+          </ul> -->
+          <table style="border: 1em;">
+            <tr>
+              <td>
+                <a [routerLink]="" id="lnkEdit" (click)="editSlot()">Edit</a>
+              </td>
+            </tr>
+              <tr>
+                  <td><a [routerLink]="" id="lnkreschedule" (click)="rescheduleSlot()">Reschedule</a>
+                     </td>
+              </tr>
+              <tr>
+                  <td><a [routerLink]="" id="lnkTransfer" (click)="transferSlot()">Transfer </a></td>
+              </tr>
+          </table>
+      <!-- <button (click)="editSlot()">Edit</button>
+      <button (click)="rescheduleSlot()">Reschedule</button>
+      <button (click)="transferSlot()">Transfer</button>
+      <button (click)="closeModal()">Close</button> -->
+    </div>
+    <div class="modal fade"   id="RescheduleModal" tabindex="-1" role="dialog" aria-labelledby="RescheduleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg"  role="document" >
+          <div class="modal-content">
+              <div class="modal-header" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+                  <h5 class="modal-title" id="RescheduleModalLabel">ReSchedule</h5>
+                  <button type="button"   class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+              </div>
+              <div class="modal-body">
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col-md-4 mb-4">
+                                  Patient Name
+                              <input type="text" id="txtPatientName" placeholder="Patient Name" class="form-control">
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  Doctor Name
+                                  <input type="text" id="txtDoctorName" placeholder="doctors Name"  class="form-control">
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                Appointment Date & Time
+                                  <input type="text" id="txtAppointmentDate" placeholder="Appointment Date"  class="form-control">
+                              </div>
+                                              
+                          </div>
+                          <div class="row">
+                              <div class="col-md-4 mb-4">
+                                  Reschedule Date
+                                  <div class="input-group">
+                                      <input
+                                      class="form-control"
+                                      placeholder="Reschedule Date"
+                                      name="dp"
+                                      [(ngModel)]="model"
+                                      ngbDatepicker
+                                      #d="ngbDatepicker"
+                                       id="fRescheduleDate" (dateSelect)="onDateSelectfromdate($event)"   name="Reschedule Date"  
+                                      />
+                                      <button id="fRescheduleDatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                                  </div>
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  Start Time
+ 
+                                  <input  id="txtStartTime" list="limittimeslist" (change)="onStarttimeChanged()"  name="notificationThreshold" required class="form-control" type="time" />   
+                                  <datalist id="limittimeslist">
+                                      <option  *ngFor="let d of limittimeslist"   value={{d}}></option>
+                                     
+                                    </datalist>
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  End Time
+                              <input type="text" id="txtendtime" placeholder="End Time"  class="form-control">
+                              </div>
+                          </div>
+                      </div>
+                     
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id="btnReschedule" (click)="reschedulePatient()" data-dismiss="modal"  class="btn btn-primary">ReSchedule</button>
+              </div>
+          </div>
+
+      </div>
+    </div>
+
+    <!-- transfer -->
+
+    <div class="modal fade"   id="TransferModal" tabindex="-1" role="dialog" aria-labelledby="TransferModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg"  role="document" >
+          <div class="modal-content">
+              <div class="modal-header" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+                  <h5 class="modal-title" id="TransferModalLabel">Transfer</h5>
+                  <button type="button"   class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+              </div>
+              <div class="modal-body">
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col-md-3 mb-3">
+                                  Patient Name
+                              <input type="text" id="txtTransferPatientName" placeholder="Patient Name" class="form-control">
+                              </div>
+                              <div class="col-md-3 mb-3">
+                                  Doctor Name
+                                  <input type="text" id="txtTransferDoctorName" placeholder="doctors Name"  class="form-control">
+                              </div>
+                             <div class="col-md-3 mb-3">
+                              Speciality
+                              <select class="form-control"  id="ddltransferSpecialityId"  name="specialityID"  (change)="getDoctors($event)"  >
+                                <option [selected]="true"  hidden [value]="0" >Speciality*</option>
+                                <option  *ngFor="let d of speciality"  value={{d.specialityID}}>{{d.speciality}}</option>
+                            </select>
+                             </div>
+                             <div class="col-md-3 mb-3">
+                              Doctor
+                              <select class="form-control "  id="ddlTransferDoctor"  name="providerId" (change)="getdate($event)">
+                                <option [selected]="true"  hidden [value]="0" >Doctor*</option>
+                                 <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+                              </select>
+                             </div>
+                                              
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 mb-3">
+                              Transfer Date
+                              <div class="input-group">
+                                  <input
+                                  class="form-control"
+                                  placeholder="Transfer Date"
+                                  name="dp"
+                                  [(ngModel)]="model1"
+                                  ngbDatepicker
+                                  #e="ngbDatepicker"
+                                   id="fTransferDate" (dateSelect)="onDateSelectTransferdate($event)"   name="Transfer Date"  
+                                  />
+                                  <button id="fTransferDatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="e.toggle()" type="button"></button>
+                              </div>
+                          </div>
+                              <div class="col-md-3 mb-3">
+                                  Start Time
+ 
+                                  <input  id="txtTranferStartTime" list="limittimeslist" (change)="onTransferStarttimeChanged()"  name="notificationThreshold" required class="form-control" type="time" />   
+                                  <datalist id="limittimeslist">
+                                      <option  *ngFor="let d of limittimeslist"   value={{d}}></option>
+                                     
+                                    </datalist>
+                              </div>
+                              <div class="col-md-3 mb-3">
+                                  End Time
+                              <input type="text" id="txtTransferendtime" placeholder="End Time"  class="form-control">
+                              </div>
+                          </div>
+                      </div>
+                     
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id="btnTransfer" (click)="transferPatient()" data-dismiss="modal"  class="btn btn-primary">Transfer</button>
+              </div>
+          </div>
+
+      </div>
+    </div>
+  </form>
+  
+  
+  </div>

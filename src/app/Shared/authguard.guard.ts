@@ -12,7 +12,7 @@ export class AuthguardGuard implements CanActivate ,CanActivateChild, CanDeactiv
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    debugger
+    
       let url: string = state.url;
       return this.checkUserLogin(route, url);
       // if(this.authservice.isLoggedIn()==true)
@@ -55,10 +55,12 @@ export class AuthguardGuard implements CanActivate ,CanActivateChild, CanDeactiv
   }
 
   checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
+  
     if (this.authservice.isLoggedIn()) {
       const userRole = this.authservice.getRole();
-      if (route.data['role'] && route.data['role'].indexOf(userRole) === -1) {
-      
+     // if (route.data['role'] && route.data['role'].indexOf(userRole) === -1) {
+      if (route.data['role'] && route.data['role']!=(userRole)) {
+     
         
         return false;
       }

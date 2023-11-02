@@ -23,7 +23,7 @@ import { FindABHANoComponent } from './ABDM/Level1/find-abha-no/find-abha-no.com
 import { ScheduleTypeComponent } from './schedule-type/schedule-type.component';
 import { SearchAppointmentComponent } from './Appointments/search-appointment/search-appointment.component'; 
 import { EditAppointmentsComponent } from './Appointments/edit-appointments/edit-appointments.component';
-import { CreateAppointmentComponent } from './Appointments/create-appointment/create-appointment.component';
+
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -34,6 +34,9 @@ import { AbhastatusComponent } from './ABDM/Level1/abhastatus/abhastatus.compone
 import { FindAbhaComponent } from './ABDM/Level1/Forgot-Abha/find-abha/find-abha.component';
 import { ForgotAbhaVerifyAadhaarOtpComponent } from './ABDM/Level1/Forgot-Abha/forgot-abha-verify-aadhaar-otp/forgot-abha-verify-aadhaar-otp.component';
 import { ShowAbhaNumberComponent } from './ABDM/Abdm-Popups/show-abha-number/show-abha-number.component';
+//import { CalendarscheduleComponent } from './calendar-schedule/calendar-schedule.component';
+import { CreateAppointmentComponent } from './Appointments/create-appointment/create-appointment.component';
+import { CalendarscheduleComponent } from './calendar-schedule/calendar-schedule.component';
 @NgModule({
   declarations: [
     FrontDeskModuleComponent,
@@ -51,10 +54,12 @@ import { ShowAbhaNumberComponent } from './ABDM/Abdm-Popups/show-abha-number/sho
     EditAppointmentsComponent,
     CreateAppointmentComponent,
     AbhastatusComponent,
-    
+    CalendarscheduleComponent,
     FindAbhaComponent,
          ForgotAbhaVerifyAadhaarOtpComponent,
          ShowAbhaNumberComponent,
+         
+         
          
   ],
   imports: [
@@ -68,7 +73,8 @@ import { ShowAbhaNumberComponent } from './ABDM/Abdm-Popups/show-abha-number/sho
     MatIconModule,
     NgbTimepickerModule,
      JsonPipe,
-     MatDialogModule
+     MatDialogModule,
+     
     
         
   ],

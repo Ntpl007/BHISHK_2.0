@@ -5,13 +5,20 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { AuthguardGuard } from 'src/app/Shared/authguard.guard';
 import { SpecialityVitalsignSetupComponent } from './speciality-vitalsign-setup/speciality-vitalsign-setup.component';
+import { AddFacilitiesComponent } from './Manage-Facilities/add-facilities/add-facilities.component';
+import { SearchOrganizationComponent } from '../superadmin/search-organization/search-organization.component';
+import { AddOrganizationsComponent } from '../superadmin/manage-organizations/add-organizations/add-organizations.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 const routes: Routes = [
   { path: '', component: AdminModuleComponent ,canActivate:[AuthguardGuard],
   children:[
     { path: 'Add-User', component: AddUserComponent ,canActivate:[AuthguardGuard]},
     { path: 'User-List', component: UserListComponent,canActivate:[AuthguardGuard] },
-    { path: 'Add-VitalSigns', component: SpecialityVitalsignSetupComponent,canActivate:[AuthguardGuard] }
+    { path: 'Add-VitalSigns', component: SpecialityVitalsignSetupComponent,canActivate:[AuthguardGuard] },
+    { path: 'Add-Facilities', component: AddOrganizationsComponent,canActivate:[AuthguardGuard] },
+    { path: 'Edit-User', component: EditUserComponent,canActivate:[AuthguardGuard] }
+ 
   ]
 
 },

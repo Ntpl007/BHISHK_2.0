@@ -29,7 +29,8 @@
 
 .styled-table {
     border-collapse: collapse;
-    margin: 25px 0;
+    margin-top: 1px;
+    margin-bottom: 1px;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 400px;
@@ -49,7 +50,7 @@
 
 .styled-table th,
 .styled-table td {
-    padding: 8px 5px;
+    padding: 5px 4px;
 }
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
@@ -254,4 +255,28 @@ button{cursor: pointer;}
                   max-height: 142px;
                   overflow: hidden;
                   width: 150px;
+              }
+
+              .autocomplete-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                width:98%;
+                background-color: white;
+               
+                
+    position: absolute;
+    z-index: 999;
+    
+     border: 1px solid #b3b5b6;
+     
+              }
+              
+              .autocomplete-list li {
+                padding: 5px;
+                cursor: pointer;
+              }
+              
+              .autocomplete-list li:hover {
+                background-color: #eee;
               }

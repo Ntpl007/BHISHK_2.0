@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './Components/login/login.component';
 import { AuthguardGuard } from './Shared/authguard.guard';
 import { AppComponent } from './app.component';
+import { AddUserComponent } from './Components/admin-module/add-user/add-user.component';
+import { SuperadminComponent } from './Components/superadmin/superadmin/superadmin.component';
+import { SearchOrganizationComponent } from './Components/superadmin/search-organization/search-organization.component';
 
 const routes: Routes = [
    
@@ -10,7 +13,6 @@ const routes: Routes = [
   component:LoginComponent
 
   },
- 
   
     { path: 'Admin',
      loadChildren: () => import('./Components/admin-module/admin-module.module').then(m => m.AdminModuleModule),
@@ -18,10 +20,11 @@ const routes: Routes = [
       role:'Admin'
 
     },
+    
   
  },
-  {
-   path: 'FrontDesk',
+
+  {  path: 'FrontDesk',
    loadChildren: () => import('./Components/front-desk-module/front-desk-module.module').then(m => m.FrontDeskModuleModule) ,
    data:{
      role:'Front Desk',
@@ -31,10 +34,26 @@ const routes: Routes = [
   { path: 'NursingStation',
   loadChildren: () => import('./Components/nursingstation/nursingstation.module').then(m => m.NursingstationModule),
   data:{
-   role:'Admin'
+  // role:'Admin'
 
  },
+ },
+ 
+ { path: 'SuperAdmin',
+ loadChildren: () => import('./Components/superadmin/superadmin.module').then(m => m.SuperadminModule),
+ data:{
+  role:'Super Admin'
 
+},
+},
+
+
+{ path: 'Doctor',
+loadChildren: () => import('./Components/doctor-module/doctor-module.module').then(m => m.DoctorModuleModule),
+data:{
+ role:'Doctor'
+
+},
 },
     
   
