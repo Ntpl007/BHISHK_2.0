@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Doctors } from 'src/app/Model/Doctors';
 import { Fecility } from 'src/app/Model/Fecility';
 import { Organization } from 'src/app/Model/Organization';
+import { AddOrganizationPopupComponent } from '../../superadmin/Popups/add-organization-popup/add-organization-popup.component';
 import { Roles } from 'src/app/Model/Roles';
 import { HimsServiceService } from 'src/app/Shared/hims-service.service';
 import{HostListener} from '@angular/core'
@@ -9,6 +10,10 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { UserService } from 'src/app/Shared/user.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { AddUserFacilityPopupComponent } from '../../superadmin/Popups/add-user-facility-popup/add-user-facility-popup.component';
+import { NavigationExtras, Router } from '@angular/router';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
@@ -26,6 +31,7 @@ export class AddUserComponent implements OnInit {
   docs:Roles[]=[]
   fecility:Fecility[]=[]
   organization:Organization[]=[]
+  organizationId=0;
   username=''
   speciality:any
   isspecialityhidden=true
@@ -34,6 +40,25 @@ export class AddUserComponent implements OnInit {
   isrefdoctor:any=false
   myForm?:FormBuilder
   uservalid=false
+  OrganizationsList:any[]=[]
+  isRecordsAvailable=false
+  searchText=""
+  fcontrol:any;
+  isSelected=false
+  Organization=""
+  facilitiesbyorg:any
+  FacilityList:any
+  userlist:any
+  //isAddressExisted=false
+  isRecordsHave=false;
+  p:number=0;
+  private isMobile = new BehaviorSubject<boolean>(false);
+  selectedOrganizationData:any[]=[]
+arraylist=[{Id:1,name:""},{}]
+fItems:any[]=[]
+fItems2:any[]=[]
+
+issuperadmin:any
 d=true
   isusernamevalid=false
   isusernameinvalid=false
@@ -42,17 +67,40 @@ d=true
     public createform :NgForm | undefined;
  
     constructor(private service:HimsServiceService,private formbulder:FormBuilder,
+      private popup:MatDialog,
+      private router:Router,
       private userservice:UserService) {
-    
+        
       this.myform=formbulder.group({
-      
+        
        })
    }
+   @ViewChild('mytable')
+   mytable!: ElementRef;
+ isVisible=false;
+
+   filteredItems2: any[] = [];
+  LoadFacilities()
+  {
+    debugger
+    this.service.GetorganizationMappedData().subscribe((result)=>{debugger; this.selectedOrganizationData=result
+      this.filteredItems2=this.selectedOrganizationData.filter(x=>x.organizationName.toLowerCase().includes((<HTMLInputElement>document.getElementById('Organization')).value.toLowerCase()))
+      if(this.filteredItems2!=null)
+      {
+        this.organizationId=this.filteredItems2[0].organizationId
+       this.service.GetFacilitiesList(this.filteredItems2[0].organizationId).subscribe((result)=>{this.FacilityList=result})
+      
+      }
+    })
+   
+  }
+   config={}
   public SaveUser(data:any)
   {
     debugger
+  
     
-
+      
       this.myform.get('Organization_id').markAsDirty();
       this.myform.get('Organization_id').setErrors(null);
       this.myform.get('Organization_id').markAsTouched();
@@ -86,60 +134,27 @@ d=true
               }
            
             debugger
+            this.fecility;
+   
+    this.config = {  width: '750px', maxWidth: '90%' ,data:data};
+    // let value= this.OrganizationsList.filter(x=> x.organization_Name.includes(this.Organization))
+     const dialogRef=this.popup.open(AddUserFacilityPopupComponent,this.config)
+     
+          // this.fecility;
+          //   data.Organization_id;
+          //   // data.Address=this.address==""?(<HTMLInputElement>document.getElementById('Address')).value:this.address;
+          //   //this.Organization=(<HTMLInputElement>document.getElementById('Organization_id')).value;
+          //   data.Organization=this.Organization;
+          //   debugger
+          //   let orgs=this.OrganizationsList.filter(x=>x.organizationId==data.Organization_id)
+          //   this.Organization=orgs[0].organization_Name
           
-              this.service.SaveUser(data).subscribe((result:any)=>{
-                this.isrefdoctor=false
-                debugger
-                  let D=result
-                 if(D!=null && D!='')
-                 {
-                  if(D=='User Name is Already Exists')
-                  {
-                   
-                    Swal.fire('Failed',D,'info')
-                    this.reset()
-          
-                  }
-                  else{
-                    
-    this.isusernamevalid=false
-                    Swal.fire('Success',D,'success')
-                    this.reset()
-                 
-                  }
-          
-                 }else{
-                 
-    this.isusernamevalid=false
-                  Swal.fire('Something went wrong',D,'info')
-                  this.reset()
-        
-                 }
-                
-                  
-                 
-          
-                },
-                error=>
-                  {
-                    debugger
-                    Swal.fire('Failed',error,'error')
-                    
-    this.isusernamevalid=false
-                    //this.reset()
-                  }
-                
-                
-                
-                
-                
-                );
-            
-           
-        
+         
+
+             
           }
     }
-    this.isusernamevalid=false
+   
   }
  public GetFecility(SelectedOrganization: any )
   {
@@ -150,11 +165,8 @@ d=true
        
         this.fecility=result
       }
-       
-
-
+     
       }
-      
       
       );
 console.log(this.fecility);
@@ -172,10 +184,18 @@ checkUserRole()
     this.isSuperAdmin=false;
   }
 }
+
 public reset()
 {
   debugger
  
+  const queryParams1: NavigationExtras = {
+    queryParams: {
+    //params1:D
+    },
+  };
+  
+  this.router.navigate(['/SuperAdmin/Edit-User?id='+queryParams1]);
   //this.myform.reset();
   this.myform=this.formbulder.group({
     First_Name:['',Validators.required],
@@ -189,13 +209,14 @@ public reset()
     
   Speciality:['Speciality*'],
     
+  
   })
   
 }//'Organization*'
 
 
 AcceptMobilenumberOnly(event: KeyboardEvent) {
-  debugger
+  //debugger
   // Allow numbers, backspace, and delete keys
   if (
     [46, 8, 9, 27, 13].indexOf(event.keyCode) !== -1 ||
@@ -398,16 +419,23 @@ if(text!="")
 
 }
 
+
   ngOnInit(): void {
     debugger
+    
+    // const queryParams1: NavigationExtras = {
+    //   queryParams: {
+    //   params1:4
+    //   },
+    // };
+    
+    // this.router.navigate(['/SuperAdmin/Edit-User'], queryParams1);
     let role=localStorage.getItem('role')
     this.service.GetOrganization().subscribe((result : Organization[])=>(this.organization=result));
+    this.service.GetOrganization().subscribe((result:any)=>{(this.OrganizationsList=result)})
+    
     let OrgId=Number(this.userservice.getOrganizationId())
-    if(localStorage.getItem('role')!='Super Admin')
-    {
-      this.GetFecility(OrgId)
-    }
-   
+   this.GetFecility(OrgId)
    //this.service.GetRoles().subscribe((result : Roles[])=>(this.docs=result));
    this.service.getSpeciality().subscribe((result)=>this.speciality=result)
 this.myform=this.formbulder.group({

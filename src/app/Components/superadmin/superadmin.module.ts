@@ -22,6 +22,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { EditOrganizationComponent } from './Popups/edit-organization/edit-organization.component';
 import { SearchOrganizationsComponent } from './manage-organizations/search-organizations/search-organizations.component';
 import { EditFacilityComponent } from './Popups/edit-facility/edit-facility.component';
+import { AddUserFacilityPopupComponent } from './Popups/add-user-facility-popup/add-user-facility-popup.component';
+import { ImageUploadComponent } from '../PopUps/image-upload/image-upload.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { EditFacilityComponent } from './Popups/edit-facility/edit-facility.comp
     AddOrganizationPopupComponent,
     EditOrganizationComponent,
     SearchOrganizationsComponent,
-    EditFacilityComponent
+    EditFacilityComponent,
+    ImageUploadComponent,
+    
     
     
   ],
@@ -48,7 +52,8 @@ import { EditFacilityComponent } from './Popups/edit-facility/edit-facility.comp
     NgbTimepickerModule,
      JsonPipe,
      MatDialogModule,
-     MatButtonToggleModule
+     MatButtonToggleModule,
+     MatDialogModule
 
     
   ],

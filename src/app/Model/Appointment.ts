@@ -3,5 +3,6 @@ export class Appointment{
     StartTime = ""
     EndTime = ""
     AppointmentDate?:Date
+    DoctorId?:Number
     
 }

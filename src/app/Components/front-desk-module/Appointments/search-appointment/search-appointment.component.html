@@ -24,7 +24,7 @@
                     #d="ngbDatepicker"  
                     ngbTooltip="From Date (dd/MM/yyyy)"
                     onpaste="return false"
-                   
+                   [minDate]="minDate"
                    id="fdate"  (dateSelect)="onDateSelectfromdate($event)"   name="FromDate"   
                 />
               
@@ -48,6 +48,7 @@
                         name="dp"
                         onpaste="return false"
                         ngbDatepicker
+                        [minDate]="minDate"
                         #d2="ngbDatepicker"
                         ngbTooltip="To Date (dd/MM/yyyy)"
                         value="{{todayTo}}" id="toDate" (dateSelect)="onDateSelecttodate($event)"   name="ToDate"  
@@ -172,21 +173,23 @@
                         <td class="name">{{rowlist.doctor_Name}}</td>
                         <td  class="status"> {{rowlist.appointment_status}}</td>
                         <td style="display: none;">{{rowlist.appointmentId}} </td>
-                        <td class="action" *ngIf="rowlist.appointment_status!='Cancelled'"  >
-                           
+                        <td class="action" *ngIf="rowlist.appointment_status=='Confirmed'"  >
+                            <a style="color: rgb(45, 147, 25);font-size: 16px;font-weight:bold;" ngbTooltip="Checkin" (click)="Checkin(rowlist)" > Checkin</a>
+                        
                         <i  style="font-size:10px;" class="material-icons"  style="color: black;size: 3px;" (click)="reschedule(i, rowlist)"   ngbTooltip="Re Schedule"  > calendar_month</i>
                                 
  <i  style="font-size:10px;" class="material-icons" style="color: black;size: 3px;"   ngbTooltip="Transfer" (click)="Transfer(i,rowlist)"  >move_up</i>             
                        <a> <i  style="font-size:10px;" class="material-icons" style="color: black;height: 1px;" ngbTooltip="Edit Appointment"  (click)="EditAppointment(i, rowlist)"> edit_note</i></a> 
                        <i style="font-size:10px;" class="material-icons"   style="color: rgb(237, 69, 69);height: 10px;" ngbTooltip="Cancel Appointment" (click)="CancelAppointment(i, rowlist)" > cancel</i>
-                       
+                      
 
                      
                        <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home">add</mat-icon> -->
                         
                         </td>
                         <td class="action" *ngIf="rowlist.appointment_status=='Cancelled'"  >
-                           
+                            <a style="color: rgb(137, 142, 136);font-size: 16px;font-weight:bold;"  > Checkin</a>
+                        
                             <i  style="font-size:10px;" class="material-icons"  style="color: rgb(173, 168, 168);size: 3px;"    > calendar_month</i>
                             <i  style="font-size:10px;" class="material-icons" style="color: rgb(173, 168, 168);size: 3px;"  >move_up</i>                 
                             
@@ -198,6 +201,21 @@
                            <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home">add</mat-icon> -->
                             
                             </td>
+
+                            <td class="action" *ngIf="rowlist.appointment_status=='Arrived'"  >
+                                <a style="color: rgb(137, 142, 136);font-size: 16px;font-weight:bold;"  > Checkin</a>
+                        
+                                <i  style="font-size:10px;" class="material-icons"  style="color: rgb(173, 168, 168);size: 3px;"    > calendar_month</i>
+                                <i  style="font-size:10px;" class="material-icons" style="color: rgb(173, 168, 168);size: 3px;"  >move_up</i>                 
+                                
+                               <a> <i  style="font-size:10px;" class="material-icons" style="color: rgb(173, 168, 168);height: 1px;"  > edit_note</i></a> 
+                               <i style="font-size:10px;" class="material-icons"   style="color: rgb(173, 168, 168);height: 10px;" > cancel</i>
+                               
+        
+                             
+                               <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home">add</mat-icon> -->
+                                
+                                </td>
                       
 
                         

@@ -10,18 +10,25 @@ import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angula
 import { UserService } from 'src/app/Shared/user.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatLabel } from '@angular/material/form-field';
+import { MatAccordion } from '@angular/material/expansion';
+import { MatDialog } from '@angular/material/dialog';
+import { AddUserFacilityPopupComponent } from '../../superadmin/Popups/add-user-facility-popup/add-user-facility-popup.component';
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.css']
+  styleUrls: ['./edit-user.component.css'],
+  
 })
 export class EditUserComponent implements OnInit {
   isSuperAdmin=false;
   _role:number=0
   _gender:number=0
   _organization:number=0
+  defaultFacilityId:any;
   _facility:number=0
   docs:Roles[]=[]
+  p: number = 0;
   fecility:Fecility[]=[]
   organization:Organization[]=[]
   username=''
@@ -32,15 +39,22 @@ export class EditUserComponent implements OnInit {
   isrefdoctor:any=false
   myForm?:FormBuilder
   uservalid=false
+  FacilityList:any
 d=true
   isusernamevalid=false
   isusernameinvalid=false
   enbld:any="[attr.enabled]"
   @ViewChild('reg') 
     public createform :NgForm | undefined;
- 
+  userid: any;
+  userfacilitylist: any;
+  uname: any;
+ showlist=false;
     constructor(private service:HimsServiceService,private formbulder:FormBuilder,
-      private userservice:UserService,private route: ActivatedRoute,private router:Router) {
+      private userservice:UserService,private route: ActivatedRoute,private router:Router,
+      private popup:MatDialog
+      
+      ) {
     
       this.myform=formbulder.group({
       
@@ -58,7 +72,7 @@ d=true
       //data.Organization_id=this.userservice.getOrganizationId();
             debugger
             data.FacilityId=this.myform.get('FacilityId').value;
-            data.UserId=Number(this.Uid)
+            data.UserId=Number(this.userid)
             if(this.isspecialityhidden)
             {
               data.isProvider=null;
@@ -67,22 +81,36 @@ d=true
             {
               data.isProvider=0
             }else data.isProvider=1
+            data.FacilityId=this.defaultFacilityId
               this.service.UpdateUser(data).subscribe((result:any)=>{
                 this.isrefdoctor=false
                 debugger
                   let D=result
                  if(D!=null && D!='')
                  {
-                 
-                    Swal.fire('Success',D,'success')
-                    if(localStorage.getItem('role')=='Admin')
-                    {
-                      this.router.navigateByUrl('/Admin/User-List')
-                    }else   if(localStorage.getItem('role')=='Super Admin')
-                    {
-                      this.router.navigateByUrl('/SuperAdmin/User-List')
-                    }
+                   if(this.FacilityArrayForUpdate!=null && this.FacilityArrayForUpdate.length>0)
+                   {
+                    this.service.UpdateUserFacilities(this.FacilityArrayForUpdate).subscribe((result2:any)=>{
+                       debugger
+                       
+                //    this.GetUserData(Number(this.userid));
+                    this.Reload();
+                    
+                    })
+                    
+                   }else{
+                    
+  this.GetUserData(Number(this.userid));
+                   }
                    
+                    // if(localStorage.getItem('role')=='Admin')
+                    // {
+                    //   //this.router.navigateByUrl('/Admin/User-List')
+                    // }else   if(localStorage.getItem('role')=='Super Admin')
+                    // {
+                    //  // this.router.navigateByUrl('/SuperAdmin/User-List')
+                    // }
+                    Swal.fire('Success',D,'success')
                   
                  }else{
                  
@@ -357,7 +385,9 @@ if(Obj[0].isProvider==0)
 UserList:any
 GetUserData(Id:Number)
 {
+  debugger;
   this.service.GetUserById(Id).subscribe((result)=>{
+    debugger
 this.UserList=result;
 this.FieldsBinding(result)
 console.log(result)
@@ -365,13 +395,45 @@ console.log(result)
 }
   ngOnInit(): void {
     debugger
-    
+    // this.route.queryParams.subscribe(params=>{
+    //   this.userid=params['D']
+    // })
     this.route.queryParams.subscribe(params => {
-    debugger
-  this.Uid=params['id'];
-  this.GetUserData(Number(this.Uid))
-      // Use param1 and param2 as needed in this component
-    });
+      debugger
+    //this.userid=params['params'];
+    this.userid=params['id'];
+  
+   
+    //this.userid=params['id'];
+    //this.getuserbyfacilitylist
+    
+    
+  
+        // Use param1 and param2 as needed in this component
+      });
+    this.Reload();
+   
+
+  }
+  FacilityArrayForUpdate:any[]=[]
+
+  List=new Array();
+ar:any[]=[]
+  selectedOption="";
+
+  Reload()
+  {
+   
+  
+    this.service.getuserbyfacilitylist(this.userid).subscribe((result:any)=>{
+      debugger;
+      this.userfacilitylist=result;
+      this.defaultFacilityId=this.userfacilitylist[0].facilityid;
+
+      this.uname=this.userfacilitylist[0].UserName
+
+
+        })
     let role=localStorage.getItem('role')
     this.service.GetOrganization().subscribe((result : Organization[])=>(this.organization=result));
     let OrgId=Number(this.userservice.getOrganizationId())
@@ -406,17 +468,94 @@ this.myform=this.formbulder.group({
         this.myform.get('OrganizationId').patchValue(OrgId);
        
       } 
-   // this.service.GetFecility().subscribe((result : Fecility[])=>(this.fecility=result));
    
+    
+      this.GetUserData(Number(this.userid))
+  }
+  selectChangeForRemove(index:Number,Item:any)
+  {
+   // let k=0;
+   if((<HTMLInputElement>document.getElementById('isdefault'+index)).checked==true)
+   {
+      Swal.fire("This is Default Facility.It can't be removed",'','info');
+      (<HTMLInputElement>document.getElementById('isfacility'+index)).checked=true
+   }else{
+    this.FacilityArrayForUpdate=[]
+    for(var i=0;i<this.userfacilitylist.length;i++)
+    {
+      
+     
+      if((<HTMLInputElement>document.getElementById('isfacility'+i)).checked==true)
+      {
+        this.FacilityArrayForUpdate.push({FacilityListId:this.userfacilitylist[i].facilityListId,DefaultFacilityId:this.defaultFacilityId,UserId:this.userid});
+        
+     //  this.List.push(this.FacilityArrayForUpdate);
+      //  k=k+1;
+      }
+    }
+   }
+  
     debugger
+  }
+  selectchange(index:Number,Item:any)
+  {
+    debugger
+   // this.FacilityArrayForUpdate=[]
+    for(var i=0;i<this.userfacilitylist.length;i++)
+    {
+      this.ar[i]='isdefault'+i;
+      
+     // if('isdefault'+index!='isdefault'+i)
+     // (<HTMLInputElement>document.getElementById('isdefault'+index)).checked=false
+     if( this.ar[i]!='isdefault'+index)
+     {
+      (<HTMLInputElement>document.getElementById('isdefault'+i)).checked=false
+     }
+     else{
+      this.defaultFacilityId=Item.facilityListId;
+      if(this.FacilityArrayForUpdate.length>0)
+      {
+        this.FacilityArrayForUpdate[0].DefaultFacilityId=this.defaultFacilityId;
+        this.FacilityArrayForUpdate[0].UserId=this.userid;
+        
+      }
+      else{
+        this.FacilityArrayForUpdate.push({FacilityListId:0,DefaultFacilityId:this.defaultFacilityId,UserId:this.userid});
+     
+      }
+      
+       
+      console.log( this.defaultFacilityId)
+     }
+    }
+    this.ar=[]
     
    
 
   }
-
+  config={}
+  dl:any
+  AddMoreFacilities()
+  {
+    debugger
+    if(this.userfacilitylist.length==0)
+    {
+      //localStorage.setItem('userOrgId',localStorage.getItem('usersearchOrganization'))
+  // .. this.userfacilitylist[0]=  localStorage.getItem('usersearchOrganization')
+    }else    localStorage.setItem('userOrgId',this.userfacilitylist[0].organizationId)
+   //let dl.Organization_id=userfacilitylist[0].organizationId
+    this.config = {  width: '900px', maxWidth: '90%' ,data:this.userfacilitylist};
+    // let value= this.OrganizationsList.filter(x=> x.organization_Name.includes(this.Organization))
+     const dialogRef=this.popup.open(AddUserFacilityPopupComponent,this.config)
+     
+ dialogRef.afterClosed().subscribe(result => {
+  // This code will execute when the dialog is closed
+ 
+  this.Reload();
   
+});
 
-  
+  }
 
 }
 

@@ -37,7 +37,7 @@ export class OpdComponent implements OnInit {
 ;
   minDate: { year: number; month: number; day: number; };
   maxDate:{ year: number; month: number; day: number; };
-  
+  isrefNoShow=false
   constructor(private service:HimsServiceService,
     private dialogService:DialogcommunicationService,
     private http:HttpClient,private router:Router,
@@ -122,6 +122,7 @@ export class OpdComponent implements OnInit {
     init='';
     RGA:string=""
     fname=""
+    lname=""
     selecteddate=""
   pd:PatientData[]=[]
   PatientData: any = [];
@@ -200,12 +201,20 @@ options: string[] = ['One', 'Two', 'Three'];
     debugger
     if(event.target.value=="Mr"||event.target.value=="Mrs")
     {
-      this.Sex=1;
+     // this.Sex=1;
+      this.opform.get('Sex').patchValue(1)
     }
     if(event.target.value=="Miss"||event.target.value=="Ms")
     {
-      this.Sex=2
+     // this.Sex=2
+     this.opform.get('Sex').patchValue(2)
     }
+    if(event.target.value=="Others")
+    {
+     // this.Sex=3
+     this.opform.get('Sex').patchValue(3)
+    }
+    
 
   }
 
@@ -218,7 +227,7 @@ options: string[] = ['One', 'Two', 'Three'];
    // let gloabaldate=year+"-"+month + "-" +day;
        this.dobModel=actual;
       // (<HTMLInputElement>document.getElementById('dob')).value=actual
-
+      this.getAgeInDays(this.dateservice.GlobalStringDateFormat(actual) );
    }
 checkMobileisInteger(event:any)
 {
@@ -362,7 +371,8 @@ getpatientdata(index: any, SelectedPatient: any ){
    // console.warn("RRRRR", this.PatientData[0].occupation)
    // console.log(this.PatientData)
     // this.showModal = false;
-    this.fname=this.PatientData[0].firstName+" "+this.PatientData[0].lastName
+    this.fname=this.PatientData[0].firstName
+    this.lname=this.PatientData[0].lastName
     var dateofbirth= this.PatientData[0].dob.split("T");
     const current =new Date(this.PatientData[0].dob)
     this.startDate = {
@@ -526,7 +536,10 @@ debugger
  this.controlpath='CreateOP/SaveOp'
  if(this.opform.invalid)
  {
-  this.validateallformfields(this.opform)
+  
+  this.validateallformfields(this.opform);
+  
+ //(<HTMLInputElement>document.getElementById('txtName')).focus();
  }else
  {
   if(this.MyInputData.City.trim()!=""||this.MyInputData.Village.trim()!="")
@@ -557,13 +570,16 @@ debugger
         this._payamount="0";
       }else  this._payamount=this.MyInputData.PaymentAmount
         this.InputData=result;
+        debugger
       this.InputDataaray=[
         {
           PatienTId:this.InputData.patientID,
+          ReferenceNo:data.ReferenceNo,
           encounterId:this.InputData.encounterID,
           Comments:this.MyInputData.Comments,
           createdBy:localStorage.getItem('name'),
           PaymentModeId:this.MyInputData.PaymentMode,
+
           // PaymentAmount:this._payamount,
           DoctorId:this.MyInputData.DoctorId,
           RefDoctorId:this.MyInputData.RefDoctorId,
@@ -580,7 +596,7 @@ debugger
       //}
        //input.reset();
        var objpatinput=this.InputDataaray;
-      this.http.post<void>(this.service.Serverbaseurl+"Payments/SavePayments",objpatinput).subscribe((result)=>{
+      this.http.post<void>(this.service.Serverbaseurl+"api/Payments/SavePayments",objpatinput).subscribe((result)=>{
       debugger 
       this.http.get<any>(this.service.Serverbaseurl+'api/Home/GetRegistrationandConsulatationPaymentDetails?PatientId='+msg.patientID+'&EncounterId='+msg.encounterID).subscribe((result2)=>
         { debugger
@@ -693,12 +709,17 @@ this.listOfDisplayData=null
 
 public Clear(){
   debugger
+  (<HTMLInputElement>document.getElementById('txtAge')).value="";
+  (<HTMLInputElement>document.getElementById('ddlAgeMode')).value="0";
+  (<HTMLInputElement>document.getElementById('txtfinalamount')).value=this.RGA
+  this.finalamount=this.RGA
 this._conamount="0"
 this.districts=null;
 this.mobile05accaptable=false
 this.aadhaar01accaptable=false
 this.opform=this.formbuilder.group({
  FirstName:['',Validators.required],
+ LastName:['',Validators.required],
  dob:["",Validators.required],
  Sex:[{value:'0',disabled: true}],
   Aadhaar:['',[Validators.required,Validators.pattern(/^[2-9]\d{11}$/)]],
@@ -724,7 +745,8 @@ this.opform=this.formbuilder.group({
   PaymentCategoryId:['0',Validators.required],
   EmailId: ['', Validators.compose([Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i)])],
   conamount:['0',[Validators.required,Validators.pattern(/^[0-9]\d{9}$/)]],
-  txtRefDoctor:['']
+  txtRefDoctor:[''],
+  ReferenceNo:['',Validators.required]
 
 });
 
@@ -746,6 +768,19 @@ this.isconsultdoctorhide=true;
  // this.service.GetRefDoctorbyspeciality(id.target.value).subscribe((result)=>{
   //  debugger
   //  this.refd=result})
+  }
+  public GetConsultationAmount()
+  {
+    let OrganizationId=localStorage.getItem('organizationId')
+    let FacilityId=localStorage.getItem('facilityId')
+    let DoctorId=this.opform.get('DoctorId').value;
+    this.service.GetConsultationAmount(DoctorId,OrganizationId,FacilityId,725).subscribe((result : any)=>{
+       // alert(result);
+       
+       this.opform.get('conamount').patchValue(result);
+        let payamt= parseFloat(this.RGA)+parseFloat(result);
+        this.opform.get('PaymentAmount').patchValue(payamt);
+      });
   }
 
   public getCorporate(Id:any)
@@ -793,6 +828,7 @@ const control=formgroup.get(fields)
 if(control instanceof FormControl)
 {
   control.markAsTouched({onlySelf:true})
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }else if(control instanceof FormGroup)
 {
   this.validateallformfields(control)
@@ -1064,7 +1100,7 @@ onKeyDownForPincode(event: KeyboardEvent) {
 
 
     }
-
+  
   ngOnInit(): void {
     debugger
     this.RGA='50'
@@ -1097,14 +1133,14 @@ const emailPattern = new RegExp('\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w
 
 this.opform=this.formbuilder.group({
   FirstName:['',Validators.required],
-
+  LastName:['',Validators.required],
   dob:["",Validators.required],
   Sex:[{value:'0',disabled: true}],
   Aadhaar:['',[Validators.required,Validators.pattern(/^[2-9]\d{11}$/)]],
   MobileNumber:['',[Validators.required,Validators.pattern(/^[6-9]\d{9}$/)]],
   ReligionId:['0',Validators.required],
   NationalityId:['0',Validators.required],
-  HouseNo:['',Validators.required],
+  HouseNo:['',[Validators.required,Validators.pattern(/^[A-Za-z0-9/.,\\-]*$/)]],
   State:['0',Validators.required],
   District:['0',Validators.required],
   City:[''],
@@ -1125,7 +1161,9 @@ this.opform=this.formbuilder.group({
  EmailId: ['', Validators.compose([Validators.required,Validators.pattern(emailPattern)])],
  
  conamount:['0',[Validators.required,Validators.pattern(/^[0-9]\d{9}$/)]],
-  txtRefDoctor:['']
+  txtRefDoctor:[''],
+  
+  ReferenceNo:['',[Validators.required,Validators.pattern(/^[A-Za-z0-9]*$/)]]
 
 });
 
@@ -1231,10 +1269,10 @@ this.opform=this.formbuilder.group({
                 var encId='';
                 var IsReview=false;                
                 const numWords = require('num-words') 
-                const amountInWords = numWords(test.regPaidAmount) 
+                const amountInWords =this.service.ToCapital(numWords(test.regPaidAmount))  
                 var Review=0;
                 Particulars = Particulars + "<tr><td width='5%'></td><td width='45%'>" + 'Registration' + "</td><td width='15%'>" + '1' + " </td><td width='30%' align='right'>" + test.registrationAmount + ".00</td><td width='5%'></td></tr>";
-                Notes = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.registrationAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.regPaidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" +amountInWords+" "+ 'Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
+                Notes = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.registrationAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.regPaidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" +amountInWords+" "+ 'Rupees Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
                  + "</td><td align='right'>Authorised Signature</td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td colspan='4' align='center'>16-11-404/16, SBI Officers Colony Rd,Moosarambagh, Hyderabad-500036</td></tr>";
                 Footer = "<tr> </tr>";
                 var mywindow = window.open('', 'Payment Voucher', 'height=512,width=960');
@@ -1318,10 +1356,10 @@ this.opform=this.formbuilder.group({
                 var encId='';
                 var IsReview=false;                
                 const numWords = require('num-words') 
-                const amountInWords = numWords(test.regPaidAmount) 
+                const amountInWords =this.service.ToCapital( numWords(test.regPaidAmount) )
                 var Review=0;
                 Particulars = Particulars + "<tr><td width='5%'></td><td width='45%'>" + 'Registration' + "</td><td width='15%'>" + '1' + " </td><td width='30%' align='right'>" + test.registrationAmount + ".00</td><td width='5%'></td></tr>";
-                Notes = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.registrationAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.regPaidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" + amountInWords+" "+'Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
+                Notes = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.registrationAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.regPaidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" + amountInWords+" "+'Rupees Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
                  + "</td><td align='right'>Authorised Signature</td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td colspan='4' align='center'>16-11-404/16, SBI Officers Colony Rd,Moosarambagh, Hyderabad-500036</td></tr>";
                 Footer = "<tr> </tr>";
 
@@ -1336,10 +1374,11 @@ this.opform=this.formbuilder.group({
                 var encId='';
                 var IsReview=false;                
                 const numWords1 = require('num-words') 
-                const amountInWords1 = numWords(test.paidAmount) 
+                const amountInWords1 = this.service.ToCapital(numWords(test.paidAmount))
+                
                 var Review=0;
                 Particulars1 = Particulars1 + "<tr><td width='5%'></td><td width='45%'>" + 'Consultation' + "</td><td width='15%'>" + '1' + " </td><td width='30%' align='right'>" + test.totalBilledAmount + ".00</td><td width='5%'></td></tr>";
-                Notes1 = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.totalBilledAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.paidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" + amountInWords1+" "+'Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
+                Notes1 = "<tr><td colspan='5'></td></tr><tr><td colspan='5'></td></tr><tr><td colspan='5'><hr/></td></tr></table><table width='100%' style='font-size:12px'  border='0' align='center' cellspacing='0' cellpadding='0'><tr><td></td><td></td><td align='right'><b>Total Charges:&#160;&#160;" + test.totalBilledAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td width='2%'></td><td>" + PaymentMode + "</td><td align='right'><b>" + test.paidAmount + ".00</b></td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr> <tr><td width='2%'></td><td width='30%'><b>Notes :</b>" + 0 + "</td><td><b>Total In Words:</b>" + amountInWords1+" "+'Rupees Only' + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>" + Review + "</b></td><td width='5%'></td></tr><tr><td width='2%'></td><td><b>Payment Received By:&#160;&#160;</b>" + 'ntc'
                  + "</td><td align='right'>Authorised Signature</td><td width='5%'></td></tr><tr><td colspan='4'><hr></hr></td></tr><tr><td colspan='4' align='center'>16-11-404/16, SBI Officers Colony Rd,Moosarambagh, Hyderabad-500036</td></tr>";
                 Footer1 = "<tr> </tr>";
 
@@ -1355,4 +1394,57 @@ this.opform=this.formbuilder.group({
                 mywindow?.print();
          
     }
+
+    public ShowRefNumber(event:any)
+    {
+      debugger
+      let PaymentModeId=event.target.value;
+
+      if(PaymentModeId==1)
+      {
+        this.isrefNoShow=false;
+        this.opform.get('ReferenceNo').setErrors(null)
+        
+      }else 
+      {
+        this.opform.get('ReferenceNo').setErrors('required')
+        this.isrefNoShow=true;
+       
+      }
+      
+    }
+  
+public getAgeInDays(dateOfBirth: any): number {
+  var today = new Date();
+  debugger
+ // var dt=(<HTMLInputElement>document.getElementById('dob')).value
+  var birthDate = new Date(dateOfBirth);
+  
+  // Calculate the time difference in milliseconds between today and the birth date
+  var timeDiff = today.getTime() - birthDate.getTime();
+  var age=0
+  // Convert milliseconds to days (1 day = 24 hours * 60 minutes * 60 seconds * 1000 milliseconds)
+  var days = Math.floor(timeDiff / (24 * 60 * 60 * 1000));
+  if(days>=365)
+  {
+    age=Math.floor(days/365);
+    (<HTMLInputElement>document.getElementById('txtAge')).value=age.toString();
+   (<HTMLInputElement>document.getElementById('ddlAgeMode')).value="3"
+  }else
+  if(days<365 && days>=30)
+  {
+    age=Math.floor(days/30);
+    (<HTMLInputElement>document.getElementById('txtAge')).value=age.toString();
+    (<HTMLInputElement>document.getElementById('ddlAgeMode')).value="2"
+  }
+  else
+  if(days<30)
+  {
+   // age=Math.floor(days/30);
+    (<HTMLInputElement>document.getElementById('txtAge')).value=days.toString();
+   (<HTMLInputElement>document.getElementById('ddlAgeMode')).value="1"
+  }
+  return days;
+}
+
 }

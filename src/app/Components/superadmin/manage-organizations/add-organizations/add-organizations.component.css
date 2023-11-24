@@ -18,6 +18,7 @@
 }
 
 
+
 .styled-table tbody tr{
   margin-left: 1px;
 }
@@ -313,4 +314,32 @@ margin: 0 10px 0 10px;
     display:list-item;
       flex-direction: column; /* Display buttons in a column */
   }
+
+  
+  
+  
+input {
+  display: none;
+}
+
+/* .image-upload-container {
+  cursor: pointer;
+} */
+
+.img-preview-container {
+  background-color: #f7f7f7;
+  position: relative;
+
+  .img-preview {
+    background: center center no-repeat;
+    background-size: contain;
+    height: 116px;
+    width: 116px;
+
+    &-error {
+      display: none;
+    }
+  }
+}
+  
 }

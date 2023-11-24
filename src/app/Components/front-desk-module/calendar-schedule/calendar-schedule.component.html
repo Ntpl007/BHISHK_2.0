@@ -29,7 +29,7 @@
   </div>
       <div class="col-md-3 mb-3" *ngIf="isdatehide">
           <div class="input-group">
-              <input formControlName="ScheduledDate" class="form-control" readonly="true"
+              <input  class="form-control" readonly="true"
                      class="form-control"
                      placeholder="Please Select date"
                      ngbDatepicker
@@ -44,9 +44,9 @@
                  />
                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="p.toggle()"type="button"></button>
              </div>
-             <small *ngIf="myform.get('AppointmentDate').touched&&myform.get('AppointmentDate').hasError('required')" class="text-danger">
+             <!-- <small *ngIf="myform.get('AppointmentDate').touched&&myform.get('AppointmentDate').hasError('required')" class="text-danger">
               Appointment Date is required
-             </small>
+             </small> -->
       </div>
        
 
@@ -99,16 +99,16 @@
       </div>
     </div>
 
-    <div  class="modal-popup"    id="modalPopup" [ngStyle]="contextMenuPosition" *ngIf="showCntxtMenu" style="background-color:hsla(160, 23%, 95%, 0.856)" >
+    <div  class="modal-popup"    id="modalPopup" [ngStyle]="contextMenuPosition" *ngIf="showCntxtMenu" style="background-color:hsla(160, 23%, 95%, 0.856);background-clip: padding-box;" >
       <!-- <ul>
           <li><button (click)="editSlot()">Edit</button></li>
                                       <li><button (click)="rescheduleSlot()">Reschedule</button></li>
                                       <li><button (click)="transferSlot()">Transfer</button></li>
           </ul> -->
-          <table style="border: 1em;">
+          <table style="border: 1em;width: 200px;padding-left: 50px;">
             <tr>
               <td>
-                <a [routerLink]="" id="lnkEdit" (click)="editSlot()">Edit</a>
+                <a [routerLink]="" style="padding-left: 5px;" id="lnkEdit" (click)="editSlot()">Edit</a>
               </td>
             </tr>
               <tr>
@@ -209,32 +209,40 @@
                   <div class="card">
                       <div class="card-body">
                           <div class="row">
-                              <div class="col-md-3 mb-3">
+                              <div class="col-md-4 mb-4">
                                   Patient Name
                               <input type="text" id="txtTransferPatientName" placeholder="Patient Name" class="form-control">
                               </div>
-                              <div class="col-md-3 mb-3">
+                              <div class="col-md-4 mb-4">
                                   Doctor Name
                                   <input type="text" id="txtTransferDoctorName" placeholder="doctors Name"  class="form-control">
                               </div>
-                             <div class="col-md-3 mb-3">
+                              <div class="col-md-4 mb-4">
+                                Appointment Date & Time
+                                  <input type="text" id="txtTransferAppointmentDate" placeholder="Appointment Date"  class="form-control">
+                              </div>           
+                          </div>
+                          <div class="row">
+                            <h5 class="modal-title" id="TransferModalLabel">Transfer to</h5>
+                          </div>
+                         &nbsp;
+                         &nbsp;
+                          <div class="row">
+                            <div class="col-md-4 mb-4">
                               Speciality
-                              <select class="form-control"  id="ddltransferSpecialityId"  name="specialityID"  (change)="getDoctors($event)"  >
+                              <select class="form-control"  id="ddltransferSpecialityId"  name="specialityID"  (change)="getTransferDoctors($event)"  >
                                 <option [selected]="true"  hidden [value]="0" >Speciality*</option>
                                 <option  *ngFor="let d of speciality"  value={{d.specialityID}}>{{d.speciality}}</option>
                             </select>
                              </div>
-                             <div class="col-md-3 mb-3">
+                             <div class="col-md-4 mb-4">
                               Doctor
-                              <select class="form-control "  id="ddlTransferDoctor"  name="providerId" (change)="getdate($event)">
+                              <select class="form-control "  id="ddlTransferDoctor"  name="providerId" >
                                 <option [selected]="true"  hidden [value]="0" >Doctor*</option>
-                                 <option  *ngFor="let d of doctors"  value={{d.providerId}}>{{d.firstName}}</option>
+                                 <option  *ngFor="let d of transferdoctors"  value={{d.providerId}}>{{d.firstName}}</option>
                               </select>
                              </div>
-                                              
-                          </div>
-                          <div class="row">
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-4">
                               Transfer Date
                               <div class="input-group">
                                   <input
@@ -249,7 +257,7 @@
                                   <button id="fTransferDatepicker" class="btn btn-outline-secondary bi bi-calendar3" (click)="e.toggle()" type="button"></button>
                               </div>
                           </div>
-                              <div class="col-md-3 mb-3">
+                              <div class="col-md-4 mb-4">
                                   Start Time
  
                                   <input  id="txtTranferStartTime" list="limittimeslist" (change)="onTransferStarttimeChanged()"  name="notificationThreshold" required class="form-control" type="time" />   
@@ -258,7 +266,7 @@
                                      
                                     </datalist>
                               </div>
-                              <div class="col-md-3 mb-3">
+                              <div class="col-md-4 mb-4">
                                   End Time
                               <input type="text" id="txtTransferendtime" placeholder="End Time"  class="form-control">
                               </div>

@@ -331,10 +331,11 @@ EndTimeKeyEvent(event: KeyboardEvent) {
       Data.EndTime= this.convertTo24HourFormat(Data.EndTime);
     }
   }
-    if(localStorage.getItem('patId')!=null)
+    if(localStorage.getItem('patId')!=undefined||localStorage.getItem('patId')!=null)
     {
 
       Data.PatientId=localStorage.getItem('patId');
+      localStorage.removeItem('patId')
     } else 
     Data.PatientId=0;
     Data.CretedBy=localStorage.getItem('name')
@@ -581,7 +582,8 @@ public getpatient(X:any)
   //debugger;
    if(this.mobilenumber?.length==10)
    {
-  this.http.get<any>(this.service.Serverbaseurl+'FetchMasterData/GetPatientDetails?mobilenumber='+this.mobilenumber).subscribe(
+    let OrganizationId=localStorage.getItem('organizationId')
+  this.http.get<any>(this.service.Serverbaseurl+'FetchMasterData/GetPatientDetails?mobilenumber='+this.mobilenumber+'&OrganizationId='+OrganizationId).subscribe(
     (data: any)=>{
       debugger;
       this.listOfDisplayData = data;
@@ -1022,6 +1024,7 @@ GetTimeSlotsForTimePicker(date:any,TimeInterval:any)
 }
   ngOnInit(): void {
     debugger
+    localStorage.removeItem('patId')
     let today=new Date();
     let _date=formatDate(today,'dd-MM-yyyy','en-Us');
     if(this.Data[3].split('=')[1] != null && this.Data[3].split('=')[0] == "Appointment Date"){

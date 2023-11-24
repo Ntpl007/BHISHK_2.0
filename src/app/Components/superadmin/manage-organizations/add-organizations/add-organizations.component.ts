@@ -10,13 +10,15 @@ import { ActivatedRoute } from '@angular/router';
 import { EditFacilityComponent } from '../../Popups/edit-facility/edit-facility.component';
 import Swal from 'sweetalert2';
 import { UserService } from 'src/app/Shared/user.service';
+import { ImageUploadComponent } from 'src/app/Components/PopUps/image-upload/image-upload.component';
 
 @Component({
   selector: 'app-add-organizations',
   templateUrl: './add-organizations.component.html',
   styleUrls: ['./add-organizations.component.css',"../../../../../css/style.css","../../../../../css/bootstrap.min.css"
   ,"../../../../../css/responsive.bootstrap4.min.css","../../../../../css/buttons.bootstrap4.min.css" ,
-  "../../../../../css/dataTables.bootstrap4.min.css","../../../../../css/metisMenu.min.css"]
+  "../../../../../css/dataTables.bootstrap4.min.css","../../../../../css/metisMenu.min.css"],
+  providers: [ImageUploadComponent]
 })
 export class AddOrganizationsComponent implements OnInit {
   OrganizationsList:any[]=[]
@@ -38,11 +40,15 @@ organizationId=0;
 issuperadmin:any
 selectedOrganizationData:any[]=[]
 list:any=null
+src?:string = '';
+file : any;
+imagepath : string ='';
   constructor(private service:HimsServiceService,
     private fb:FormBuilder,
     private popup:MatDialog,
     private route:ActivatedRoute,
-    private userservice:UserService
+    private userservice:UserService,
+    private imageUploadComponent : ImageUploadComponent
     ) {
       this.checkIfMobile();
       window.addEventListener('resize', () => this.checkIfMobile());
@@ -64,11 +70,13 @@ list:any=null
 Reset()
 {
   debugger
+  (<HTMLInputElement>document.getElementById('image_src')).style.backgroundImage = '';
   this.isSelected=false
  // this.isAddressExisted=false; 
   this.fcontrol=this.fb.group({
     Organization:['',[Validators.required,Validators.pattern('!/^[A-Za-z ]+$/')]],
-    Address:['',[Validators.required,Validators.pattern('!/^[A-Za-z ]+$/')]]
+    Address:['',[Validators.required,Validators.pattern('!/^[A-Za-z ]+$/')]],
+    // src:['', Validators.required]
   })
   this.FacilityList=[]
   if(this.FacilityList.length>0)
@@ -81,7 +89,18 @@ Reset()
     }
 orgname=""
 paramList:any
-
+// processFile(imageInput: any)
+//   {
+//     debugger;
+//     const file:File = imageInput.files[0];
+//     const reader = new FileReader();
+//     reader.addEventListener('load',(event) =>{
+//       debugger;
+//       this.src = event.target?.result?.toString();
+//       this.file = file;
+//     });
+//     reader.readAsDataURL(file);
+//   }
 Binding2()
 {
   
@@ -110,16 +129,32 @@ bindData(Id:any)
     this.fcontrol.get('Address').value=this.respData.organization;
     this.fcontrol.get('Organization').value=this.respData.address;
     
+    console.log(this.respData.organizationimage);
+    localStorage.setItem('imagepath',"");
+    //localStorage.setItem('imagepath','123.jpg');
+    
+    // (<HTMLInputElement>document.getElementById('image_src')).style.backgroundImage = '';
+    // console.log((<HTMLInputElement>document.getElementById('image_src')).style.backgroundImage);
+    //this.imagepath = "123.jpg";
+    //localStorage.setItem('imagepath','123.jpg');
+    //this.imageUploadComponent.ngOnInit();
+    //localStorage.setItem('imagepath','');
+    //(<HTMLInputElement>document.getElementById('image_src')).style.backgroundImage =  `url('${this.respData.organizationimage}')`;
+    //"url('"+this.respData.organizationimage+"')";
+    //'url("'+this.respData.organizationimage+'")';
+     
+    
   })
 
 
 }
   ngOnInit(): void {
     
-   
+    
   this.fcontrol=this.fb.group({
     Organization:['',[Validators.required,Validators.pattern(/^[A-Za-z -]+$/)]],
-     Address:['',[Validators.required,Validators.pattern(/^[A-Za-z0-9 :,-/]+$/)]]
+     Address:['',[Validators.required,Validators.pattern(/^[A-Za-z0-9 :,-/]+$/)]],
+    //  src:['', Validators.required]
    })
    debugger
     if(localStorage.getItem('role')=='Super Admin')
@@ -350,14 +385,16 @@ this.Update();
      
     }
     isUpdated:any
-    formdata={Organization:'',OrganizationId:0,Address:''}
+    formdata={Organization:'',OrganizationId:0,Address:'', organizationimage:''}
   Update(){
 debugger
 
 this.formdata.Organization=(<HTMLInputElement>document.getElementById('Organization')).value;
 this.formdata.OrganizationId=this.organizationId;
-this.formdata.Address=((<HTMLInputElement>document.getElementById('Address')).value)
-     
+this.formdata.Address=((<HTMLInputElement>document.getElementById('Address')).value);
+var og= (<HTMLInputElement>document.getElementById('image_src')).style.backgroundImage;
+this.formdata.organizationimage = og.replace("url(","").replace(")","").slice(1);
+//this.formdata.src= this.src?.toString();     
 
 $('#overlay').fadeIn();
 this.service.UpdateOrganization(this.formdata).subscribe((result)=>
@@ -365,8 +402,13 @@ this.service.UpdateOrganization(this.formdata).subscribe((result)=>
   debugger
   //OrganizationId
 this.isUpdated=result;
+if(result>0)
+{
+  Swal.fire('Updated Successfully','','success')
+}
+
 this.bindData(this.organizationId)
-if(this.isUpdated)
+if(this.isUpdated>0)
 {
   this.paramList.OrganizationName=  (<HTMLInputElement>document.getElementById('Address')).value;
   this.paramList.Address=(<HTMLInputElement>document.getElementById('Address')).value;
@@ -383,6 +425,8 @@ if(this.isUpdated)
   dataList.Address=this.address==""?(<HTMLInputElement>document.getElementById('Address')).value:this.address;
   this.Organization=(<HTMLInputElement>document.getElementById('Organization')).value;
   dataList.Organization=this.Organization;
+  var og= (<HTMLInputElement>document.getElementById('image_src')).style.backgroundImage;
+  dataList.organizationimage = og.replace("url(","").replace(")","").slice(1);
   debugger
   let value= this.OrganizationsList.filter(x=> x.organization_Name.includes(this.Organization))
   

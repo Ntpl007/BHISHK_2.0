@@ -9,6 +9,9 @@ import { AddFacilitiesComponent } from './Manage-Facilities/add-facilities/add-f
 import { SearchOrganizationComponent } from '../superadmin/search-organization/search-organization.component';
 import { AddOrganizationsComponent } from '../superadmin/manage-organizations/add-organizations/add-organizations.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { FacilityTariffComponent } from './facility-tariff/facility-tariff.component';
+import { DoctorFacilityTariffComponent } from './doctor-facility-tariff/doctor-facility-tariff.component';
+//import { FacilityTariffComponent } from './facility-tariff/facility-tariff.component';
 
 const routes: Routes = [
   { path: '', component: AdminModuleComponent ,canActivate:[AuthguardGuard],
@@ -17,10 +20,11 @@ const routes: Routes = [
     { path: 'User-List', component: UserListComponent,canActivate:[AuthguardGuard] },
     { path: 'Add-VitalSigns', component: SpecialityVitalsignSetupComponent,canActivate:[AuthguardGuard] },
     { path: 'Add-Facilities', component: AddOrganizationsComponent,canActivate:[AuthguardGuard] },
-    { path: 'Edit-User', component: EditUserComponent,canActivate:[AuthguardGuard] }
- 
+    { path: 'Edit-User', component: EditUserComponent,canActivate:[AuthguardGuard] },
+    { path: 'Add-FacilityTariff', component: FacilityTariffComponent,canActivate:[AuthguardGuard] },
+    { path: 'Add-FacilityDoctorTariff', component: DoctorFacilityTariffComponent,canActivate:[AuthguardGuard] }
   ]
-
+  
 },
 
 ]

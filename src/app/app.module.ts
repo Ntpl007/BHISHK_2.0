@@ -40,6 +40,9 @@ import { AddFacilitiesComponent } from './Components/admin-module/Manage-Facilit
 import { VitaldetailsPopupComponent } from './Components/PopUps/vitaldetails-popup/vitaldetails-popup.component';
 import { DoctorDashboardComponent } from './Components/DashBoards/doctor-dashboard/doctor-dashboard.component';
 import { FrontdeskDashboardComponent } from './Components/DashBoards/frontdesk-dashboard/frontdesk-dashboard.component';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
+import { EditDoctorFacilityTariffComponent } from './Components/PopUps/Admin/edit-doctor-facility-tariff/edit-doctor-facility-tariff.component';
+import { CreateDoctorFacilityTariffComponent } from './Components/PopUps/Admin/create-doctor-facility-tariff/create-doctor-facility-tariff.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,9 @@ import { FrontdeskDashboardComponent } from './Components/DashBoards/frontdesk-d
     AddFacilitiesComponent,
     VitaldetailsPopupComponent,
     DoctorDashboardComponent,
-    FrontdeskDashboardComponent
+    FrontdeskDashboardComponent,
+    EditDoctorFacilityTariffComponent,
+    CreateDoctorFacilityTariffComponent
     ],
   imports: [
     BrowserModule,
@@ -78,6 +83,9 @@ import { FrontdeskDashboardComponent } from './Components/DashBoards/frontdesk-d
      MatDatepickerModule,
      MatDialogModule,
      MatSnackBarModule,
+     MatFormFieldModule,
+     MatExpansionModule,
+     
         
   ],
  

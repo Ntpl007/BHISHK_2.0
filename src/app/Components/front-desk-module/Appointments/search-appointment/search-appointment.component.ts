@@ -153,16 +153,16 @@ isvi:boolean=false
     let year = event.year;
     let month = event.month <= 9 ? '0' + event.month : event.month;;
     let day = event.day <= 9 ? '0' + event.day : event.day;;
-    this._todate2 = day + "-" + month + "-" + year;
-    this._fromdate2=(<HTMLInputElement>document.getElementById('fdate')).value;
+    this._todate2 =year + "-" + month + "-" + day;
+    this._fromdate2=this.dateservice.GlobalStringDateFormat((<HTMLInputElement>document.getElementById('fdate')).value);
     let f= year + "-" + month + "-" + day;
-    if(this._todate2<this._fromdate2)
+    if(this._todate2>this._fromdate2)
     {
-      this.isvi=true
-     
+      this.isvi=false
+      this.istdateempty=false
     
-    }else  {this.isvi=false ; this.istdateempty=false}
-    this.todayTo=this._todate2
+    }else  {this.isvi=true ; }
+    this.todayTo=this.dateservice.LocalStringDateFormat(this._todate2)
    }
   
    Reset()
@@ -367,7 +367,8 @@ SearchAppointments(data:any)
    this.himsservice.CancelAppointments(EncryptedId).subscribe((result)=>{
     debugger
     let a=result
-    
+    debugger
+    this.setData()
     this.SearchAppointments(this.pulldata);
    
    })
@@ -537,5 +538,10 @@ Transfer(index:any,row:any)
     
   }
  
-
+Checkin(Item:any)
+{
+  debugger
+  localStorage.setItem('patientTempId',Item.patientTempId)
+  this.rout.navigateByUrl('/FrontDesk/opd-appointment');
+}
 }

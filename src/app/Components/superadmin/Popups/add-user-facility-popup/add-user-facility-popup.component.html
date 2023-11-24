@@ -1,0 +1,126 @@
+
+<div mat-dialog-content class="custom-dialog">
+ 
+    <div class="title-bar" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+      <h4>Add Facilities</h4>
+      <button class="btnclass" mat-icon-button [mat-dialog-close]="true">
+        <!-- <mat-icon>close</mat-icon> --><i class="fa fa-close"></i>
+      </button>
+    </div>
+    <div style="width: 100%;background-color: azure;"><label style="font-weight: bold;">Organization Name:&nbsp; </label><label>{{_organization}}</label></div>
+  
+    
+    <br>
+    <!-- <div style="display: flex;justify-content: left;margin-bottom: 10px;">
+      <a  (click)="add()"><i style="color: rgb(26, 190, 26);" class="fa fa-plus"></i>Add More</a>
+    </div> -->
+    <div   class="row d-flex justify-content-center " >
+      
+
+      <table *ngIf="isfromedituser" id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+          <thead style=" position: sticky;">
+              <tr >
+                  <th style="width: 50px;padding-left: 10px;" >S.No</th>
+                  <th hidden  > Organization</th>
+                  <th style="width: 200px;" > Facility</th>
+                  <th class="dt" style=" text-align: center;">Address</th>
+                  <th style=" text-align: center;">Mapped</th>
+                  <th hidden style=" text-align: center;">IsDefault</th>
+                
+                
+                  </tr>
+
+                 
+          </thead>
+         <tbody > 
+         
+          <tr  *ngFor="let item of FacilityList,let i=index" id="{{i}}" >
+            
+              <td  style="width: 50px;padding-left: 10px;">{{i+1}}</td>
+               <td hidden style="width: 200px;"><label >{{_organization}}</label></td> 
+              <!-- <td style="width: 200px;"><input  type="text" list="list" placeholder="Facility*" [value]="searchText2" (keyup)="fetchFacility(i,$event)" (keydown)="AcceptCharactersOnly($event)" id="facility_{{i}}" class="form-control text-capitalize">
+              </td> -->
+              <td hidden ><label>{{item.facilityId}}</label>
+              </td>
+              <td style="width: 200px;"><label>{{item.facility}}</label>
+              </td>
+              <td  class="dt" style=" text-align: center;"><label>{{item.address}}</label>
+              </td >
+              <td class="mapped-checkbox"   style=" text-align: center;" > <input [checked]="item.isSelected" [disabled]="item.isDefault" type="checkbox" value="" id="flexCheckDefault{{i}}"  (change)="selectMid($event,item)"></td>
+              <td hidden style=" text-align: center;">
+                <!-- <td class="mapped-checkbox"  style=" text-align: center;background-color: yellow;" *ngIf="this.item.isSelected==false"> <input  type="checkbox" value="" id="flexCheckDefault"   (change)="selectMid($event,item)"></td>
+              <td style=" text-align: center;"> -->
+              <input  type="radio" name="flexRadioDefault" id="flexRadioDefault{{i}}"  [checked]="item.isDefault" (click)="SelectFid2(i,item)">
+            </td>
+          
+              <!-- <td class="dt" ><input (keyup)="fetchFAddress(i,$event)" (keydown)="AcceptCharactersOnly($event)" type="text" placeholder="Address" class="form-control text-capitalize" id="Faddress_{{i}}"></td> -->
+             
+             
+          </tr>
+          <tr hidden>
+              <td>No Records Found</td>
+  
+          </tr>
+         </tbody>
+        
+      </table>
+
+
+      <table *ngIf="!isfromedituser" id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+        <thead style=" position: sticky;">
+            <tr>
+                <th style="width: 50px;padding-left: 10px;" >S.No</th>
+                <th hidden  > Organization</th>
+                <th style="width: 200px;" > Facility</th>
+                <th class="dt" style=" text-align: center;">Address</th>
+                <th style=" text-align: center;">Mapped</th>
+                <th style=" text-align: center;">IsDefault</th>
+              
+              
+                </tr>
+        </thead>
+       <tbody > 
+       
+        <tr  *ngFor="let item of FacilityList,let i=index" id="{{i}}" >
+          
+            <td  style="width: 50px;padding-left: 10px;">{{i+1}}</td>
+             <td hidden style="width: 200px;"><label >{{_organization}}</label></td> 
+            <!-- <td style="width: 200px;"><input  type="text" list="list" placeholder="Facility*" [value]="searchText2" (keyup)="fetchFacility(i,$event)" (keydown)="AcceptCharactersOnly($event)" id="facility_{{i}}" class="form-control text-capitalize">
+            </td> -->
+            <td hidden ><label>{{item.facilityId}}</label>
+            </td>
+            <td style="width: 200px;"><label>{{item.facility}}</label>
+            </td>
+            <td class="dt" style=" text-align: center;"><label>{{item.address}}</label>
+            </td >
+            <td class="mapped-checkbox"  style=" text-align: center;"> <input  type="checkbox" value="" id="flexCheckDefault"  [checked]="item.isChecked" (change)="selectMid($event,item)"></td>
+            <td style=" text-align: center;">
+            <input  type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="SelectFid(item)">
+          </td>
+        
+            <!-- <td class="dt" ><input (keyup)="fetchFAddress(i,$event)" (keydown)="AcceptCharactersOnly($event)" type="text" placeholder="Address" class="form-control text-capitalize" id="Faddress_{{i}}"></td> -->
+           
+           
+        </tr>
+        <tr hidden>
+            <td>No Records Found</td>
+
+        </tr>
+       </tbody>
+      
+    </table>
+      <div>
+  
+      </div>
+      </div>
+      <div class="form-row">
+        <div  class="col-md-12 buttons-right-row">
+                 <button type="submit" (click)="Save()" 
+                 class="btn btn-primary waves-effect waves-light btn-space" id="btnSave" >
+                   Save
+                 </button>
+           
+        </div>
+    
+    
+        </div>

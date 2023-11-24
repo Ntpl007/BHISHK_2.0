@@ -79,7 +79,7 @@ Reset()
     debugger
     let n=parseInt(event.target.value)
     this.organizationData= this.selectedOrganizationData.filter(item => item.organizationId==n);
-  
+    localStorage.setItem('imagepath',this.organizationData[0].organizationimage);
   }
   address="";
   SelectedOrganization(index:any,selected:any)
@@ -171,7 +171,8 @@ dialogRef.afterClosed().subscribe(result => {
 
   encodeQueryString(item:any){
     debugger
-    let _Array={OrganizationName:item.organizationName,OrganizationId:item.organizationId,Address:item.address}
+    let _Array={OrganizationName:item.organizationName,OrganizationId:item.organizationId,Address:item.address
+      }
     let queryString=JSON.stringify(_Array);
     const base64QueryString = btoa(queryString);
   //  const params = new HttpParams().set('mylist', base64QueryString);

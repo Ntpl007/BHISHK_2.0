@@ -122,7 +122,21 @@ public SearchPatients(Dates:any) : Observable<any> {
   Dates.FacilityId=localStorage.getItem('facilityId')
   return this.http.post<any>(this.Serverbaseurl+'api/Home/SearchPatients',Dates);
 }
+public SearchRegistrationPatients(Dates:any) : Observable<any> {
+  debugger
+  Dates.OrganizationId=localStorage.getItem('organizationId')
+  Dates.FacilityId=localStorage.getItem('facilityId')
+  return this.http.post<any>(this.Serverbaseurl+'api/Home/SearchRegistrationPatients',Dates);
+}
 
+
+
+public GetSearchRegisterPatientToday() : Observable<any> {
+  debugger
+  let OrgId=localStorage.getItem('organizationId')
+  let FId=localStorage.getItem('facilityId')
+  return this.http.get<any>('https://localhost:44336/'+'api/Home/GetSearchRegisterPatientToday?OrganizationId='+OrgId+'&FacilityId='+FId);
+}
 public SearchPatientstbytoday() : Observable<any> {
   debugger
   let OrgId=localStorage.getItem('organizationId')
@@ -157,12 +171,18 @@ public GetFecility(id:any) : Observable<Fecility[]> {
 public GetOrganization() : Observable<Organization[]> {
   return this.http.get<Organization[]>(this.Serverbaseurl+'FetchMasterData/GetOrganizations');
 }
-public SaveUser(User:any) : Observable<any> {
+// public SaveUser(User:any) : Observable<any> {
+//   User.CreatedBy=localStorage.getItem('name')
+//   debugger
+//   return this.http.post<any>(this.Serverbaseurl+'api/Account/Register',User);
+// }
+
+public SaveUser(User:any,commaSeparatedValues:any) : Observable<any> {
   User.CreatedBy=localStorage.getItem('name')
   debugger
+  User.facilitylist=commaSeparatedValues;
   return this.http.post<any>(this.Serverbaseurl+'api/Account/Register',User);
 }
-
 public GetabhaStatus(obj:any)
 {
  return this.http.get<any>(this.Serverbaseurl+'api/M1_2/LoginSearchByHealthID?healthID='+obj.healthID)
@@ -245,7 +265,7 @@ public GetAppointments(Data:any):Observable<any>
   Data.OrganizationId=orgId;
   Data.FacilityId=fid;
   debugger
-   return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/GetAppointments',Data)
+   return this.http.post<any>('https://localhost:44395/'+'FetchMasterData/GetAppointments',Data)
 
 }
 
@@ -508,7 +528,7 @@ public ValidationOfEffictiveandExpiryDate(providerId:any, effectiveDate:any, exp
 }
 public UpdateScheduleTemplate(ScheduleTemplateData:ScheduleTemplate[]):Observable<any>
 { 
-  return  this.http.post<any>('https://localhost:44341/'+'api/Appointments/UpdateScheduleTemplate',ScheduleTemplateData);
+  return  this.http.post<any>(this.Serverbaseurl+'api/Appointments/UpdateScheduleTemplate',ScheduleTemplateData);
   //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
   //return  this.http.post<any>(this.Serverbaseurl+'api/Appointments/SaveScheduleTemplate',ScheduleTemplateData);
   //this.http.post<any>('https://localhost:44341/'+'api/Appointments/SaveAppointment',Data)
@@ -539,6 +559,167 @@ public UnBlockScheduleTemplateDateWise(ListofDates:ListofDates[]):Observable<any
 }
 public GetResechduleslotsData(selectedDate: any,providerId: any, facilityId: any) : Observable<any> {
   return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetResechduleslotsData?selectedDate='+selectedDate+'&ProviderId='+providerId+'&FacilityId='+facilityId);
+}
+
+public UpdateUserFacilitiesbyEditUser(Facilities:any,UserId:any,DefaultFid:any):Observable<any>
+{ 
+ debugger
+  return  this.http.get<any>(this.Serverbaseurl+'api/Account/UpdateUserFacilities?Facilities='+Facilities+'&UserId='+UserId+'&DefaultFid='+DefaultFid);
+}
+
+
+public getuserbyfacilitylist(userid:any): Observable<any> {
+  debugger
+    return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/userlistbyfacilitylist?userid='+userid);
+  }
+  
+public UpdateUserFacilities(FList:any):Observable<any>
+{
+ 
+ return this.http.post<any>(this.Serverbaseurl+'api/Account/UpdateFacilitiesForUser',FList)
+ 
+}
+//ravindhra
+public RemoveFacilityTariffChargeId(obj:any):Observable<any>
+{
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/RemoveFacilityTariffChargeId?Id='+obj)
+}
+public GetChargeItemList():Observable<any>
+{
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetChargeItemDeatils')
+}
+public GetFecilityTariffDetails(OrganizationId:any,FacilityId:any) : Observable<Fecility[]> {
+  debugger
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetFaciltyTarifffDetails?OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
+}
+public SaveFacilityTariffDetails(Data:any):Observable<any>
+{
+  
+ return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/SaveFacilityTariffDetails',Data)
+}
+public UpdateFacilityTariffDetails(Data:any):Observable<any>
+{
+  
+ return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/UpdateFacilityTariffDetails',Data)
+}
+public GetExtraReScheduleDates(selectedDate: any,providerId: any, facilityId: any) : Observable<any> {
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetExtraReScheduleDates?selectedDate='+selectedDate+'&ProviderId='+providerId+'&FacilityId='+facilityId);
+}
+public RemoveDoctorFacilityTariffChargeId(obj:any):Observable<any>
+{
+  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/RemoveDoctorFacilityTariffChargeId?Id='+obj)
+}
+public UpdateDoctorFacilityTariffDetails(Data:any):Observable<any>
+{
+  
+ return this.http.post<any>('https://localhost:44395/'+'FetchMasterData/UpdateDoctorFacilityTariffDetails',Data)
+}
+public SaveDoctorFacilityTariffDetails(Data:any):Observable<any>
+{
+  
+ return this.http.post<any>('https://localhost:44395/'+'FetchMasterData/SaveDoctorFacilityTariffDetails',Data)
+}
+public GetOrganisationDoctorDetails(OrganizationId:any) : Observable<Fecility[]> {
+  debugger
+  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetDoctorByOrganisationId?OrganisationId='+OrganizationId);
+}
+public GetFecilityDoctorTariffDetails(OrganizationId:any,FacilityId:any) : Observable<Fecility[]> {
+  debugger
+  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetFaciltyDoctorTarifffDetails?OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
+}
+//Vijay start region
+//#region Billing
+public GetPatientDetailsById(patientId:any):Observable<any>
+{
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetPatientDetailsById?PatientId='+patientId)
+}
+
+public GetChargeItemDetails():Observable<any>
+{
+  let OrganizationId=localStorage.getItem('organizationId')
+ let FacilityId=localStorage.getItem('facilityId')
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetAllChargeItemDetails?OrganizationId='+OrganizationId+'&FacilityId='+FacilityId)
+}
+public saveBillingDetails(obj:any):Observable<any>
+{
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.post<any>(this.Serverbaseurl+'api/Payments/saveBillingPayments',obj)
+}
+
+public SearchBillingsbytoday() : Observable<any> {
+  debugger
+ let OrgId=localStorage.getItem('organizationId')
+ let FId=localStorage.getItem('facilityId')
+  //return this.http.get<any>(this.Serverbaseurl+'api/Home/GetSearchBillingToday');
+  return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetSearchBillingToday?OrganizationId='+OrgId+'&FacilityId='+FId);
+}
+public SearchBillings(Dates:any) : Observable<any> {
+  debugger
+  Dates.OrganizationId=localStorage.getItem('organizationId')
+ Dates.FacilityId=localStorage.getItem('facilityId')
+  // return this.http.post<any>(this.Serverbaseurl+'api/Home/SearchBillingDetails',Dates);
+  return this.http.post<any>(this.Serverbaseurl+'api/Payments/SearchBillingDetails',Dates);
+}
+public GetBillChargeItemDetails(billId:any,encounterId:any):Observable<any>
+{
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetAllBillEntryDetails?BillId='+billId+'&EncounterId='+encounterId );
+}
+public GetBillPriceDetails(BillId:any):Observable<any>
+{
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetBillEntryPriceDetails?BillId='+BillId);
+}
+public GetBillSummaryDetails(BillId:any):Observable<any>
+{
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetBillSummaryDetails?BillId='+BillId);
+}
+public GetBillingDetailsByEncounterId(EncounterId:any):Observable<any>
+{
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetBillingDetailsByEncounterId?encounterId='+EncounterId)
+}
+public GetBillingDetails(EncounterId:any):Observable<any>
+{
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetBillinDetails?EncounterId='+EncounterId)
+}
+public deleteBillServiceDetails(BillId:any,chargeItemId:any):Observable<any>
+{
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/DeleteBillServiceDetails?BillId='+BillId+'&ChargeItemId='+chargeItemId );
+}
+public GetDoctorChargePriceDetails(ChargeItemId:any,DoctorId:any):Observable<any>
+{
+  let OrganizationId=localStorage.getItem('organizationId')
+  let FacilityId=localStorage.getItem('facilityId')
+  
+   //return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetEditAppointmentdetails?AppointmentId='+Id)
+   return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetDoctorChargeItemDetails?DoctorId='+DoctorId+'&ChargeItemId='+ChargeItemId+'&OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
+}
+//#endregion
+//vijay end region
+
+public GetPatientDetailsByAppointmentId(PatientTempId:any):Observable<any>
+{
+  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetPatientDatabyPatientTempID?PatientTempId='+PatientTempId)
+  // return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetDoctorChargeItemDetails?DoctorId='+DoctorId+'&ChargeItemId='+ChargeItemId+'&OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
+}
+public GetConsultationAmount(DoctorId:any,OrgId:any,Fid:any,ChargeitemId:any):Observable<any> 
+{
+  //int DoctorId,int Organizationd,int FacilityId,int ChargeItemId
+  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetConsultationAmount?DoctorId='+DoctorId+'&Organizationd='+OrgId+'&FacilityId='+Fid+'&ChargeItemId='+ChargeitemId)
+  // return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetDoctorChargeItemDetails?DoctorId='+DoctorId+'&ChargeItemId='+ChargeItemId+'&OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
+}
+
+public UpdatePatientIdInPatientTemp(PatientTempId:any,PatientId:any):Observable<any>
+{
+  //int DoctorId,int Organizationd,int FacilityId,int ChargeItemId
+  return this.http.get<any>('https://localhost:44336/'+'api/Home/UpdatePatientIdInPatientTemp?PatientTempId='+PatientTempId+'&PatientId='+PatientId)
+  // return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetDoctorChargeItemDetails?DoctorId='+DoctorId+'&ChargeItemId='+ChargeItemId+'&OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
 }
 
 }

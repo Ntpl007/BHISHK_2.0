@@ -1,0 +1,12 @@
+<label>
+    <input #imageInput type="file" accept="image/*" id="idimage"
+    (change)="processFile(imageInput)">
+</label>
+<div  class="img-preview-container">
+    <div class="img-preview" id="image_src" [ngStyle]="{'background-image':'url('+ src +')'}">
+
+    </div>
+</div>
+    
+    
+

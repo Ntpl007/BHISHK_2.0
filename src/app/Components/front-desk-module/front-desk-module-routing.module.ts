@@ -24,6 +24,13 @@ import { OPNursingStationComponent } from '../nursingstation/opnursing-station/o
 import { DoctorDashboardComponent } from '../DashBoards/doctor-dashboard/doctor-dashboard.component';
 import { CalendarscheduleComponent } from './calendar-schedule/calendar-schedule.component';
 import { FrontdeskDashboardComponent } from '../DashBoards/frontdesk-dashboard/frontdesk-dashboard.component';
+import { PatientRegistrationSearchComponent } from './patient-registration-search/patient-registration-search.component';
+import { OpdbillingComponent } from './opd-billing/opdbilling/opdbilling.component';
+import { OpdBillingSearchComponent } from './opd-billing/opd-billing-search/opd-billing-search.component';
+import { OpdupdatebillingComponent } from './opd-billing/opdupdatebilling/opdupdatebilling.component';
+import { OpdBillSearchComponent } from './opd/opd-bill-search/opd-bill-search.component';
+import { OpdbillingforexistingpatientComponent } from './opd-billing/opdbillingforexistingpatient/opdbillingforexistingpatient.component';
+import { OpdAppointmentComponent } from './opd-appointment/opd-appointment.component';
 
 const routes: Routes = [{ path: '', component: FrontDeskModuleComponent },
 {
@@ -51,7 +58,15 @@ const routes: Routes = [{ path: '', component: FrontDeskModuleComponent },
    {path:'Op-Nursing',component:OPNursingStationComponent ,  canActivate:[AuthguardGuard],},
    {path:'DashBoard',component:FrontdeskDashboardComponent ,  canActivate:[AuthguardGuard],},
    { path: 'CalendarSchedule', component: CalendarscheduleComponent,canActivate:[AuthguardGuard], },
-   
+   { path: 'Search-Patients', component: PatientRegistrationSearchComponent,canActivate:[AuthguardGuard],
+   },
+   {path:'opdbilling',component:OpdbillingComponent ,  canActivate:[AuthguardGuard],},
+    {path:'opdbilling-Search',component:OpdBillingSearchComponent ,  canActivate:[AuthguardGuard],},
+    {path:'opdupdatebilling',component:OpdupdatebillingComponent ,  canActivate:[AuthguardGuard],},
+    {path:'opdbill-Search',component:OpdBillSearchComponent ,  canActivate:[AuthguardGuard],},
+    {path:'opd-billing',component:OpdbillingforexistingpatientComponent ,  canActivate:[AuthguardGuard],},
+    {path:'opd-appointment',component:OpdAppointmentComponent ,  canActivate:[AuthguardGuard],},
+    
     
       ]
   

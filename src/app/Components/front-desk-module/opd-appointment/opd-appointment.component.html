@@ -1,0 +1,636 @@
+<div class="card-body">
+    <div>
+         <div class="float-right header-title mt-0 mb-3" id="uhid" style="display: none;">UHID : 987654321012</div>
+         <div class="form-group">
+             <!-- <div class="form-check-inline my-1">
+                 <div class="custom-control custom-radio">
+                     <input type="radio" id="customRadio1" name="customRadio" onclick="text(0)" checked="true"
+                         class="custom-control-input"  (select)="Clear()">
+                     <label   class="custom-control-label" for="customRadio1">New</label>
+                 </div>
+             </div> -->
+             <!-- <div class="form-check-inline my-1">
+                 <div class="custom-control custom-radio">
+                     <input type="radio" id="customRadio2" name="customRadio"  onclick="text(1)"
+                         class="custom-control-input"   >
+                     <label   class="custom-control-label" for="customRadio2">Re Visit</label>
+                 </div>
+             </div> -->
+             <!-- <div class="form-check-inline my-1">
+                 <div class="custom-control custom-radio">
+                     <input type="radio" id="customRadio3" name="customRadio"  (click)="gotoAbhaCreation()"
+                         class="custom-control-input"   >
+                     <label   class="custom-control-label" for="customRadio3" routerLink="/front-desk/Abdm-Home">ABHA</label>
+                 </div>
+             </div> -->
+         </div>
+     </div>
+     <div class="general-label">
+         <form  #reg="ngForm"  [formGroup]="opform" (ngSubmit)="SaveOp(reg.value)" autocomplete="off" >
+            <div id="row1" style="display: none;">
+             <div class="form-row" id="row3" >
+                <div class="col-md-3 mb-3" >
+                    <input type="text" placeholder="Aadhaar No." name="Aadhaar" id="txtAadhaar" maxlength="12" class="form-control" >
+                    </div>
+                 <div class="col-md-3 mb-3" >
+                  
+                     <select  class="form-control" id="searchby"  name="searchby">
+                         <option [selected]="true" hidden [value]="0">Search By*</option>
+                         <option value="1" >Mobile Number</option>
+                         <option disabled value="2" >UHID</option>
+                     </select>
+                 </div>
+                 <div class="col-md-6 mb-3">
+                    
+<div     #Mobilenumsearch>
+<input type="text"   class="form-control"[value]="mobilenumber" id="mobilenumber" name="mobilenumber" id="Mobilenumsearch" placeholder="Enter Mobile/ UHID*
+" (keyup)="getpatient($event)">
+</div>
+                  
+
+                    <!--table-->
+                    <div *ngIf="showModal">
+                     <div class="tableshow">
+                         <table  class="table table-hover"  id="patients" >
+                             <thead>
+                   <tr>
+                     <th style="font-size: 10px; padding-left: 9px;padding-top: 5px;">Name</th>
+                     <th style="font-size:10px; "> Gender</th>
+                     <th style="font-size: 10px; ">Patient Id</th>
+                     <th style="font-size: 10px;">Mobile</th>
+                     <th style="font-size: 10px;">Aadhar Number</th>
+                   </tr>
+                 </thead>
+                 <tbody class="tablebody" >
+                   <tr *ngFor="let item of listOfDisplayData;let k = index" (click)="getpatientdata(k, item)">
+                 
+                     <td style="text-align: left;"><label style="font-size: 10px;">{{item.firstName}}</label></td>
+                     <td ><label style="font-size: 10px;">{{item.gender}}</label></td>
+                     <td ><label style="font-size: 10px;" >{{item.patientMrn}}</label></td>
+                     <td ><label style="font-size: 10px;">{{item.mobileNumber}}</label></td>
+                     <td style="text-align: center;"><label style="font-size: 10px;">--</label></td>
+                   </tr>
+                 </tbody>
+               </table>
+                     </div>
+                  
+                   </div>
+                  
+                 </div>
+               
+                 <!-- <div class="col-md-3 mb-3">
+                    
+                     <select class="form-control" id="combobox1" [(ngModel)]="_area" name="AreaId" >
+                         <option [selected]="true"  hidden [value]="0" >Area*</option>
+                         <option  *ngFor="let d of areaa"  [value]="d.areaId">{{d.areaName}}</option>
+                     </select>
+                        
+                     
+                 </div> -->
+              
+              
+             </div>
+           
+             <div class="form-row" id="row2" >
+                 <div class="col-md-12">
+                     <hr class="hr-line">
+                 </div>
+             </div>
+           
+             
+         </div>
+        
+                 
+       
+        
+             <div class="form-row">
+                 <div class="col-md-1 mb-3">
+                     <select class="form-control" isSearchable="true"formControlName="Prefix" id="exampleFormControlSelect1" (change)="setGenderByprefix($event)"name="Prefix" id="ddlprefix">
+                         <option [selected]="true" hidden  >Prefix*</option>
+                         <option value="Mr" >Mr</option>
+                         <option value="Miss">Miss</option>
+                         <option value="Ms">Ms</option>
+                         <option value="Mrs">Mrs</option>
+                         <option value="Others">Others</option>
+                     </select>
+                     <!-- <small *ngIf="opform.get('Prefix').pristine&& opform.get('Prefix').touched" class="text-danger">
+                        Prefix is  required
+                                     </small>  -->
+                 </div>
+                 
+                 <!-- <div class="col-md-5 mb-3">
+                   
+
+                     <input type="text"   value="{{fname}}"  onpaste="return false" formControlName="FirstName"  class="form-control text-capitalize"(keydown)="AcceptCharactersOnly($event)" id="txtName" placeholder="FullName*" name="firstName">
+                     <small *ngIf="opform.get('FirstName').touched&& opform.get('FirstName').hasError('required')" class="text-danger">
+                        First Name is required
+                       </small> 
+                    
+                </div>  -->
+                <div class="col-md-3 mb-3">
+                   
+
+                    <input type="text"   value="{{fname}}"  onpaste="return false" formControlName="FirstName"  class="form-control text-capitalize"(keydown)="AcceptCharactersOnly($event)" id="txtName" placeholder="First Name*" readonly="true" name="firstName">
+                    <!-- <small *ngIf="opform.get('FirstName').touched&& opform.get('FirstName').hasError('required')" class="text-danger">
+                       First Name is required
+                      </small>  -->
+                   
+               </div> 
+               <div class="col-md-3 mb-3">
+                   
+
+                <input type="text"   value="{{lname}}"  onpaste="return false" formControlName="LastName"  class="form-control text-capitalize"(keydown)="AcceptCharactersOnly($event)" id="txtLName" placeholder="Last Name*" name="LastName" readonly="true">
+                <!-- <small *ngIf="opform.get('LastName').touched&& opform.get('LastName').hasError('required')" class="text-danger">
+                   Last Name is required
+                  </small>  -->
+               
+           </div> 
+
+               
+               
+                 <div  class="col-md-3 mb-3" >
+                    <div class="input-group">
+                        <input formControlName="dob"
+                        (keydown)="AcceptHousenumberOnly($event)"
+                            class="form-control"
+                            placeholder="Date Of Birth*"
+                            (dateSelect)="onDateSelectDob($event)" 
+                            ngbDatepicker
+                            #d="ngbDatepicker"
+                            [value]="dobModel"
+                            onpaste="return false"
+                            [maxDate]="maxDate"
+                            [minDate]="minDate"
+                            id="dob"
+                            readonly="true"
+                        />
+                      
+                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button" disabled></button>
+                    </div>
+     
+                      <!-- <input   class="form-control dtp"  onchange="getdatevalue()"   type="text"   name="dob" ngModel   placeholder="Date Of Birth" > -->
+                      <!-- <input class="form-control"  type="text" id="dob" [(ngModel)]="dob" name="dob"  onfocus="(this.type='date')" onblur="(this.type='text')" 
+                      min="1997-01-01" max="2030-12-31" placeholder="DOB">
+                       -->
+                      <!-- <input class="form-control"     name="dob"  [(ngModel)]="dob"  type="date" id="popupDatepicker"> -->
+                      <!-- <small *ngIf="opform.get('dob').touched&&opform.get('dob').hasError('required')" class="text-danger">
+                        Date of Birth is required
+                       </small>  -->
+                      
+                 </div>
+                 
+
+                 <div class="col-md-2 mb-3">
+                     <select [value]="3" class="form-control" id="ddlSex" [value]="Sex"   formControlName="Sex" name="Sex"   >   
+                         <option [selected]="true" hidden  value="0" >Gender*</option>
+                         <option value="1">Male</option>
+                         <option value="2">Female</option>
+                         <option value="3">Others</option>
+                     </select>
+                     <!-- <small *ngIf="opform.get('Sex').pristine&& opform.get('Sex').touched" class="text-danger">
+            Gender is  required
+                         </small> -->
+                 </div>
+                
+             </div>
+             <div class="form-row">
+                <div class="col-md-1 mb-3">
+                  <input class="form-control" readonly id="txtAge" type="text" placeholder="Age"></div>
+
+                  <div class="col-md-2 mb-3">
+                    <select disabled class="form-control" id="ddlAgeMode" >
+                        <option selected value="0">Age Mode</option>
+                        <option value="1">Days</option>
+                        <option value="2">Months</option>
+                        <option value="3">Years</option>
+                    </select>
+                    </div>
+                <div class="col-md-2 mb-3">
+                    <input type="text" onpaste="return false"  class="form-control" (keyup)="checkIsAadhaarValid($event)"  id="Aadhaar" (keydown)="onKeyDown($event)"  formControlName="Aadhaar" maxlength="12"  placeholder="Aadhaar*"  name="Aadhaar" readonly="true">
+                   <span  *ngIf="isaadhaarvalidsymbol" class="fa fa-check errspan"></span>
+                   <span  *ngIf="isaadhaarvalid" class="fa fa-exclamation-circle errspan2"></span>
+                 
+                   <!-- <small style="color: red;" *ngIf="isaadhaarvalid">Aadhaar is already Existed</small>  
+                   <small *ngIf="opform.get('Aadhaar').touched&& opform.get('Aadhaar').hasError('required')" class="text-danger">
+                    Aadhaar is required
+                   </small> -->
+                   <!-- <small *ngIf="opform.get('Aadhaar').dirty&& opform.get('Aadhaar').hasError('minlength')" class="text-danger">
+                 Aadhaar No. must be 12 digits 
+                  </small>
+                  <small *ngIf="aadhaar01accaptable" class="text-danger">
+                    Accepts only numbers and Starting with 0 or 1 digits not acceptable
+                   </small> -->
+                   <!-- <small class="text-danger" *ngIf="opform.get('Aadhaar').hasError('pattern')"> Aadhaar Number is Invalid</small> -->
+    
+                </div>
+               
+                 <div class="col-md-2 mb-3">
+                 <input type="text"  onpaste="return false" class="form-control" id="txtMobile" formControlName="MobileNumber"   [value]="Mobile"  placeholder="Mobile*"maxlength="10"  name="MobileNumber" readonly="true">
+                 <small *ngIf="opform.get('MobileNumber').touched&& opform.get('MobileNumber').hasError('required')" class="text-danger">
+                    Mobile Number is required
+                   </small>  
+                   <!-- <small *ngIf="opform.get('MobileNumber').dirty&& opform.get('MobileNumber').hasError('minlength')" class="text-danger">
+                    Mobile No. must be 10 digits  
+                                     </small> -->
+                   <!-- <small *ngIf="mobile05accaptable" class="text-danger">
+                 Accepts only numbers and  starting with 0 to 5 digits not acceptable
+                   </small> -->
+                   <!-- <small class="text-danger" *ngIf="opform.get('MobileNumber').hasError('pattern')"> Mobile Number is Invalid</small> -->
+    
+                </div>
+                 <div class="col-md-2 mb-3">
+                     <input type="email" class="form-control" onpaste="return false"  
+                     required id="txtemail"   formControlName="EmailId" placeholder="Email Id*"  name="EmailId" value="{{_email}}"> 
+                     
+                   
+      <small class="text-danger" *ngIf="opform.get('EmailId').touched&& opform.get('EmailId').hasError('required')">Email address is required</small>
+      <small class="text-danger" *ngIf="opform.controls.EmailId.hasError('pattern')">Email address is invalid</small>
+     
+    
+                        <!-- <small *ngIf="opform.get('Email').touched&& opform.get('Email').hasError('Email')" class="text-danger">
+                            Email is required
+                        </small> 
+                      -->
+                        
+                    
+                    </div>
+                 <!-- <div class="col-md-3 mb-3">
+                     <select class="form-control" id="ddlrelType" [(ngModel)]="relType" name="RelationType" >
+                         <option [selected]="true"  hidden [value]="0" >RelationType*</option>
+                         <option   *ngFor="let d of relation" value={{d.relatioN_ID}} >{{d.relation}}</option>
+                       
+                     </select>
+                 </div> -->
+                 <!-- <div class="col-md-3 mb-3">
+                     <input type="text" class="form-control text-capitalize" id="txtRelation" name="RelationName" value="{{relname}}"
+                         placeholder="Relation Name*" [(ngModel)]="relname" >
+                 </div> -->
+            
+            
+                 <div class="col-md-3 mb-3">
+                     <select class="form-control" name="Occupation"  formControlName="Occupation" id="ddloccupation" >
+                         <option [selected]="true"  hidden value="0"  >Occupation*</option>
+                         <option  *ngFor="let d of OccuData" value={{d.occupation}} >{{d.occupation}}</option>
+                        
+                     </select>
+                     <small *ngIf="opform.get('Occupation').pristine&& opform.get('Occupation').touched" class="text-danger">
+                        Occupation is  required
+                                     </small>
+                 </div>
+                 <div class="col-md-3 mb-3">
+                     <select class="form-control" id="ddlReligion" formControlName="ReligionId"   name="ReligionId" >
+                         <option [selected]="true"  hidden value="0"  >Religion*</option>
+                         <option  *ngFor="let d of Relig"  value={{d.religionID}}>{{d.religionName}}</option>
+                        
+                     </select>
+                     <!-- <small *ngIf="opform.get('ReligionId').pristine&& opform.get('ReligionId').touched" class="text-danger">
+                        Religion is  required
+                                     </small> -->
+                 </div>
+                 <div class="col-md-3 mb-3">
+                    <select class="form-control" id="ddlnationality" formControlName="NationalityId" name="NationalityId" >
+                        <option [selected]="true"  hidden value="0" >Nationality*</option>
+                        <option  *ngFor="let d of nat"  value={{d.nationalitY_ID}}>{{d.nationalitY_NAME}}</option>
+                    </select>
+                    <!-- <small *ngIf="opform.get('NationalityId').pristine&& opform.get('NationalityId').touched" class="text-danger">
+                        Nationality is  required
+                                     </small> -->
+                </div>
+                
+                 
+                
+                
+                 <div class="col-md-3 mb-3">
+                    <input type="text" class="form-control" id="Hno" formControlName="HouseNo" placeholder="House Number*" readonly="true">
+                    <small *ngIf="opform.get('HouseNo').touched&& opform.get('HouseNo').hasError('required')" class="text-danger">
+                        HouseNo is required
+                       </small> 
+                       <!-- <small class="text-danger" *ngIf="opform.get('HouseNo').hasError('pattern')"> House Number is Invalid</small> -->
+    
+                </div>
+                 <div class="col-md-3 mb-3">
+                    <select class="form-control"  id="State" #state name="State" formControlName="State"(change)="GetDistricts(state.value)" >
+                        <option [selected]="true"  hidden  value="0">State*</option>
+                        <option  *ngFor="let x of states" value={{x.id}}>{{x.name}}</option>
+                    </select>
+                    <!-- <small *ngIf="opform.get('State').pristine&& opform.get('State').touched" class="text-danger">
+                        State is  required
+                                     </small> -->
+                </div>
+           
+               
+                <div class="col-md-3 mb-3">
+                    <select class="form-control" id="District" formControlName="District"name="District" >
+                        <option [selected]="true"  hidden  value="0" >District*</option>
+                        <option *ngFor="let x of districts" value={{x.id}} >{{x.name}}</option>
+                    </select>
+                    <!-- <small *ngIf="opform.get('District').pristine&& opform.get('District').touched" class="text-danger">
+                        District is  required
+                                     </small> -->
+                </div>
+                <div class="col-md-3 mb-3">
+                    <input type="text" class="form-control text-capitalize" onpaste="return false"  id="City" name="City" (keydown)="AcceptCharactersOnly($event)"formControlName="City" placeholder="City" readonly="true">
+                    <!-- <small *ngIf="opform.get('City').touched&& opform.get('City').hasError('required')" class="text-danger">
+                        City is required
+                       </small> -->
+                </div>
+                <div class="col-md-3 mb-3">
+                    <input type="text" class="form-control text-capitalize"onpaste="return false"  id="Village"  formControlName="Village"name="Village" (keydown)="AcceptCharactersOnly($event)"placeholder="Village" readonly="true">
+                   
+                </div>
+                <div class="col-md-3 mb-3">
+                    <input type="text" class="form-control" onpaste="return false"  id="Pincode" name="Pincode"(keydown)="onKeyDownForPincode($event)" maxlength="6"formControlName="Pincode"placeholder="Pincode*" readonly="true">
+                    <!-- <small *ngIf="opform.get('Pincode').touched&& opform.get('Pincode').hasError('required')" class="text-danger">
+                        Pincode is required
+                       </small>
+                       <small *ngIf="opform.get('Pincode').dirty&& opform.get('Pincode').hasError('minlength')" class="text-danger">
+                        Pincode No. must be 6 digits  
+                                         </small> -->
+                </div>
+            </div>
+                 <!-- <div class="col-md-2 mb-3">
+                     <select class="form-control" id="ddlAreaId" [(ngModel)]="_area" name="AreaId" >
+                         <option [selected]="true"  hidden [value]="0" >Area*</option>
+                         <option  *ngFor="let d of areaa"  value={{d.areaId}}>{{d.areaName}}</option>
+                     </select>
+                 </div> -->
+                 <!-- <div class="col-md-1 mb-3">
+                     <div class="custom-control custom-checkbox">
+                         <input type="checkbox" class="custom-control-input" 
+                             id="customCheck01" data-parsley-multiple="groups" 
+                             data-parsley-mincheck="2">
+                         <label class="custom-control-label" for="customCheck01">New</label>
+                     </div>
+                 </div> -->
+            
+             <!-- <div class="form-row">
+                 <div class="col-md-12 mb-3">
+                     <textarea class="form-control" rows="5" id="txtAddress" spellcheck="false" [(ngModel)]="_address"
+                         placeholder="Complete Address*" name="Address" [value]="_address" ></textarea>
+                 </div>
+             </div> -->
+             <div class="form-row">
+                <div class="col-md-12">
+                    <hr class="hr-line">
+                </div>
+            </div>
+            <div class="form-row">
+
+                <div class="col-md-3 mb-3">
+                    <select class="form-control"    id="PaymentCategoryId" formControlName="PaymentCategoryId" name="PaymentCategoryId" (change)="getCorporate($event)">
+                        <option [selected]="true"  hidden value="0">Payment category*</option>                                                
+                        <option *ngFor="let list of paymentcategory" value="{{list.payment_Category_ID}}">{{list.paymenT_CATEGORY}}</option>
+                    
+                    </select>
+                 <small *ngIf="opform.get('PaymentCategoryId').pristine&& opform.get('PaymentCategoryId').touched" class="text-danger">
+                        Payment Category is  required
+                                     </small>
+                </div>
+                <div class="col-md-3 mb-3" *ngIf="iscorporateenable">
+                    <select class="form-control"  id="Corporate"  formControlName="CorporateId" name="CorporateId" (change)="clearField()">
+                        <option [selected]="true"  hidden value="0" >Corporate*</option>                                                
+                        <option *ngFor="let list of corporateList" value="{{list.corporatE_ID}}">{{list.corporatE_NAME}}</option>
+                    
+                    </select>
+                    <small *ngIf="opform.get('CorporateId').pristine&& opform.get('CorporateId').touched" class="text-danger">
+                        CorporateId is  required
+                                     </small>
+                </div>
+                <div class="col-md-3 mb-3" *ngIf="iscorporateenable">
+                   <input type="text"  class="form-control" name="BenificiaryId"  formControlName="BenificiaryId" id="BenificiaryId"  placeholder="Beneficiary Id*">
+                   <small *ngIf="opform.get('BenificiaryId').touched&& opform.get('BenificiaryId').invalid" class="text-danger">
+                    Beneficiary is required
+                   </small>
+                   <small class="text-danger" *ngIf="opform.get('BenificiaryId').hasError('pattern')"> Benificiary Id is Invalid</small>
+    
+                </div>
+            </div>
+            <hr>
+             <div class="form-group mb-0 row">
+                 
+                <!-- <label class="col-md-2 my-1 control-label">Consultation Group*</label> -->
+                <div class="col-md-10">
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" id="customRadio7"  name="customRadio"
+                                class="custom-control-input" checked="true">
+                            <label   class="custom-control-label"
+                                for="customRadio7">Consultation</label>
+                        </div>
+                    </div>
+                   </div>
+               </div>
+            
+             <div class="form-row" >
+                 <div class="col-md-3 mb-3">
+                     <select (change)="modelBind($event)" formControlName="SpacialityId"class="form-control" id="ddlSpecialityId"  name="SpacialityId" (click)="GetDoctor($event)" >
+                         <option [selected]="true"  hidden value="0" >Speciality*</option>
+                         <option *ngFor="let a of special" value={{a.specialityID}}>{{a.speciality}}</option>
+                        
+                     </select>
+                     <!-- <small *ngIf="opform.get('SpacialityId').pristine&& opform.get('SpacialityId').touched" class="text-danger">
+                        Speciality is required
+                                     </small> -->
+                 </div>
+                 <div class="col-md-3 mb-3">
+                     <select class="form-control" name="DoctorId"formControlName="DoctorId"  id="ddlDoctorId" >
+                         <option [selected]="true"  hidden value="0" >Doctor*</option>
+                         <option  *ngFor="let d of docs"  value="{{d.providerId}}">{{d.firstName}}</option>
+                        
+                     </select>
+                     <!-- <small *ngIf="opform.get('DoctorId').pristine&& opform.get('DoctorId').touched" class="text-danger">
+                        Doctor is required
+                                     </small> -->
+                 </div>
+                 <div id="divrefddl" class="col-md-3 mb-3">
+                     <select class="form-control" id="ddlRefDoctorId" formControlName="RefDoctorId" name="RefDoctorId"  >
+                         <option [selected]="true"  hidden value="0"  >Ref Doctor</option>
+                         <option  *ngFor="let d of refd"  value="{{d.providerId}}">{{d.firstName}}</option>
+                        
+                     </select>
+                     
+                 </div>
+                 <div id="reftext"  class="col-md-3 mb-3 isdisplayretextbx">
+                    <input type="text" formControlName="txtRefDoctor"   name="txtRefDoctor"  class="form-control" placeholder="Ref Doctor" onpaste="return false">
+
+                 </div>
+                 <div class="col-md-3 mb-3">
+                     <div class="custom-control custom-checkbox">
+                         <input type="checkbox" class="custom-control-input" [checked]=isnewchecked
+                             id="customCheck02" data-parsley-multiple="groups"
+                             data-parsley-mincheck="2" onclick="isrefdoctor()">
+                         <label class="custom-control-label" for="customCheck02">New Ref Doctor</label>
+                     </div>
+                 </div>
+                 <!-- <div class="col-md-3 mb-3">
+                     <select class="form-control" id="ddlCorporateId" [(ngModel)]="corporateid" name="CorporateId">
+                         <option [selected]="true"  hidden [value]="0" >Corporate</option>
+                        
+                         <option  *ngFor="let d of corp"  value="{{d.corporatE_ID}}">{{d.corporatE_NAME}}</option>
+                        
+                     </select>
+                 </div> -->
+             </div>
+            
+                     <!-- <div class="form-check-inline my-1">
+                         <div class="custom-control custom-radio">
+                             <input type="radio" id="customRadio8" name="customRadio" onclick="reviewchange(0)" [checked]="_isrdchecked"
+                                 class="custom-control-input">
+                             <label   class="custom-control-label"
+                                 for="customRadio8">Procedure</label>
+                         </div>
+                     </div> -->
+                     
+                     <!-- <div class="form-check-inline my-1">
+                         <div class="custom-control custom-radio">
+                             <input type="radio" id="customRadio11" name="customRadio" onclick="reviewchange(1)" [checked]="_isrdchecked"
+                                 class="custom-control-input" value="isfree"  >
+                             <label   class="custom-control-label" for="customRadio11">Is
+                                 Free</label>
+                         </div>
+                     </div> -->
+                     <!-- <div class="form-check-inline my-1">
+                         <div class="custom-control custom-radio">
+                             <input type="radio" id="customRadio12" name="customRadio" onclick="reviewchange(2)" [checked]="_isrdchecked"
+                                 class="custom-control-input">
+                             <label    class="custom-control-label"
+                                 for="customRadio12">Coupon</label>
+                         </div>
+                     </div> -->
+             <!-- <div id="review" style="display: inline; visibility: hidden;">
+                 <div class="form-check-inline my-1" >
+                     <div class="custom-control custom-radio">
+                         <input type="radio" id="customRadio9"  name="customRadio" onclick="reviewchange(3)"
+                             class="custom-control-input">
+                         <label   class="custom-control-label" for="customRadio9">IP
+                             Review</label>
+                     </div>
+                 </div>
+                 <div class="form-check-inline my-1" ip="rdreview"  >
+                     <div class="custom-control custom-radio">
+                         <input type="radio" id="customRadio10" [(ngModel)]="_isrdchecked" name="customRadio" onclick="reviewchange(4)" 
+                             class="custom-control-input">
+                         <label   class="custom-control-label"
+                             for="customRadio10">Review</label>
+                     </div>
+                 </div>
+             </div> -->
+                    
+                
+             <div class="form-row" >
+                 <div class="col-md-12">
+                     <hr class="hr-line">
+                 </div>
+             </div>
+             <div class="form-inline">
+                <div>
+                <div class="form-group">
+                    <label class="" for="txtconamount">Con.Amnt:</label>
+                    <input type="text"  (keyup)="UpdateConAmount($event)" [readonly]="conAmountisReadobly" id="txtconamount" formControlName="conamount" class="form-control" maxlength="8"  [value]="_conamount" name="conamount" 
+                        placeholder="Enter Amount*" onpaste="return false" onkeyup="setPaymentamnt()" >
+                        
+                    </div>
+                    <small  *ngIf="opform.get('conamount').touched&& opform.get('conamount').hasError('required')" class="text-danger">
+                        Consultation Amount is required
+                         </small> 
+                </div>
+                 <div class="form-group ml-2">  <label  for="chkRegAmount">+ Reg.Amnt(50.00)</label>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" 
+                            id="chkRegAmount" data-parsley-multiple="groups" name="regcheckamount"
+                            data-parsley-mincheck="2" checked onclick="addRegAmnt()">
+                        <label class="custom-control-label" for="chkRegAmount">=&nbsp;</label>
+                    </div>
+                   
+                    
+                    <input type="text" class="form-control" id="txtRegAmount"  name="txtRegAmount"
+                    placeholder="Reg.Amount" value="{{RGA}}" disabled>
+            </div>
+                 <div class="form-group ml-2">
+                     <label class="" >Final Amnt:</label>
+                     <input type="text" class="form-control" id="txtfinalamount" name="famount"  
+                         placeholder="Final Amount" [value]="finalamount" disabled >
+                 </div>
+                
+                 <div class="form-group m-l-9 mb-4 mt-4">
+                
+                   
+                      
+                        <input type="text" style="display: none;">
+                            
+                    </div>
+                
+             </div>
+             <br>
+             <div class="form-row">
+                <div class="col-md-3 mb-3">
+                <input type="text" class="form-control ml-2" (keydown)="onKeyDownForPayment($event)" onpaste="return false" id="txtPaymentAmount" 
+                placeholder="Payment Amount*" maxlength="8"  name="PaymentAmount" onkeyup="pamount()" formControlName="PaymentAmount" readonly="true">
+               
+       
+       <small *ngIf="opform.get('PaymentAmount').touched&& opform.get('PaymentAmount').hasError('required')" class="text-danger">
+           Payment Amount is required
+          </small></div>
+    
+                 <div class="col-md-3 mb-3">
+                     <input type="text" class="form-control"  placeholder="Comments" name="Comments"  formControlName="Comments" id="txtComments">
+                    
+                    </div>
+                    <div class="col-md-3 mb-3">
+    
+    <select class="form-control" (change)="ShowRefNumber($event)"  id="ddlPaymentModeId"  formControlName="PaymentMode" name="PaymentMode">
+                            <option [selected]="true"  hidden value="0"  >Payment Mode*</option>                                                
+                            <option *ngFor="let list of paymentMode" [value]="list.paymenT_MODE_ID">{{list.paymenT_MODE}}</option>
+                        
+                        </select>
+                        <small *ngIf="opform.get('PaymentMode').pristine&& opform.get('PaymentMode').touched" class="text-danger">
+                            Payment Mode is  required
+                                         </small>
+                    </div>
+                    <div class="col-md-3 mb-3" *ngIf="isrefNoShow">
+                        <input type="text" class="form-control"  placeholder="Reference Number*" name="ReferenceNo"  formControlName="ReferenceNo" id="ReferenceNo">
+                        <small *ngIf="opform.get('ReferenceNo').touched&& opform.get('ReferenceNo').hasError('required')" class="text-danger">
+                            Reference No is required
+                           </small>
+                           <small class="text-danger" *ngIf="opform.get('ReferenceNo').hasError('pattern')"> Reference Number is Invalid</small>
+    
+                       </div>
+                    <!-- value="{{list.paymenT_MODE_ID}}" -->
+                 <!-- <div class="col-md-3 mb-3">
+                     <select class="form-control"  id="ddlPaymentModeId"  formControlName="PaymentMode">
+                         <option [selected]="true"  hidden  >PaymentMode*</option>                          
+                         <option *ngFor="let list of paymentMode" >{{list.paymenT_MODE}}</option>                      
+                         <small *ngIf="opform.get('PaymentMode').pristine && opform.get('PaymentMode').touched" class="text-danger">
+                            PaymentMode is  required
+                                         </small>
+                     </select>
+                 </div> -->
+             </div>
+             <div >
+
+                 <!--sample-->
+
+                
+
+                 <!--sample-->
+                 </div>                                            
+                                                      
+             <div class="buttons-right-row">
+                 <button type="submit"  
+                 style=" background: #2c7eeb; color:white;font-weight: bold; width: 70px;"
+
+                 class="btn btn-gradient-primary waves-effect waves-light btn-space" id="btnSave" >
+                     Save
+                   
+                 </button>&nbsp;
+                 <button type="button" (click)="Clear()" style=" background: #ef4d56; color:white;font-weight: bold;  width: 70px;" id="reset" class="btn btn-gradient-danger waves-effect m-l-5 btn-space">
+                     Clear
+                 </button>
+             </div>
+            
+         </form>
+     </div>
+     </div>
+     <script >
+        
+     </script>

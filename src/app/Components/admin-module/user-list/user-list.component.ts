@@ -70,6 +70,7 @@ EditUser(SelectedRow:any)
    public GetFacility(SelectedOrganization: any )
    {
      debugger
+     localStorage.setItem('usersearchOrganization',SelectedOrganization)
      this.service.GetFecility(SelectedOrganization).subscribe((result:any)=>{
        debugger
        if(result!=null){

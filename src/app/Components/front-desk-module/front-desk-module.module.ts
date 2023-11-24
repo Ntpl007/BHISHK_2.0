@@ -37,6 +37,11 @@ import { ShowAbhaNumberComponent } from './ABDM/Abdm-Popups/show-abha-number/sho
 //import { CalendarscheduleComponent } from './calendar-schedule/calendar-schedule.component';
 import { CreateAppointmentComponent } from './Appointments/create-appointment/create-appointment.component';
 import { CalendarscheduleComponent } from './calendar-schedule/calendar-schedule.component';
+import { PatientRegistrationSearchComponent } from './patient-registration-search/patient-registration-search.component';
+import { OpdBillingSearchComponent } from './opd-billing/opd-billing-search/opd-billing-search.component';
+import { OpdBillSearchComponent } from './opd/opd-bill-search/opd-bill-search.component';
+import { OpdbillingforexistingpatientComponent } from './opd-billing/opdbillingforexistingpatient/opdbillingforexistingpatient.component';
+import { OpdAppointmentComponent } from './opd-appointment/opd-appointment.component';
 @NgModule({
   declarations: [
     FrontDeskModuleComponent,
@@ -58,6 +63,11 @@ import { CalendarscheduleComponent } from './calendar-schedule/calendar-schedule
     FindAbhaComponent,
          ForgotAbhaVerifyAadhaarOtpComponent,
          ShowAbhaNumberComponent,
+         PatientRegistrationSearchComponent,
+         OpdBillingSearchComponent,
+         OpdBillSearchComponent,
+         OpdAppointmentComponent
+         
          
          
          

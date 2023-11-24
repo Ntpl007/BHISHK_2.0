@@ -25,6 +25,7 @@
                </small> 
                <!-- <small class="text-danger" *ngIf="fcontrol.get('Organization').hasError('pattern')">Email address is invalid</small>
       -->
+      
               <div class="tableshow" #mytable  *ngIf="list && isVisible">
                 <table  class="table table-hover"  id="patients" >
                     
@@ -52,9 +53,32 @@
             Invalid Input Format
              </small> 
         </div>
-       
     </div>
    
+    <div class="form-row">
+        <div class="col-md-6 mb-2">
+            <app-image-upload   id="imageUpload"></app-image-upload>
+            <!-- <label>
+                <input #imageInput type="file" accept="image/*"
+                (change)="processFile(imageInput)" >
+            </label>
+            <div *ngIf="src" class="img-preview-container">
+                <div class="img-preview" [ngStyle]="{'background-image':'url('+ src +')'}">
+            
+                </div>
+            </div> -->
+            <!-- <div>
+                <small *ngIf="fcontrol.get('src').touched&&fcontrol.get('src').hasError('required')" class="text-danger">
+                    OrganizationImage is required
+                   </small> 
+                   <small *ngIf="fcontrol.get('src').hasError('pattern')" class="text-danger">
+                    Invalid Input Format
+                     </small> 
+            </div> -->
+           
+           
+    </div>
+    </div>
       
    
     <div class="form-row">

@@ -1,0 +1,265 @@
+<div class="card-body">
+
+  <form [formGroup]="opbilling" (ngSubmit)="saveBilling(reg.value)" #reg="ngForm" autocomplete="off">
+    <div class="form-row">
+      <table>
+        <tbody>
+          <tr>
+            <td><b>Name</b>: {{name}}</td>
+            <td><b>Patient Id</b>: {{patientMRN}}</td>
+            <td><b>OP Id</b>: {{opId}}</td>
+          </tr>
+          <tr>
+            <td><b>Age/Gender</b>: {{age}} {{ageMode}} /{{gender}}</td>
+            <td><b>Doctor</b>: {{doctor}}</td>
+            <td><b>Ref Doctor</b>: {{refDoctor}}</td>
+          </tr>
+          <tr>
+            <td><b>Corporate</b>: {{corporate}}</td>
+            <td><b>Date of Visit</b>: {{dateOfVisit}}</td>
+            <td><b>Mobile</b>: {{mobileNo}}</td>
+          </tr>
+          <tr style="display: none;">
+            <td><b>Occupation</b>: {{occupation}}</td>
+            <td><b>Religion</b>: {{religion}}</td>
+            <td><b>patientId</b>: {{patientId}}</td>
+            <td><b>encounterId</b>: {{encounterId}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class=" col-md-12" id="divaddservice"
+      style="background: #F5FBFF; padding: 10px; border: #46AEF7 solid 1px; border-radius: 4px; margin-bottom: 20px;">
+
+      <div class="card-body" id="receiptedititems">
+        <div class="form-row">
+
+
+          <div class="col-12 col-md-4 mb-2 divselect">
+
+            Charge Item <span style="color:red;"> * </span>
+            <mat-form-field class="example-full-width" style="width: 100%;">
+              <mat-label>Charge Item</mat-label>
+              <input type="text" placeholder="select Charge Item" aria-label="Charge Item" matInput
+                [formControl]="myControl" [matAutocomplete]="auto" formControlName="chargeItem">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getChargItem.bind(this)"
+                (optionSelected)="getChargItemPrice($event.option.value)">
+
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.chargeItemId">
+                  {{option.shortName}}
+                </mat-option>
+              </mat-autocomplete>
+
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-2 mb-2">
+            No Of Unit
+            <input type="text" class="form-control" tabindex="-1" id="txtNoOfUnits" placeholder="No Of Units"
+              [value]="noOfUnits" (change)="getUnitPrice()" (keydown)="onKeyDownForPayment($event)" onpaste="return false" #txtNoOfUnits  />
+
+          </div>
+
+          <div class="col-12 col-md-2 mb-2">
+            Price<span style="color:red;"> *</span>
+            <input type="text" class="form-control" tabindex="-1" id="txtamount" disabled placeholder="Amount"
+              [value]="chargeItemprice" #txtPrice />
+          </div>
+
+          <div class="col-md-2 mb-2" style="margin-top: 30px">
+            <button type="button" id="btnaddItem" class="btn btn-success" 
+              (click)="addChargeItems()"><i class="fa fa-plus"></i></button>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div clas="row" id="tblchargeItems" *ngIf="isShown">
+            <div class="col-md-12">
+
+              <div class="table-responsive">
+                <table id="tableschedule" class="table">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left;width: 5%;">S No.</th>
+                      <th style="text-align: left;width: 25%;">Charge Item</th>
+                      <th style="text-align: left;width: 7%;">No Of Units</th>
+                      <th style="text-align: right;width: 5%;">Price</th>
+                      <th style="text-align: left;width: 5%;">Actions</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let charge of chargeItemData;let i=index " class="ng-star-inserted"> 
+                      <td data-label="S No." style="text-align: left;width: 5%;">{{i+1}}</td>
+                      <td data-label="Charge Item" style="text-align: left;width: 25%;">
+                        {{charge.ShortName}}
+
+                      </td>
+                      <td data-label="No Of Units" style="text-align: center;width: 7%;"> {{charge.NoOfUnits}} </td>
+                      <td data-label="Price" style="text-align: right;width: 5%;">{{charge.UnitPrice}} </td>
+                      <td data-label="Actions" style="text-align: center;width: 5%;"><i class="fa fa-trash"
+                          id="iDelete_{{i}}" (click)="deleterow(charge.ChargeItemId)" style="font-size:20px;"
+                          aria-hidden="true" ngbTooltip="Delete">&nbsp;</i></td>
+
+                    </tr>
+                  </tbody>
+                  <!-- <tfoot>
+                    <tr>
+                      <td> Tot Amt :  {{totAmount}}</td>
+                    </tr>
+                  </tfoot> -->
+                </table>
+                <table>
+                  <tr>
+                    <td style="text-align: left;width: 11%;"></td>
+                    <td style="text-align: left;width: 25%;">Tot Amt :</td>
+                    <td style="text-align: left;width: 23%;"></td>
+                    <td style="text-align: left;width: 20%;"></td>
+                    <td style="text-align: left;width: 16%;">{{totAmount}}</td>
+                  </tr>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label><span><b>Discounts :  &nbsp;</b></span></label>
+        <label>
+          <input type="radio" value="percentage" name="discount" (change)="getDiscountType('percentage')"> &nbsp; %  &nbsp;
+        </label>
+
+        <label>
+          <input type="radio" value="amount" name="discount" (change)="getDiscountType('amount')" checked> Rs.
+        </label>
+
+        <div class="col-md-2 mb-2" *ngIf="selectedDiscountType === 'amount'">
+          <label><b>Discount Amount</b></label>
+          <input type="text" class="form-control" onpaste="return false" id="txtDiscountAmount" name="DiscountAmount"
+            (change)="getTotalDue()" formControlName="DiscountAmount" placeholder="Discount Amount" [value]="discAmount"
+            ngbTooltip="DiscountAmount" (keydown)="onKeyDownForPayment($event)" onpaste="return false"
+            #txtDiscountAmount>
+          <!-- <small *ngIf="opbilling.get('TotalDiscAmount').pristine&& opbilling.get('TotalDiscAmount').touched" class="text-danger">
+          Discount Amount is  required
+                       </small> -->
+        </div>
+        <div class="col-md-2 mb-2" *ngIf="selectedDiscountType === 'percentage'">
+          <label><b>Discount Pencentage</b></label>
+          <input type="text" class="form-control" onpaste="return false" id="txtDiscountPerc" name="DiscountPerc"
+            (change)="getTotalDue()" formControlName="DiscountPerc" placeholder="Discount Perc" [value]="discPerc"
+            ngbTooltip="DiscountPerc" (keydown)="onKeyDownForPayment($event)" onpaste="return false" maxlength="2"
+            #txtDiscountPerc>
+          <!-- <small *ngIf="opbilling.get('TotalDiscPerc').pristine&& opbilling.get('TotalDiscPerc').touched" class="text-danger">
+        Discount Percentage is  required
+                     </small> -->
+        </div>
+        <div class="col-md-2 mb-2">
+          <label><b>Payment Amount</b></label>
+          <input type="text" class="form-control" onpaste="return false" id="txtPaymentAmount" name="paymentAmount"
+            (change)="getTotalDue()" formControlName="payingAmount" placeholder="paying Amount" [value]="payingAmount"
+            ngbTooltip="payingAmount" (keydown)="onKeyDownForPayment($event)" onpaste="return false" #txtPaymentAmount>
+          <small *ngIf="opbilling.get('payingAmount').pristine&& opbilling.get('payingAmount').touched"
+            class="text-danger">
+            Paying Amount is required
+          </small>
+        </div>
+        <div class="col-md-2 mb-2">
+          <label><b>Due Amount</b></label>
+          <input type="text" class="form-control" onpaste="return false" id="txtdueAmount" name="dueAmount"
+            formControlName="dueAmount" placeholder="due Amount" [value]="dueAmount" ngbTooltip="DueAmount"
+            (keydown)="onKeyDownForPayment($event)" onpaste="return false" readonly #txtdueAmount>
+          <!-- <small *ngIf="opbilling.get('TotalDueAmount').pristine&& opbilling.get('TotalDueAmount').touched" class="text-danger">
+        Due Amount is  required
+                     </small> -->
+        </div>
+        <div class="col-md-2 mb-2">
+          <label><b>Payment Mode</b></label>
+          <select class="form-control" id="ddlPaymentModeId" formControlName="paymentMode" name="PaymentMode"
+            ngbTooltip="PaymentMode" (change)="getRefNo()" #ddlPaymentMode>
+            <option [selected]="true" hidden value="0">PaymentMode*</option>
+            <option *ngFor="let list of paymentMode" [value]="list.paymenT_MODE_ID">{{list.paymenT_MODE}}</option>
+
+          </select>
+          <small *ngIf="opbilling.get('paymentMode').pristine&& opbilling.get('paymentMode').touched"
+            class="text-danger">
+            Payment Mode is required
+          </small>
+        </div>
+        <div class="col-md-2 mb-2" *ngIf="isPayment">
+          <label><b>Ref No</b></label>
+          <input type="text" class="form-control" onpaste="return false"  id="txtRefNo" name="refNo" formControlName="refNo"placeholder="Ref No" (input)="getRefNovalue($event)" ngbTooltip="Ref No" #txtRefNo>
+          
+        </div>
+      </div>
+<div class="form-row">
+  <table>
+                          <tr>
+                            <td>Summary  :</td>
+                            <td> Tot Amt :  {{totAmount}}</td>
+                            <td> Tot Disc. Amt :  {{this.totdiscAmt}}</td>
+                            <td> Tot Paid Amt :  {{this.totpaidAmt}}</td>
+                            <td> Tot Due Amt :  {{this.totdueAmt}}</td>
+                            <td>
+                              <div>
+                                <a> <i  style="font-size:10px;" class="material-icons" style="color: black;height: 1px;" ngbTooltip="Billing Summary"  (click)="showBillSumm()"> menu</i></a>
+                                <!-- <button type="button" id="btnaddItem" class="btn btn-success" (click)="showBillSumm()">
+                                  <i class="fa-solid fa-bars"></i>
+                                </button> -->
+                                
+                            </div>
+                            </td>
+                          </tr>
+                      </table>
+
+</div>
+<div class="form-row" *ngIf="isSummary">
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align: center;width: 1%;" >S No.</th>
+        <th style="text-align: center;width: 1%;">Bill No</th>
+        <th style="text-align: right;width: 2%;">Total Amount</th>
+        <th style="text-align: right;width: 2%;"> Paid Amount</th>
+        <th style="text-align: right;width: 2%;">Disc Amount</th>
+        <th style="text-align: right;width: 2%;">Due Amount</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let bill of billSummary;let i=index ">
+      <td style="text-align: center;width: 1%;"  > {{i+1}}</td>
+      <td style="text-align: center;width: 1%;" > {{bill.billId}}</td>
+      <td style="text-align: right;width: 2%;"> {{bill.totalBillAmt}}</td>
+      <td style="text-align: right;width: 2%;"> {{bill.totalPaidAmt}}</td>
+      <td style="text-align: right;width: 2%;"> {{bill.totalDiscAmt}}</td>
+      <td style="text-align: right;width: 2%;"> {{bill.totalDue}}</td>
+      
+    </tr>
+  </tbody>
+</table>
+</div>
+      <div class="form-row">
+
+        <div class="col-md-12 mb-4 buttons-right-row">
+          <button type="submit" class="btn btn-primary waves-effect waves-light btn-space" id="btnSave">
+            Update
+
+          </button>&nbsp;
+          <button type="button" class="btn btn-danger waves-effect waves-light btn-space" (click)="NavigatePage()"
+            id="btnGoBack">
+            Go Back
+
+          </button>
+
+
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

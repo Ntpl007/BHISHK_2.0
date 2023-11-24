@@ -13,7 +13,15 @@ import { GlobalInterceptor } from 'src/app/global.interceptor';
 import { AppComponent } from 'src/app/app.component';
 import { SpecialityVitalsignSetupComponent } from './speciality-vitalsign-setup/speciality-vitalsign-setup.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
-
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AddUserFacilityPopupComponent } from '../superadmin/Popups/add-user-facility-popup/add-user-facility-popup.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FacilityTariffComponent } from './facility-tariff/facility-tariff.component';
+import { EditFacilityTariffComponent } from '../PopUps/Admin/edit-facility-tariff/edit-facility-tariff.component';
+import { FacilitiTariffComponent } from '../PopUps/Admin/faciliti-tariff/faciliti-tariff.component';
+import { DoctorFacilityTariffComponent } from './doctor-facility-tariff/doctor-facility-tariff.component';
 @NgModule({
   declarations: [
     AdminModuleComponent,
@@ -22,6 +30,17 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     
     SpecialityVitalsignSetupComponent,
          EditUserComponent,
+         AddUserFacilityPopupComponent,
+         
+         FacilityTariffComponent,
+         EditFacilityTariffComponent,
+         FacilitiTariffComponent,
+         DoctorFacilityTariffComponent
+         
+       
+         
+         
+         
        
        
          
@@ -33,7 +52,10 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     FormsModule,
     HttpClientModule,
     NgxPaginationModule,
-    
+    MatExpansionModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatDialogModule
     
     
   ],

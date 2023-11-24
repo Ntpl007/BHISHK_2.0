@@ -1,0 +1,329 @@
+
+  
+    fieldset,
+    img {
+      border: none;
+    }
+    
+    caption,
+    th {
+      text-align: left;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+  }
+  th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+  }
+  th {
+      background-color: #f2f2f2;
+  }
+  @media screen and (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+          display: block;
+      }
+      thead tr {
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+      }
+      tr { margin: 0 0 1rem 0; }
+      td {
+          border: none;
+          position: relative;
+          padding-left: 50%;
+      }
+      td:before {
+          position: absolute;
+          top: 6px;
+          left: 6px;
+          width: 45%;
+          padding-right: 10px;
+          white-space: nowrap;
+          content: attr(data-label);
+      }
+      
+  }
+    
+  .m{
+    margin:100px;
+  }
+  
+  /* timestyle end */
+  
+  
+  .TimeSpan {
+  float: right;
+  /* margin-right: 6px; */
+  margin-top: 10px;
+  margin-left: -28px;
+  position: relative;
+  z-index: 2;
+  color: rgb(21, 22, 21);
+  }
+  .non-selectable {
+  user-select: none; /* Prevent text selection */
+  cursor: not-allowed; /* Show disabled cursor */
+  background-color: #f0f0f0; /* Apply a background color */
+  }
+  
+  .btn-outline-secondary{
+    background-color:#41cbd8 ;
+  }
+  .example-chip-list {
+    width: 100%;
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    font-family:'Open Sans';
+    background-color: #E53F6D;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    padding-left:5px;
+    padding-right:5px;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    left: 60px;
+    opacity: 0;
+    transition: opacity 0.5s; 
+  
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%; 
+    margin-top: -8px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent #E53F6D transparent transparent;
+}
+label {
+    font-size: 19px;}
+
+
+    
+#patients thead, #patients tbody{
+    width: 100%;
+    border-collapse: collapse;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  #patients td {
+    /* border: 1px solid #ddd; */
+     padding-left: 9px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align: left;
+    width: 20px;
+    overflow: hidden;
+    /* position: absolute; */
+   }  
+  
+  .tablebody tr{
+padding: 10px;
+  }
+   #patients th {
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align: left;
+    width: 20px;
+    background-color:#0b7af3;
+    color: white; 
+    
+   }  
+  .tablebody{
+    display: block;
+      max-height: 100px;
+      overflow-y: scroll;
+     /* z-index: 999;  */
+  
+  
+  } 
+  
+   thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    
+    /* even columns width , fix width of table too*/
+   } 
+  
+  .tableshow{
+    position: absolute;
+     z-index: 999;
+      background:#f1f5fa;
+      border: 1px solid #0075a9;
+      text-align: center;
+  }
+  .loading-indicator {
+    display: inline-block;
+    color: #999;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+
+  .table-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 20px;
+  }
+  
+  .title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .title-bar h2 {
+    margin: 0;
+  }
+  
+  .mat-icon-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .mattable th{
+  padding: 20px;
+  }
+  
+  
+  input[type="time"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 152px;
+  }
+  
+  /* Style for the time picker arrow */
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    background-color: transparent;
+    cursor: pointer;
+    padding: 2px;
+    border: none;
+    margin-left: -6px;
+  }
+  
+  
+  
+  
+  /* popuptimer stles */
+  label {
+    font-size: 25px;}
+  
+  
+    fieldset,
+    img {
+      border: none;
+    }
+    
+    caption,
+    th {
+      text-align: left;
+    }
+    
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    
+    td {
+      vertical-align: top;
+    }
+    
+    
+    #patients2 thead, #patients2 tbody{
+      width: 100%;
+      border-collapse: collapse;
+      padding-left: 5px;
+      padding-right: 5px;
+     
+    }
+    #patients2 td {
+      /* border: 1px solid #ddd; */
+       padding-left: 9px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      text-align: left;
+      width: 20px;
+      overflow: hidden;
+      /* position: absolute; */
+     }  
+    
+    
+    .tablebody2{
+      display: block;
+        max-height: 140px;
+      
+        overflow-y: scroll;
+       /* z-index: 999;  */
+    
+    
+    } 
+    
+     thead, tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed; 
+      
+      /* even columns width , fix width of table too*/
+     } 
+    
+    .tableshow2{
+      position: absolute;
+       z-index: 999;
+        background:#f1f5fa;
+        border: 1px solid #0075a9;
+        text-align: center;
+        border-radius: 5px;
+        max-height: 142px;
+    }
+    
+    
+  .m{
+    margin:100px;
+  }
+  
+  /* timestyle end */
+  
+  
+  .TimeSpan {
+  float: right;
+  /* margin-right: 6px; */
+  margin-top: 10px;
+  margin-left: -22px;
+  position: relative;
+  z-index: 2;
+  color: rgb(21, 22, 21);
+  }
+  .non-selectable {
+  user-select: none; /* Prevent text selection */
+  cursor: not-allowed; /* Show disabled cursor */
+  background-color: #f0f0f0; /* Apply a background color */
+  }

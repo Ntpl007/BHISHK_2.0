@@ -69,7 +69,7 @@
     </div>
         <div class="col-md-4">
               <!-- <label for="cmbOrganization"  class="form-label">Organization</label> -->
-            <select  formControlName="OrganizationId" #facility class="form-control" (change)="GetFecility(facility.value)" id="cmbOrganization"  name="Organization_id" >
+            <select hidden formControlName="OrganizationId" #facility class="form-control" (change)="GetFecility(facility.value)" id="cmbOrganization"  name="Organization_id" >
                <option  hidden [selected]="true" >Organization*</option>
                
                 <option   *ngFor="let item of organization"   [value]="item.organizationId" >{{item.organization_Name}}</option>
@@ -80,9 +80,9 @@
                              </small> -->
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" hidden>
             <!-- <label for="cmbFecility" class="form-label">Facility</label> -->
-            <select   class="form-control" formControlName="FacilityId" id="cmbFecility"  name="facility_id" >
+            <select   class="form-control"  formControlName="FacilityId" id="cmbFecility"  name="facility_id" >
                 <option  [selected]="true"  hidden  >Facility*</option>
                
                 <option   *ngFor="let d of fecility"  [value]="d.fecilityId">{{d.fecility_Name}}</option>
@@ -110,19 +110,86 @@
           </div> -->
          
         </div>
-          <div style="margin-top: 5px;text-align: right;">
-            <div   >
-                <button class="btn btn-primary" type="submit"  >Update User</button>
-                &nbsp;
-                <button type="reset"  (click)="reset()"    id="reset" class="btn btn-danger waves-effect m-l-5">
-                    Clear
-                </button>
-              </div>
-            
-          </div>
-
          
 
+          <!-- <div style="width: 100%;background-color: azure;"><label style="font-weight: bold;">User Name:&nbsp; </label><label>{{uname}}</label></div> -->
+  
+    
+          <br>
+         <!-- <div>
+          <a ><input type="checkbox" id="chk" >&nbsp; <label for="chk" style="font-size: 16px;">Show List</label>  </a>
+          
+         </div> -->
+         <div><a style="color: green;margin-left: 50px;" (click)="AddMoreFacilities()"><i class="fa fa-plus"></i> Add More</a></div>
+          <div    class="row d-flex justify-content-center " >
+            
+            <table id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+                <thead style=" position: sticky;">
+                    <tr>
+                        <th style="width: 50px;padding-left: 10px;" >S.No</th>
+                        <!-- <th hidden  > Organization</th> -->
+                        <td hidden>FacilityListId</td>
+                        <th style="width: 300px;" > FacilitiesName</th>
+                        <!-- <th style="width: 300px;" hidden>DefaultFacility</th> -->
+                       <th style="text-align: center;width: 300px;">Address</th>
+                       <th style="width: 250px;text-align: center;">Mapped</th>
+                       <th style="width: 250px;text-align: center;">Is Default</th>
+                        
+                      
+                      
+                        </tr>
+                </thead>
+               <tbody > 
+               
+                <tr  *ngFor="let item of userfacilitylist,let i=index" id="{{i}}" >
+                  
+                    <td  style="width: 50px;padding-left: 10px;">{{i+1}}</td>
+                     <!-- <td hidden style="width: 200px;"><label >{{_organization}}</label></td>  -->
+                    <!-- <td style="width: 200px;"><input  type="text" list="list" placeholder="Facility*" [value]="searchText2" (keyup)="fetchFacility(i,$event)" (keydown)="AcceptCharactersOnly($event)" id="facility_{{i}}" class="form-control text-capitalize">
+                    </td> -->
+                    <!-- <td hidden >{{item.facilityid}}
+                    </td> -->
+                    <td hidden>{{item.facilityListId}}</td>
+                    <td style="width: 300px;">{{item.facilityListName}}
+                    </td>
+                    <!-- <td  style="width: 400px;" hidden> {{item.facilityName}}</td> -->
+                    <td style=" text-align: center;width: 300px;">{{item.address}}
+                    </td >
+                    <td style="width: 250px;text-align: center;"><input id="isfacility{{i}}" type="checkbox" checked (click)="selectChangeForRemove(i,item)"></td>
+                   <td *ngIf="item.facilityListName==item.facilityName" style="width: 250px;text-align: center;">
+                     <input type="radio" type="radio" checked name="flexRadioDefault" id="isdefault{{i}}" (click)="selectchange(i,item)">
+                    </td>
+                    <td *ngIf="item.facilityListName!=item.facilityName" style="width: 250px;text-align: center;">
+                      <input type="radio" type="radio" name="flexRadioDefault" id="isdefault{{i}}" (click)="selectchange(i,item)">
+                     </td>
+                    
+                
+                    <!-- <td class="dt" ><input (keyup)="fetchFAddress(i,$event)" (keydown)="AcceptCharactersOnly($event)" type="text" placeholder="Address" class="form-control text-capitalize" id="Faddress_{{i}}"></td> -->
+                   
+                   
+                </tr>
+                <tr hidden>
+                    <td>No Records Found</td>
+        
+                </tr>
+               </tbody>
+              
+            </table>
+            <div>
+        
+            </div>
+            </div>
+          
+            <div style="margin-top: 5px;text-align: right;">
+              <div   >
+                  <button class="btn btn-primary" type="submit"  >Save Changes</button>
+                  &nbsp;
+                  <button hidden type="reset"  (click)="reset()"    id="reset" class="btn btn-danger waves-effect m-l-5">
+                      Clear
+                  </button>
+                </div>
+              
+            </div>
           
       </form>
     </div>

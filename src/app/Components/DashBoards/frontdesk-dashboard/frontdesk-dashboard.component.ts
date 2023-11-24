@@ -35,7 +35,7 @@ public getDashboardData()
   }
 
   ngOnInit(): void {
-
+localStorage.setItem('header','DashBoard')
     this.getDashboardData()
    
   }

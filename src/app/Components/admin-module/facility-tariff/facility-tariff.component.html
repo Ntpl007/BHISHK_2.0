@@ -1,0 +1,97 @@
+
+<div class="card-body">
+    <form [formGroup]="myform" #event="ngForm" (ngSubmit)="openPopup(event.value)">
+     <div class="form-row">
+         <div class="col-md-4">
+             <select #id (change)="LoadVitalSignsData(id.value)" class="form-control" formControlName="FacilityId" name="FacilityId" >
+                 <option [selected]="true" [value]="0" hidden >
+                     Facility*
+                 </option>
+                 <option *ngFor="let list of FacilityList" value={{list.fecilityId}}>{{list.fecility_Name}}</option>
+             </select>
+             <small *ngIf="myform.get('FacilityId').pristine&& myform.get('FacilityId').touched" class="text-danger">
+                 Facility is required
+                              </small>
+         </div>
+        
+        
+        
+     </div><br>
+     <div class="form-row" style="margin-left: 50px;margin-right: 70px;">
+         <div class="col" hidden>
+             Total Count: &nbsp;<a>0</a>
+         </div>
+         <div class="col-auto ml-auto">
+             <div class="form-group">
+               
+                 <button type="submit" class="btn btn-link"><i class="fa fa-plus">&nbsp;Add</i> </button> 
+             </div>
+                       
+            
+             
+         </div>
+     </div>
+ 
+ 
+     <div   class="row d-flex justify-content-center" >
+     
+       <table id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+          
+         <thead >
+             <tr>
+               <th class="sno" >S.No</th>
+               <!-- <th class="value">Charge Item Id</th> -->
+               <th class="vitalsigns">Charge Item Name</th>              
+               <th class="value">Base Price</th>
+               <th class="value">Unit Price </th>
+               <!-- <th class="value">Overriden Price </th> -->
+                <!-- <th class="unitmeasure">Unit Of Measure</th>
+               <th class="order">Order No.</th> -->
+               <th class="action">Action</th> 
+               <!-- <th hidden>Vital Sign Id</th>
+               <th hidden>Vital Sign</th> -->
+             </tr>
+           </thead>
+          <tbody > 
+             <tr *ngFor="let i=index let  list of BindTabledata"  [hidden]="isfootertrue" >
+             <td class="sno">{{i+1}}</td>
+             <!-- <td class="vitalsigns">{{list.charge_Item_Id}}</td> -->
+             <td class="value">{{list.chargE_ITEM}}</td>
+             <td class="value">{{list.base_Price}}</td>
+             <td class="value">{{list.unit_Price}}</td>
+             <!-- <td class="unitmeasure">{{list.unitOfMeasure}}</td>
+             <td class="order"><input  [value]="list.orderNumber"  type="text" (keyup)="updateModel(i,$event)"  maxlength="2" id="txt_{{i}}"  class="form-control"></td> -->
+             <!-- <td class="action"><button type="button" (click)="Remove(i,list)" class="button-37 btn-sm" role="button">Edit</button>
+             <td class="action"><button type="button" (click)="Remove(i,list)" class="button-37 btn-sm" role="button">Remove</button> -->
+                <td class="action">
+                <i style="font-size:20px;" class="fa fa-edit" style="color: rgb(13, 8, 41);height: 15px;"  ngbTooltip="Edit" (click)="openPopupEdit(i,list)" >  </i>
+               &nbsp;&nbsp;
+                <i style="font-size:20px;" class="fa fa-trash-o" style="color: rgb(244, 109, 19);height: 15px;"  ngbTooltip="Remove" (click)="Remove(i,list)" > </i>
+            </td>
+             <!-- </td> -->
+             <!-- <td hidden class="value">{{list.vitalSignId}}</td>
+             <td hidden >{{list.vitalSfacilityVitalSignIdignId}}</td> -->
+         </tr>
+           <tr *ngIf="isfootertrue">
+               <td>No Records Found</td>
+ 
+           </tr>
+          </tbody>
+         
+     
+       </table>
+      
+ 
+       </div>
+<!--  
+       <div style="display: flex;justify-content: right;margin-top: 10px;margin-right: 18px;">
+        
+         <button [disabled]="!BindTabledata" type="button" (click)="UpdateVitalsOrder()"  class="btn btn-primary btn-sm btn-width">Update Facility Tariff</button>
+                
+       </div> -->
+      
+   
+    </form>
+ </div>
+ 
+ 

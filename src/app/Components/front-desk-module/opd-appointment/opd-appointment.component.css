@@ -1,0 +1,74 @@
+select option{
+    width: 100px;
+}
+
+.isdisplayretextbx{
+    display: none;
+}
+
+.errspan {
+    float: right;
+    margin-right: 6px;
+    margin-top: -28px;
+    position: relative;
+    z-index: 2;
+    color: green;
+}
+
+
+.errspan2 {
+    float: right;
+    margin-right: 6px;
+    margin-top: -28px;
+    position: relative;
+    z-index: 2;
+    color: red;
+}
+
+.divd {
+   
+    transition: opacity 1s ease-out;
+    opacity: 0;
+}
+
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    font-family:'Open Sans';
+    background-color: #E53F6D;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    padding-left:5px;
+    padding-right:5px;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    left: 60px;
+    opacity: 0;
+    transition: opacity 0.5s; 
+  
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%; 
+    margin-top: -8px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent #E53F6D transparent transparent;
+}

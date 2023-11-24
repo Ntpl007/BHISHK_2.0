@@ -123,8 +123,15 @@
                 <td class="custum-col">{{rowlist.opId}}</td>
                 <td class="custum-col">{{rowlist.mobileNumber}}</td> 
                 <td class="custum-col">{{rowlist.dateOfVisit}}</td>
-              <td class="custum-col"><i style="font-size:10px;" class="material-icons" style="color: rgb(13, 8, 41);height: 10px;"  ngbTooltip="Print" (click)="printThisPage(i, rowlist)" >print </i></td> 
-               
+              <td class="custum-col">
+                <i style="font-size:10px;" class="material-icons" style="color: rgb(13, 8, 41);height: 10px;"  ngbTooltip="Print" (click)="printThisPage(i, rowlist)" >print </i>
+            &nbsp;
+            <button   
+            class="btn btn-primary waves-effect waves-light btn-space" id="btnBill" (click)="EditBilling(i, rowlist)" >
+               Billing
+            </button>
+            </td> 
+             
             </tr>
             <tr *ngIf=norecords>
                 <td>No Records Found</td>

@@ -1,6 +1,7 @@
 
 <div class="card-body">
     <form [formGroup]="myform"   #reg="ngForm" (ngSubmit)="SaveUser(reg.value)" autocomplete="off">
+      
         <div class="form-row">
         <div class="col-md-4">
           <!-- <label for="txtfname" class="form-label">First Name</label> -->
@@ -79,18 +80,7 @@
                              </small> -->
 
         </div>
-        <div class="col-md-4">
-            <!-- <label for="cmbFecility" class="form-label">Facility</label> -->
-            <select   class="form-control" formControlName="facility_id" id="cmbFecility"  name="facility_id" >
-                <option  [selected]="true"  hidden  >Facility*</option>
-               
-                <option   *ngFor="let d of fecility"  [value]="d.fecilityId">{{d.fecility_Name}}</option>
-               
-               </select>
-               <small *ngIf="myform.get('facility_id').pristine&& myform.get('facility_id').touched" class="text-danger">
-                Facility is required 
-                             </small>
-        </div>
+       
         <div class="col-md-4"  [hidden]=isrefdoctor>
             <!-- <label for="txtusername" class="form-label">User name</label> -->
             <input maxlength="15" type="text" onpaste="return false"   formControlName="User_Name" (keyup)="CheckUsernameisExisted($event)" [disabled]="d" class="form-control"name="User_Name" id="txtusername"  placeholder="User Name*">
@@ -118,6 +108,7 @@
         </div>
           <div style="margin-top: 5px;text-align: right;">
             <div   >
+             
                 <button class="btn btn-primary" type="submit"  >Save User</button>
                 &nbsp;
                 <button type="reset"  (click)="reset()"    id="reset" class="btn btn-danger waves-effect m-l-5">
@@ -127,7 +118,6 @@
             
           </div>
 
-         
 
           
       </form>

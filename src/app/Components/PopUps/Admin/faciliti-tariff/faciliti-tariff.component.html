@@ -1,0 +1,74 @@
+
+<div mat-dialog-content class="custom-dialog">
+ 
+  <div class="title-bar" style="background-color: rgb(140, 216, 247);border-radius: 5px;">
+    <h4>Add Facility Tariff</h4>
+    <button class="btnclass" mat-icon-button [mat-dialog-close]="true">
+      <!-- <mat-icon>close</mat-icon> --><i class="fa fa-close"></i>
+    </button>
+  </div>
+  <!-- <div style="width: 100%;background-color: azure;"><label style="font-weight: bold;">Organization Name:&nbsp; </label><label>{{_organization}}</label></div> -->
+
+  
+  <br>
+  <div style="display: flex;justify-content: left;margin-bottom: 10px;">
+    <a  (click)="add()"><i style="color: rgb(26, 190, 26);" class="fa fa-plus"></i>Add More</a>
+  </div>
+  <div   class="row d-flex justify-content-center " >
+    
+    <table id="tblfacility"  class="styled-table" style="margin-top: 0px;" >
+        <thead >
+            <tr>
+                <th style="width: 50px;padding-left: 15px;" >S.No</th>
+                 <th hidden style="width: 200px;" > Organization</th>  
+                <th style="width: 200px;" >Charge Item</th>
+                <th class="dt">Base Price</th>
+                <th class="dt">Unit Price</th>
+                <th class="action">Action</th>
+              
+                </tr>
+        </thead>
+       <tbody > 
+        
+        <tr  *ngFor="let item of rowlist1,let i=index" id="{{i}}">
+          
+            <td  style="width: 50px;padding-left: 10px;">{{i+1}}</td>
+            <td hidden style="width: 200px;"><label >{{_organization}}</label></td> 
+            <td hidden style="width: 200px;"><input  type="text" list="list" placeholder="Facility*" [value]="searchText2" (keyup)="fetchFacility(i,$event)" (keydown)="AcceptCharactersOnly($event)" id="facility_{{i}}" class="form-control text-capitalize">
+            </td> 
+            <td style="width: 200px;">  <select #id (change)="LoadChargeItemData(id.value,i)" class="form-control"   formControlName="ChargeItemId" name="ChargeItemId" >
+            <option [selected]="true" [value]="0" hidden >
+                Charge Item*                 
+            </option>
+            <option *ngFor="let list of chargeItemList" id="chargeitemid{{i}}" value={{list.chargeItemId}}>{{list.chargeItem}}</option>
+            </select> <small *ngIf="myform.get('ChargeItemId').pristine&& myform.get('ChargeItemId').touched" class="text-danger">
+              Charge Item is required
+            </small></td>
+            <td class="dt" ><input  type="text" placeholder="Base Price" class="form-control text-capitalize" id="Faddress_{{i}}" formControlName="BasePrice"   readonly="true"></td>
+            <td class="dt" ><input (keyup)="fetchFAddress(i,$event)"  type="text" placeholder="Unit Price" class="form-control text-capitalize" id="UnitPrice_{{i}}"></td>
+            <td class="action"><a (click)="remove(i,item)"><i class="fa fa-trash-o" ></i></a></td>
+            <!-- (keydown)="AcceptCharactersOnly($event)" -->
+        </tr>
+        <tr hidden>
+            <td>No Records Found</td>
+
+        </tr>
+       </tbody>
+      
+    </table>
+    <div>
+    </div>
+    </div>
+    <div class="form-row">
+      <div  class="col-md-12 buttons-right-row">
+               <button type="submit" (click)="Save()" 
+               class="btn btn-primary waves-effect waves-light btn-space" id="btnSave" >
+                 Save
+               </button>
+         
+      </div>
+  
+  
+      </div>
+
+     

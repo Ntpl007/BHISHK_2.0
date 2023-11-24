@@ -218,6 +218,7 @@ if(k==0)
     {
       
       let data=this.rowlist;
+      data[0].organizationimage=this.Data.organizationimage;
       debugger;
       this.service.SaveOrganizationsbySuperAdmin(data).subscribe((result)=>{
        debugger

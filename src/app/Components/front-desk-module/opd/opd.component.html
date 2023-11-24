@@ -111,14 +111,14 @@
                          <option value="Miss">Miss</option>
                          <option value="Ms">Ms</option>
                          <option value="Mrs">Mrs</option>
-                         <option value="Trans">Trans</option>
+                         <option value="Others">Others</option>
                      </select>
                      <small *ngIf="opform.get('Prefix').pristine&& opform.get('Prefix').touched" class="text-danger">
                         Prefix is  required
                                      </small> 
                  </div>
                  
-                 <div class="col-md-5 mb-3">
+                 <!-- <div class="col-md-5 mb-3">
                    
 
                      <input type="text"   value="{{fname}}"  onpaste="return false" formControlName="FirstName"  class="form-control text-capitalize"(keydown)="AcceptCharactersOnly($event)" id="txtName" placeholder="FullName*" name="firstName">
@@ -126,7 +126,26 @@
                         First Name is required
                        </small> 
                     
-                </div> 
+                </div>  -->
+                <div class="col-md-3 mb-3">
+                   
+
+                    <input type="text"   value="{{fname}}"  onpaste="return false" formControlName="FirstName"  class="form-control text-capitalize"(keydown)="AcceptCharactersOnly($event)" id="txtName" placeholder="First Name*" name="firstName">
+                    <small *ngIf="opform.get('FirstName').touched&& opform.get('FirstName').hasError('required')" class="text-danger">
+                       First Name is required
+                      </small> 
+                   
+               </div> 
+               <div class="col-md-3 mb-3">
+                   
+
+                <input type="text"   value="{{lname}}"  onpaste="return false" formControlName="LastName"  class="form-control text-capitalize"(keydown)="AcceptCharactersOnly($event)" id="txtLName" placeholder="Last Name*" name="LastName">
+                <small *ngIf="opform.get('LastName').touched&& opform.get('LastName').hasError('required')" class="text-danger">
+                   Last Name is required
+                  </small> 
+               
+           </div> 
+
                
                
                  <div  class="col-md-3 mb-3" >
@@ -161,12 +180,12 @@
                  </div>
                  
 
-                 <div class="col-md-3 mb-3">
-                     <select class="form-control" id="ddlSex" [value]="Sex"   formControlName="Sex" name="Sex"   >   
+                 <div class="col-md-2 mb-3">
+                     <select [value]="3" class="form-control" id="ddlSex" [value]="Sex"   formControlName="Sex" name="Sex"   >   
                          <option [selected]="true" hidden  value="0" >Gender*</option>
                          <option value="1">Male</option>
                          <option value="2">Female</option>
-                         <option value="3">Trans Gender</option>
+                         <option value="3">Others</option>
                      </select>
                      <!-- <small *ngIf="opform.get('Sex').pristine&& opform.get('Sex').touched" class="text-danger">
             Gender is  required
@@ -175,7 +194,18 @@
                 
              </div>
              <div class="form-row">
-                <div class="col-md-3 mb-3">
+                <div class="col-md-1 mb-3">
+                  <input class="form-control" readonly id="txtAge" type="text" placeholder="Age"></div>
+
+                  <div class="col-md-2 mb-3">
+                    <select disabled class="form-control" id="ddlAgeMode" >
+                        <option selected value="0">Age Mode</option>
+                        <option value="1">Days</option>
+                        <option value="2">Months</option>
+                        <option value="3">Years</option>
+                    </select>
+                    </div>
+                <div class="col-md-2 mb-3">
                     <input type="text" onpaste="return false"  class="form-control" (keyup)="checkIsAadhaarValid($event)"  id="Aadhaar" (keydown)="onKeyDown($event)"  formControlName="Aadhaar" maxlength="12"  placeholder="Aadhaar*"  name="Aadhaar">
                    <span  *ngIf="isaadhaarvalidsymbol" class="fa fa-check errspan"></span>
                    <span  *ngIf="isaadhaarvalid" class="fa fa-exclamation-circle errspan2"></span>
@@ -194,7 +224,7 @@
     
                 </div>
                
-                 <div class="col-md-3 mb-3">
+                 <div class="col-md-2 mb-3">
                  <input type="text"  onpaste="return false" class="form-control" id="txtMobile"formControlName="MobileNumber"   [value]="Mobile"  placeholder="Mobile*"maxlength="10"  name="MobileNumber">
                  <small *ngIf="opform.get('MobileNumber').touched&& opform.get('MobileNumber').hasError('required')" class="text-danger">
                     Mobile Number is required
@@ -208,7 +238,7 @@
                    <small class="text-danger" *ngIf="opform.get('MobileNumber').hasError('pattern')"> Mobile Number is Invalid</small>
     
                 </div>
-                 <div class="col-md-3 mb-3">
+                 <div class="col-md-2 mb-3">
                      <input type="email" class="form-control" onpaste="return false"  
                      required id="txtemail"   formControlName="EmailId" placeholder="Email Id*"  name="EmailId" value="{{_email}}"> 
                      
@@ -403,7 +433,7 @@
                                      </small>
                  </div>
                  <div class="col-md-3 mb-3">
-                     <select class="form-control" name="DoctorId"formControlName="DoctorId"  id="ddlDoctorId" >
+                     <select class="form-control" name="DoctorId"formControlName="DoctorId"  id="ddlDoctorId" (change)="GetConsultationAmount()" >
                          <option [selected]="true"  hidden value="0" >Doctor*</option>
                          <option  *ngFor="let d of docs"  value="{{d.providerId}}">{{d.firstName}}</option>
                         
@@ -424,12 +454,12 @@
                     <input type="text" formControlName="txtRefDoctor"   name="txtRefDoctor"  class="form-control" placeholder="Ref Doctor" onpaste="return false">
 
                  </div>
-                 <div class="col-md-1 mb-3">
+                 <div class="col-md-3 mb-3">
                      <div class="custom-control custom-checkbox">
                          <input type="checkbox" class="custom-control-input" [checked]=isnewchecked
                              id="customCheck02" data-parsley-multiple="groups"
                              data-parsley-mincheck="2" onclick="isrefdoctor()">
-                         <label class="custom-control-label" for="customCheck02">New</label>
+                         <label class="custom-control-label" for="customCheck02">New Ref Doctor</label>
                      </div>
                  </div>
                  <!-- <div class="col-md-3 mb-3">
@@ -517,7 +547,7 @@
                     placeholder="Reg.Amount" value="{{RGA}}" disabled>
             </div>
                  <div class="form-group ml-2">
-                     <label class="" for="exampleInputEmail2">Final Amnt:</label>
+                     <label class="" >Final Amnt:</label>
                      <input type="text" class="form-control" id="txtfinalamount" name="famount"  
                          placeholder="Final Amount" [value]="finalamount" disabled >
                  </div>
@@ -547,8 +577,9 @@
                     
                     </div>
                     <div class="col-md-3 mb-3">
-                        <select class="form-control"  id="ddlPaymentModeId"  formControlName="PaymentMode" name="PaymentMode">
-                            <option [selected]="true"  hidden value="0"  >PaymentMode*</option>                                                
+    
+    <select class="form-control" (change)="ShowRefNumber($event)"  id="ddlPaymentModeId"  formControlName="PaymentMode" name="PaymentMode">
+                            <option [selected]="true"  hidden value="0"  >Payment Mode*</option>                                                
                             <option *ngFor="let list of paymentMode" [value]="list.paymenT_MODE_ID">{{list.paymenT_MODE}}</option>
                         
                         </select>
@@ -556,6 +587,14 @@
                             Payment Mode is  required
                                          </small>
                     </div>
+                    <div class="col-md-3 mb-3" *ngIf="isrefNoShow">
+                        <input type="text" class="form-control"  placeholder="Reference Number*" name="ReferenceNo"  formControlName="ReferenceNo" id="ReferenceNo">
+                        <small *ngIf="opform.get('ReferenceNo').touched&& opform.get('ReferenceNo').hasError('required')" class="text-danger">
+                            Reference No is required
+                           </small>
+                           <small class="text-danger" *ngIf="opform.get('ReferenceNo').hasError('pattern')"> Reference Number is Invalid</small>
+    
+                       </div>
                     <!-- value="{{list.paymenT_MODE_ID}}" -->
                  <!-- <div class="col-md-3 mb-3">
                      <select class="form-control"  id="ddlPaymentModeId"  formControlName="PaymentMode">

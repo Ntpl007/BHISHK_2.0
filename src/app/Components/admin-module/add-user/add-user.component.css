@@ -62,3 +62,263 @@ li{
     z-index: 2;
     color: red;
 }
+
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0 0 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+  
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 5px 5px 0 0;
+    scroll-behavior: smooth;
+ 
+    display: block;
+    overflow-y: auto;
+   
+   
+  
+}
+
+.styled-table tbody tr{
+    margin-left: 1px;
+}
+.styled-table thead tr {
+    background-color: #0a4890;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th{
+    padding: 8px 5px;
+}
+.styled-table td {
+    padding: 5px 3px;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+   
+    
+}
+/* 
+.styled-table tbody{
+    display: block;
+overflow-x:auto;
+max-height: 280px;
+ } */
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #0a4890;
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    /* color: #009879; */
+}
+.tbtr td{
+    padding: 12px 15px;
+    
+}
+.btnadd{
+    color:  rgb(38, 245, 38);font-weight: bold;
+}
+.btnadd:hover{
+    cursor: pointer;
+
+}
+.lnkbtn{
+    border:none;
+    background-color:transparent;
+    color:  rgb(38, 245, 38);font-weight: bold;
+
+}
+lnkbtn:hover{
+    cursor: pointer;
+    color: aqua;
+}
+
+a{cursor: pointer;}
+button{cursor: pointer;}
+/* 
+ .styled-table tbody{
+    display: block;
+    overflow-y: auto;
+    max-height: 200px;
+    
+    
+ } */
+ #loading{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    }
+   
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    #spin{
+        overflow: hidden;
+    }
+
+            .dt{
+                width: 90px;
+            }
+            .mobile{
+                width: 110px;
+            }
+            .mobileh{
+                width: 100px;
+            }
+            .name{
+                width: 130px;
+            }
+            .nameh{
+                width: 120px;
+            }
+            .age{
+                width: 92px;
+            }
+            .time
+            {
+                width: 140px;
+
+            }
+            .timeh
+            {
+                width: 130px;
+
+            }
+            .action{
+                width:165px;
+
+            }
+            .action a{
+                color:#2451f4;
+                font-weight: bold;
+            }
+             /* .styled-table tr td{
+                border: solid 1px black;
+
+            }
+
+            .styled-table tr th{
+                border: solid 1px black;
+
+            }  */
+            .status{
+                width: 140px;
+            }
+          
+            .styled-table tbody tr:hover{
+                background-color: #eff1e9;
+            }
+
+            
+
+.menu{
+    width:65px;
+    height:260px;
+    background:#5533FF;
+    border-radius: 5px;
+    
+  }
+  
+  .material-icons{
+      color: white;
+      padding-top:20px;
+      padding-left: 20px;
+   
+  }
+  
+  .material-icons:hover{
+      color: #c9c9c9;
+      cursor:pointer;
+      
+    
+  }
+  
+  .tooltip {
+      position: relative;
+      display: inline-block;
+  }
+  .tooltip .tooltiptext {
+      visibility: hidden;
+      font-family:'Open Sans';
+      background-color: #E53F6D;
+      color: white;
+      text-align: center;
+      padding: 5px 0;
+      padding-left:5px;
+      padding-right:5px;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 1;
+      top: 15px;
+      left: 60px;
+      opacity: 0;
+      transition: opacity 0.5s; 
+    
+  }
+  
+  .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+      
+  }
+  
+  .tooltip .tooltiptext::after {
+      content: " ";
+      position: absolute;
+      top: 50%;
+      right: 100%; 
+      margin-top: -8px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent #E53F6D transparent transparent;
+  }
+
+  i.material-icons{
+    padding-top: 0px; padding-left: 20px;
+  
+  }
+
+  .custum-col{
+    width: 150px;
+  }
+  
+  .custum-col-100{
+    width: 100px;
+  }
+  .custum-col-sno{
+    width:60px;
+     padding-left: 10px;
+  }
+  
+  .custum-col-facility{
+    width: 200px;
+  }
+  
+  .fa-edit{
+    font-size: 22px;
+  }
+  .styled-table thead tr th:first-child,
+  .styled-table tbody tr td:first-child
+  {
+    text-align: center;
+  }
