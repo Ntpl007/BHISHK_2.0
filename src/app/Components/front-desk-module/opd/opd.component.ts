@@ -23,6 +23,7 @@ import { DialogcommunicationService } from 'src/app/Shared/dialogcommunication.s
 import { LoadingPopupComponent } from 'src/app/Components/PopUps/loading-popup/loading-popup.component';
 import Swal from 'sweetalert2';
 import { UserService } from 'src/app/Shared/user.service';
+
 @Component({
   selector: 'app-opd',
   templateUrl: './opd.component.html',
@@ -34,6 +35,7 @@ import { UserService } from 'src/app/Shared/user.service';
 export class OpdComponent implements OnInit {
   form!: FormGroup;
     submitted = false;
+   
 ;
   minDate: { year: number; month: number; day: number; };
   maxDate:{ year: number; month: number; day: number; };

@@ -554,7 +554,7 @@ public getpatient(X:any)
    {
     let OrganizationId=localStorage.getItem('organizationId')
     let facilityId=localStorage.getItem('facilityId')
-  this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetpatientDetailsForBilling?mobilenumber='+this.mobilenumber+'&OrganizationId='+OrganizationId+'&FacilityId='+facilityId).subscribe(
+  this.http.get<any>(this.service.Serverbaseurl+'FetchMasterData/GetpatientDetailsForBilling?mobilenumber='+this.mobilenumber+'&OrganizationId='+OrganizationId+'&FacilityId='+facilityId).subscribe(
     (data: any)=>{
       debugger;
       this.listOfDisplayData = data;

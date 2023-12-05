@@ -11,6 +11,7 @@ import { CustomAdapter } from 'src/app/Shared/Dates/CustomAdapter ';
 import { CustomDateParserFormatter } from 'src/app/Shared/Dates/CustomDateParserFormatter ';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-opd-search',
   templateUrl: './opd-search.component.html',
@@ -404,5 +405,37 @@ if(control instanceof FormControl)
          
     
        }
+
+      //  exportToExcel(): void {
+      //   // Your data (example)
+      //   debugger
+      //   const data = [
+      //     ['Name', 'Age', 'City'],
+      //     ['John Doe', 30, 'New York'],
+      //     ['Jane Doe', 25, 'San Francisco'],
+      //     // ... more data
+      //   ];
+      //   const data2 = [
+      //    {"name":"madhu","id":1},
+      //    {"name":"suresh","id":2}
+      //     // ... more data
+      //   ];
+      
+      //   // Create a worksheet
+      //  // let jsondata=JSON.stringify(data2)
+      //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data2);
+      
+      //   // Create a workbook
+
+      //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      //   const columnWidths = [15, 20];
+      //   ws['!cols'] = columnWidths.map(width => ({ width }));
+
+      //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      
+      //   // Save the workbook as an Excel file
+      //   XLSX.writeFile(wb, 'exported-data.xlsx');
+      // }
+      
 
 }

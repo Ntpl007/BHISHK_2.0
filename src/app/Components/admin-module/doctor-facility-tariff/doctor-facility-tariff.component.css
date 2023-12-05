@@ -1,17 +1,24 @@
-
+body {
+    overflow-x: hidden;
+  }
+  .styled-table thead tr th:first-child,
+  .styled-table tbody tr td:first-child
+  {
+    text-align: center;
+  }
 .styled-table {
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 0.9em;
    
     font-family: sans-serif;
-    box-shadow: 0 0 20px rgba(160, 130, 244, 0.81);
+    box-shadow: 0 0 20px rgba(213, 212, 214, 0.81);
     border-radius: 5px 5px 0 0;
+    display: block;
     
-    overflow-y: auto;
     scrollbar-width: thin;
-    
-   width: 90%;
+   
+  
    
   
 }
@@ -54,7 +61,7 @@ max-height: 280px;
 
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #0a4890;
+    border-bottom: 2px solid #f1f6fa;
 }
 .styled-table tbody tr.active-row {
     font-weight: bold;
@@ -231,8 +238,23 @@ color: green;
     .button-37 {
       padding: 10px 30px;
     }
+    
   }
-
+  
+  @media screen and (max-width: 768px) {
+    /* CSS rules for small screens */
+    .styled-table{
+        width: 800px;
+        display: block;
+        overflow: auto;
+    }
+    .styled-table thead tr th,
+    .styled-table tbody tr td
+    {
+        width: 120px;
+    }
+  }
   .btn-width{
     width: 150px;
   }
+  

@@ -135,7 +135,7 @@ public GetSearchRegisterPatientToday() : Observable<any> {
   debugger
   let OrgId=localStorage.getItem('organizationId')
   let FId=localStorage.getItem('facilityId')
-  return this.http.get<any>('https://localhost:44336/'+'api/Home/GetSearchRegisterPatientToday?OrganizationId='+OrgId+'&FacilityId='+FId);
+  return this.http.get<any>(this.Serverbaseurl+'api/Home/GetSearchRegisterPatientToday?OrganizationId='+OrgId+'&FacilityId='+FId);
 }
 public SearchPatientstbytoday() : Observable<any> {
   debugger
@@ -265,7 +265,7 @@ public GetAppointments(Data:any):Observable<any>
   Data.OrganizationId=orgId;
   Data.FacilityId=fid;
   debugger
-   return this.http.post<any>('https://localhost:44395/'+'FetchMasterData/GetAppointments',Data)
+   return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/GetAppointments',Data)
 
 }
 
@@ -607,25 +607,25 @@ public GetExtraReScheduleDates(selectedDate: any,providerId: any, facilityId: an
 }
 public RemoveDoctorFacilityTariffChargeId(obj:any):Observable<any>
 {
-  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/RemoveDoctorFacilityTariffChargeId?Id='+obj)
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/RemoveDoctorFacilityTariffChargeId?Id='+obj)
 }
 public UpdateDoctorFacilityTariffDetails(Data:any):Observable<any>
 {
   
- return this.http.post<any>('https://localhost:44395/'+'FetchMasterData/UpdateDoctorFacilityTariffDetails',Data)
+ return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/UpdateDoctorFacilityTariffDetails',Data)
 }
 public SaveDoctorFacilityTariffDetails(Data:any):Observable<any>
 {
   
- return this.http.post<any>('https://localhost:44395/'+'FetchMasterData/SaveDoctorFacilityTariffDetails',Data)
+ return this.http.post<any>(this.Serverbaseurl+'FetchMasterData/SaveDoctorFacilityTariffDetails',Data)
 }
 public GetOrganisationDoctorDetails(OrganizationId:any) : Observable<Fecility[]> {
   debugger
-  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetDoctorByOrganisationId?OrganisationId='+OrganizationId);
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetDoctorByOrganisationId?OrganisationId='+OrganizationId);
 }
 public GetFecilityDoctorTariffDetails(OrganizationId:any,FacilityId:any) : Observable<Fecility[]> {
   debugger
-  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetFaciltyDoctorTarifffDetails?OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetFaciltyDoctorTarifffDetails?OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
 }
 //Vijay start region
 //#region Billing
@@ -705,20 +705,20 @@ public GetDoctorChargePriceDetails(ChargeItemId:any,DoctorId:any):Observable<any
 
 public GetPatientDetailsByAppointmentId(PatientTempId:any):Observable<any>
 {
-  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetPatientDatabyPatientTempID?PatientTempId='+PatientTempId)
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetPatientDatabyPatientTempID?PatientTempId='+PatientTempId)
   // return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetDoctorChargeItemDetails?DoctorId='+DoctorId+'&ChargeItemId='+ChargeItemId+'&OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
 }
 public GetConsultationAmount(DoctorId:any,OrgId:any,Fid:any,ChargeitemId:any):Observable<any> 
 {
   //int DoctorId,int Organizationd,int FacilityId,int ChargeItemId
-  return this.http.get<any>('https://localhost:44395/'+'FetchMasterData/GetConsultationAmount?DoctorId='+DoctorId+'&Organizationd='+OrgId+'&FacilityId='+Fid+'&ChargeItemId='+ChargeitemId)
+  return this.http.get<any>(this.Serverbaseurl+'FetchMasterData/GetConsultationAmount?DoctorId='+DoctorId+'&Organizationd='+OrgId+'&FacilityId='+Fid+'&ChargeItemId='+ChargeitemId)
   // return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetDoctorChargeItemDetails?DoctorId='+DoctorId+'&ChargeItemId='+ChargeItemId+'&OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
 }
 
 public UpdatePatientIdInPatientTemp(PatientTempId:any,PatientId:any):Observable<any>
 {
   //int DoctorId,int Organizationd,int FacilityId,int ChargeItemId
-  return this.http.get<any>('https://localhost:44336/'+'api/Home/UpdatePatientIdInPatientTemp?PatientTempId='+PatientTempId+'&PatientId='+PatientId)
+  return this.http.get<any>(this.Serverbaseurl+'api/Home/UpdatePatientIdInPatientTemp?PatientTempId='+PatientTempId+'&PatientId='+PatientId)
   // return this.http.get<any>(this.Serverbaseurl+'api/Payments/GetDoctorChargeItemDetails?DoctorId='+DoctorId+'&ChargeItemId='+ChargeItemId+'&OrganizationId='+OrganizationId+'&FacilityId='+FacilityId);
 }
 

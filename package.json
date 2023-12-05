@@ -22,6 +22,8 @@
     "@angular/router": "^14.0.0-next.0",
     "@auth0/angular-jwt": "^5.1.2",
     "@ng-bootstrap/ng-bootstrap": "^13.1.1",
+    "html2pdf": "^0.0.11",
+    "html2pdf.js": "^0.10.1",
     "jquery": "^3.7.0",
     "ngx-pagination": "^6.0.3",
     "num-words": "^1.2.3",

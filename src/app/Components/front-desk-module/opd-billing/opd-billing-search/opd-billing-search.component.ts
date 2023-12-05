@@ -341,7 +341,7 @@ if(control instanceof FormControl)
   ngOnInit(): void {
     debugger
    this.SearchBillingsinload();
-    localStorage.setItem('header','OPD Search')
+    localStorage.setItem('header','OPD Billing Search')
     this.patientList=[]
     debugger
     let dt=formatDate(this.datenow,'dd-MM-yyyy','en-Us') 
